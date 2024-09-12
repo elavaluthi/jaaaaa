@@ -1,0 +1,70 @@
+Vector:
+
+-> Vector is a synchronized dynamic array implementation in Java.
+-> It provides thread safety at the cost of performance overhead.
+-> Vector is part of the legacy collections framework and is less commonly used in modern Java development.
+-> If thread safety is not required, ArrayList is generally preferred for better performance.
+
+
+Synchronized:
+
+Vector is synchronized, meaning it is thread-safe and can be used in a concurrent environment. 
+
+However, this synchronization comes with a performance cost.
+
+
+Performance:
+Insertion -> O(1) & if insertion causes restructring of internal array , it will be O(n)
+Removal -> O(1) & if removal causes restructring of internal array , it will be O(n) 
+Retrieval -> O(1)
+
+When to use:
+
+-> Use it when you need synchronized list.
+
+Syntax:
+
+public class Vector<E>
+extends AbstractList<E>
+implements List<E>, RandomAccess, Cloneable, Serializable
+
+Example:
+
+import java.util.Vector;
+import java.util.Enumeration;
+
+public class VectorExample {
+    public static void main(String[] args) {
+        // Creating a Vector
+        Vector<String> vector = new Vector<>();
+
+        // Adding elements to the Vector
+        vector.add("Apple");
+        vector.add("Banana");
+        vector.add("Cherry");
+        vector.add("Date");
+        
+        // Displaying the size and capacity of the Vector
+        System.out.println("Size: " + vector.size());
+        System.out.println("Capacity: " + vector.capacity());
+
+        // Accessing elements from the Vector
+        System.out.println("First element: " + vector.get(0));
+        
+        // Removing an element from the Vector
+        vector.remove("Banana");
+
+		Iterator<String> iterator = vector.iterator();
+        System.out.println("Elements in the Vector:");
+        while (iterator.hasNext()) {
+            System.out.println(enumeration.next());
+        }
+
+        // Checking if the Vector contains a specific element
+        if (vector.contains("Cherry")) {
+            System.out.println("Vector contains Cherry");
+        } else {
+            System.out.println("Vector does not contain Cherry");
+        }
+    }
+}

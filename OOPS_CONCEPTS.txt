@@ -1,0 +1,1451 @@
+OOPS Concepts:
+
+What is OOPS:
+
+-> It use objects as a primary source to implement what is needs to be happen in the code
+-> The main aim of OOPS is to bind together the data and the functions that operate on them.
+ so that no other part of the code can access this data except that function. 
+
+Concepts of OOPs:
+1)Objects
+2)Classes
+3)Abstraction
+4)Encapsulation
+5)Inheritance
+6)Polymorphism
+7)Coupling and Cohesion
+8)Association, Aggregation, and Composition
+
+
+1)Objects:
+->It's runtime entity & embodiment of a class
+->These objects mirror real-world entities, complete with both state and behavior
+->Think of a ‘Car’ object based on a ‘Car’ class 
+(It possesses attributes like color, brand, and speed, along with behaviors like ‘accelerate’ and ‘brake’)
+This is where Java OOP concepts come to life.
+
+-> Objects are always called instances of a class which are created from a class in java or any other language. 
+They have states and behaviour.
+
+-> Objects can be both physical and logical data. It contains addresses and takes up some space in memory
+
+Example:
+
+Public class Mybook {
+	int x=10;
+	Mybook(int value){
+	this.x=value;
+	}
+	Public static void main (String args []) {
+		Mybook Myobj= new Mybook ();
+		Mybook secObj=new Mybook(20);
+		System.out.println(MyObj.x);
+		System.out.println(secObj.x);
+	}
+}
+
+2) Classes:
+
+-> Classes are like constructors for creating objects. 
+-> The collection of objects is said to be a class. 
+-> Classes are said to be logical quantities. 
+-> Classes don’t consume any space in the memory. 
+-> Class is also called a template of an object. 
+-> Classes have members which can be fields, methods and constructors. 
+-> class has both static and instance initializers.
+
+Declaration:
+
+Modifiers: These can be public or default access.
+Keyword: class
+Class name: Initial letter capital.
+Superclass: A class can only extend (subclass) one parent.
+Interfaces: A class can implement more than one interface.
+Body: Body surrounded by braces, { }.
+Constructors:
+Getter & Setters:
+
+Example:
+
+public class Employee{
+	int empNo;
+	String empName;
+	String emailId;
+	
+	Employee(int empNo, String empName, String emailId){
+		this.empNo=empNo;
+		this.empName=empName;
+		this.emailId=emailId;
+	}
+	
+	public void printEmpDetails(Employee empObj){
+	
+	system.out.println(empObj.empNo + " " + empObj.empName + " " + empObj.emailId);
+	
+	}
+	
+	public static void main(String args[]){
+		Employee obj=new Employee(10001, "Abdulmajeeth N", "majeethiet@gmail.com");
+		obj.printEmpDetails(obj);
+	}
+}
+
+3) Inheritance:
+
+-> one class is allowed to inherit the features(fields and methods) of another class.
+-> Inheritance means creating new classes based on existing ones
+-> A class that inherits from another class can reuse the methods and fields of that class. 
+In addition, you can add new fields and methods to your current class as well.
+
+Usage:
+-> code reusability 
+-> Method Overriding
+-> Abstraction
+
+The extends keyword is used for inheritance in Java. 
+Using the extends keyword indicates you are derived from an existing class. 
+In other words, “extends” refers to increased functionality.
+
+Syntax:
+
+class DerivedClass extends BaseClass  
+{  
+   //methods and fields  
+}
+
+Example:
+
+class Bicycle {
+	public int gear;
+	public int speed;
+
+	public Bicycle(int gear, int speed)
+	{
+		this.gear = gear;
+		this.speed = speed;
+	}
+
+	public void applyBrake(int decrement)
+	{
+		speed -= decrement;
+	}
+
+	public void speedUp(int increment)
+	{
+		speed += increment;
+	}
+
+	public String toString()
+	{
+		return ("No of gears are " + gear + "\n" + "speed of bicycle is " + speed);
+	}
+}
+
+
+class MountainBike extends Bicycle {
+	public int seatHeight;
+
+	public MountainBike(int gear, int speed,int startHeight)
+	{
+		super(gear, speed);
+		this.seatHeight = startHeight;
+	}
+
+	public void setHeight(int newValue)
+	{
+		seatHeight = newValue;
+	}
+
+	@Override
+	public String toString()
+	{
+		return (super.toString() + "\nseat height is "
+				+ seatHeight);
+	}
+}
+
+public class Test {
+	public static void main(String args[])
+	{
+		MountainBike mb = new MountainBike(3, 100, 25);
+		System.out.println(mb.toString());
+	}
+}
+
+Output
+No of gears are 3
+speed of bicycle is 100
+seat height is 25
+
+->  when an object of MountainBike class is created, a copy of all methods and fields of the superclass acquires memory in this object.
+-> That is why by using the object of the subclass we can also access the members of a superclass
+
+Object Creation in Inheritance:
+
+->  It is mandatory that when an object is created, the constructor is for sure called 
+but it is not mandatory when a constructor is called object creation is need to be done.
+
+-> In inheritance, subclass acquires super class properties. An important point to note is, when a subclass object is created, 
+a separate object of a superclass will not be created.
+
+-> Only a subclass object is created that has superclass variables. This situation is different from a normal assumption 
+that a constructor call means an object of the class is created.
+
+-> so we can’t blindly say that whenever a class constructor is executed, the object of that class is created or not.
+
+Example:
+
+// Java program to demonstrate that Both Super Class
+// and Subclass Constructors Refer to Same Object
+
+import java.util.*;
+
+class Fruit {
+
+	public Fruit() {
+
+		System.out.println("Super class constructor");
+
+		System.out.println("Super class object hashcode :" + this.hashCode());
+
+		System.out.println(this.getClass().getName());
+	}
+}
+
+class Apple extends Fruit {
+
+	public Apple() {
+
+		System.out.println("Subclass constructor invoked");
+
+		System.out.println("Sub class object hashcode :" + this.hashCode());
+
+		System.out.println(this.hashCode() + " " + super.hashCode());
+
+		System.out.println(this.getClass().getName() + " " + super.getClass().getName());
+	}
+}
+
+
+public class GFG {
+
+	public static void main(String[] args) {
+		Apple myApple = new Apple();
+	}
+}
+
+Output:
+
+Super class constructor
+Super class object hashcode :1149319664
+Apple
+Subclass constructor invoked
+Sub class object hashcode :1149319664
+1149319664 1149319664
+Apple Apple
+
+Note: As we can see that both superclass(Fruit) object hashcode and subclass(Apple) object hashcode are same, so only one object is created
+
+Inheritance Types:
+
+-> Single Inheritance
+-> Multilevel Inheritance
+-> Hierarchical Inheritance
+-> Multiple Inheritance
+-> Hybrid Inheritance
+
+Single Inheritance:
+
+-> subclasses inherit the features of one superclass
+
+	A
+	|
+	B 
+	
+Example:
+
+import java.io.*;
+import java.lang.*;
+import java.util.*;
+
+class One {
+	public void print_learn()
+	{
+		System.out.println("Learn");
+	}
+}
+
+class Two extends One {
+	public void print_earn() {
+		System.out.println("Earn");
+	}
+}
+
+
+public class Main {
+
+	public static void main(String[] args)
+	{
+		Two g = new Two();
+		g.print_learn();
+		g.print_earn();
+	}
+}
+
+Output:
+
+Learn
+Earn
+
+Multilevel Inheritance:
+
+-> A derived class will be inheriting a base class, and as well as the derived class also acts as the base class for other classes.
+
+	A (Base Class)
+	|
+	B (Intermediatory Class)
+	|
+	C (Derived Class)
+	
+-> class A serves as a base class for the derived class B, which in turn serves as a base class for the derived class C
+	
+Note: class cannot directly access the grandparent’s members. (super.super.print();) 
+Because It violates encapsulation. You shouldn’t be able to bypass the parent class’s behavior.
+It makes sense to sometimes be able to bypass your own class’s behavior (particularly from within the same method) but not your parent’s. 
+
+Example:
+
+
+class Grandparent {
+	public void Print()
+	{
+		System.out.println("Grandparent's Print()");
+	}
+}
+
+class Parent extends Grandparent {
+	public void Print()
+	{
+		super.Print();
+		System.out.println("Parent's Print()");
+	}
+}
+
+class Child extends Parent {
+	public void Print()
+	{
+		//super.super.print() ->  Trying to access Grandparent's Print() will throw error
+		super.Print();
+		System.out.println("Child's Print()");
+	}
+}
+
+public class Main {
+	public static void main(String[] args)
+	{
+		Child c = new Child();
+		c.Print();
+	}
+}
+
+Output:
+
+Grandparent's Print()
+Parent's Print()
+Child's Print()
+
+3) Hierarchical Inheritance:
+
+-> one class serves as a superclass (base class) for more than one subclass
+
+		A 
+		|
+	B---C---D
+	
+-> class A serves as a base class for the derived classes B, C, and D.
+
+Example:
+
+class A {
+	public void print_A() { 
+		System.out.println("Class A"); 
+	}
+}
+
+class B extends A {
+	public void print_B() { 
+		System.out.println("Class B"); 
+	}
+}
+
+class C extends A {
+	public void print_C() { 
+		System.out.println("Class C"); 
+	}
+}
+
+class D extends A {
+	public void print_D() { 
+		System.out.println("Class D"); 
+	}
+}
+
+public class Test {
+	public static void main(String[] args)
+	{
+		B obj_B = new B();
+		obj_B.print_A();
+		obj_B.print_B();
+
+		C obj_C = new C();
+		obj_C.print_A();
+		obj_C.print_C();
+
+		D obj_D = new D();
+		obj_D.print_A();
+		obj_D.print_D();
+	}
+}
+
+Output:
+
+Class A
+Class B
+Class A
+Class C
+Class A
+Class D
+
+Multiple Inheritance (Through Interfaces):
+
+-> one class can have more than one superclass and inherit features from all parent classes. 
+-> Java does not support multiple inheritances with classes. In Java, we can achieve multiple inheritances only through Interfaces.
+
+	A		B 
+	|		|
+	|---C---|
+	
+Example:
+//Class level
+
+class A{
+public void print(){
+system.out.println("printA");
+}
+}
+
+class B{
+public void print(){
+system.out.println("printB");
+}
+}
+
+Class C extends A,B{//class can extend only one class
+super.print(); // Here will face an exception java won't know to call which class print()
+}
+	
+Example:
+
+// Java program to illustrate the
+// concept of Multiple inheritance with interface
+import java.io.*;
+import java.lang.*;
+import java.util.*;
+
+// Interface for shape
+interface Shape {
+    double calculateArea();
+    String getDescription();
+}
+
+// Interface for color
+interface Color {
+    String getColor();
+    String getDescription();
+}
+
+// Class representing a rectangle
+class Rectangle implements Shape, Color {
+    private double length;
+    private double width;
+    private String color;
+
+    public Rectangle(double length, double width, String color) {
+        this.length = length;
+        this.width = width;
+        this.color = color;
+    }
+
+    @Override
+    public double calculateArea() {
+        return length * width;
+    }
+
+    @Override
+    public String getColor() {
+        return color;
+    }
+
+    @Override
+    public String getDescription() {
+        return "A " + color + " rectangle with area " + calculateArea();
+    }
+}
+
+public class Main {
+    public static void main(String[] args) {
+        Rectangle rectangle = new Rectangle(5.0, 3.0, "Red");
+        System.out.println(rectangle.getDescription());
+    }
+}
+
+Hybrid Inheritance:
+
+-> It is a mix of two or more of the above types of inheritance. 
+
+-> Since Java doesn’t support multiple inheritances with classes, hybrid inheritance involving multiple inheritance is also not possible with classes. 
+
+-> In Java, we can achieve hybrid inheritance only through Interfaces if we want to involve multiple inheritance to implement Hybrid inheritance.
+
+-> Hybrid inheritance can be achieved through a combination of Multilevel Inheritance and Hierarchical Inheritance with classes, Hierarchical and Single Inheritance with classes
+
+-> it is indeed possible to implement Hybrid inheritance using classes alone, without relying on multiple inheritance type.
+
+	|-->A<--|
+	|		|
+	B		C
+	^		^
+	|		|
+	|---D---|
+	
+
+Points:
+
+-> We can write a new instance method in the subclass that has the same signature as the one in the superclass, thus overriding it 
+
+-> We can write a new static method in the subclass that has the same signature as the one in the superclass, thus hiding it.
+
+-> if the name of a derived class static function is the same as a base class static function then the base class static function shadows (or conceals) the derived class static function
+
+Example:
+
+class A {
+	static void fun() { System.out.println("A.fun()"); }
+}
+
+class B extends A {
+	static void fun() { System.out.println("B.fun()"); }
+}
+
+public class Main {
+	public static void main(String args[])
+	{
+		A a = new B();
+		a.fun(); // prints A.fun();
+
+		// B a = new B();
+		// a.fun(); // prints B.fun()
+
+		// the variable type decides the method
+		// being invoked, not the assigned object type
+	}
+}
+
+Output:
+A.fun()
+
+* If we make both A.fun() and B.fun() as non-static then the above program would print “B.fun()”.
+
+	
+4) Abstraction:
+
+-> It's the process of providing only the required information and hiding the unnecessary information.
+-> We can say that the main purpose of abstraction is data hiding
+-> The process of identifying only the required characteristics of an object, ignoring the irrelevant details
+
+Consider a real-life example of a man driving a car. 
+-> The man only knows that pressing the accelerators will increase the car speed or applying brakes will stop the car,
+-> He does not know how on pressing the accelerator, the speed is actually increasing. 
+-> He does not know about the inner mechanism of the car or the implementation of the accelerators, brakes etc. in the car.
+
+It Can be achieved by two ways:
+-> abstract class
+-> interface( can achieve 100% of abstraction)
+
+
+Abstract Class:
+
+-> abstract class is declared with the abstract keyword
+-> It may have both abstract and non-abstract methods(methods with bodies).
+-> An abstract is a Java modifier applicable for classes and methods in Java but not for Variables
+-> Java abstract class is a class that can not be initiated by itself, it needs to be subclassed by another class to use its properties.
+-> We can't have an abstract class without any abstract method.
+
+Example:
+
+abstract class Sunstar {
+	abstract void printInfo();
+}
+
+// Abstraction performed using extends
+class Employee extends Sunstar {
+	void printInfo()
+	{
+		String name = "avinash";
+		int age = 21;
+		float salary = 222.2F;
+
+		System.out.println(name);
+		System.out.println(age);
+		System.out.println(salary);
+	}
+}
+
+// Base class
+class Base {
+	public static void main(String args[])
+	{
+		Sunstar s = new Employee();
+		s.printInfo();
+	}
+}
+
+-> Abstract Class having constructor, data member, and methods
+
+
+import java.io.*;
+
+abstract class Subject {
+	Subject() { 
+	System.out.println("Learning Subject"); 
+	}
+
+	abstract void syllabus();
+
+	void Learn(){
+		System.out.println("Preparing Right Now!");
+	}
+}
+
+class IT extends Subject {
+void syllabus(){
+	System.out.println("C , Java , C++");
+}
+}
+
+class GFG {
+	public static void main(String[] args) {
+		Subject x=new IT();
+	
+		x.syllabus();
+		x.Learn();
+	}
+}
+
+Observation 1:
+
+-> An instance of an abstract class cannot be created, we can have references to abstract class type though.
+
+Example:
+
+abstract class Base {
+	abstract void fun();
+}
+
+class Derived extends Base {
+	void fun()
+	{
+		System.out.println("Derived fun() called");
+	}
+}
+
+class Main {
+	public static void main(String args[])
+	{
+		Base b = new Derived();
+		b.fun();
+	}
+}
+
+Output:
+
+Derived fun() called
+
+Observation 2:
+
+->An abstract class can contain constructors in Java.
+ And a constructor of an abstract class is called when an instance of an inherited class is created
+ 
+Example:
+
+abstract class Base {
+
+	Base()
+	{
+		System.out.println("Base Constructor Called");
+	}
+	
+	abstract void fun();
+}
+
+
+class Derived extends Base {
+
+	Derived()
+	{
+		System.out.println("Derived Constructor Called");
+	}
+
+	void fun()
+	{
+		System.out.println("Derived fun() called");
+	}
+}
+
+class GFG {
+
+	public static void main(String args[])
+	{
+		Derived d = new Derived();
+		d.fun();
+	}
+}
+
+Output:
+
+Base Constructor Called
+Derived Constructor Called
+Derived fun() called 
+ 
+
+Observation 3:
+
+-> we can have an abstract class without any abstract method. 
+This allows us to create classes that cannot be instantiated but can only be inherited.
+
+Observation 4:
+
+-> Abstract classes can also have final methods (methods that cannot be overridden)
+
+Observation 5:
+
+-> For any abstract java class we are not allowed to create an object
+-> for an abstract class instantiation is not possible. 
+
+Observation 6:
+
+-> Similar to the interface we can define static methods in an abstract class 
+that can be called independently by using abstract class name without an object 
+
+Observation 7:
+
+-> We can use the abstract keyword for declaring top-level classes (Outer class) as well as inner classes as abstract
+
+Observation 8:
+
+-> If a class contains at least one abstract method then compulsory that we should declare the class as abstract otherwise we will get a compile-time error ,
+If a class contains at least one abstract method then, implementation is not complete for that class, 
+and hence it is not recommended to create an object so in order to restrict object creation for such partial classes we use abstract keyword.
+
+Observation 9
+
+-> If the Child class is unable to provide implementation to all abstract methods of the Parent class 
+then we should declare that Child class as abstract so that the next level Child class should provide implementation to the remaining abstract method.
+
+Interface:
+
+-> It is an abstract type used to specify the behavior of a class.
+-> An interface in Java is a blueprint of a behavior. 
+-> A Java interface contains static constants and abstract methods and it cannot have a method body
+-> The interface in Java is a mechanism to achieve abstraction. 
+There can be only abstract methods in the Java interface, not the method body.
+-> It is used to achieve multiple inheritances in Java using Interface.
+-> Java Interface also represents the IS-A relationship.
+-> In an interface, you can’t instantiate variables and create an object.   
+-> In Interface only one specifier is used- Public.
+
+* Its used to achive abstraction
+* Can support the functionality of multiple inheritance
+* Can achieve loose coupling
+* can any class implement an infinite number of interfaces.
+
+-> To declare an interface, use the interface keyword. 
+-> It is used to provide total abstraction. That means all the methods in an interface are declared with an empty body 
+and are public and all fields are public, static, and final by default. 
+-> A class that implements an interface must implement all the methods declared in the interface. 
+-> To implement the interface, use the implements keyword.
+
+why use interfaces when we have abstract classes?:
+
+-> abstract classes may contain non-final variables, whereas variables in the interface are final, public, and static.
+
+Example:
+
+interface Player
+{
+    final int id = 10;
+    int move();
+}
+
+
+Multiple Inheritance Problem:
+
+-> Multiple Inheritance is a feature of an object-oriented concept, 
+where a class can inherit properties of more than one parent class. 
+-> The problem occurs when there exist methods with the same signature in both the superclasses and subclass. 
+-> On calling the method, the compiler cannot determine which class method to be called and even on calling which class method gets the priority. 
+
+Example:
+
+import java.io.*;
+
+class Parent1 {
+
+	void fun() {
+		System.out.println("Parent1");
+	}
+}
+
+class Parent2 {
+
+	void fun() {
+		System.out.println("Parent2");
+	}
+}
+
+class Test extends Parent1, Parent2 {
+
+	public static void main(String args[]) {
+		Test t = new Test();
+
+	// Trying to call above functions of class where
+	// Error is thrown as this class is inheriting
+	// multiple classes
+		t.fun();
+	}
+}
+
+ 
+Daimond Problem:
+
+          GrandParent
+           /     \
+          /       \
+      Parent1      Parent2
+          \       /
+           \     /
+             Test
+	
+Example:	
+
+import java.io.*;
+
+
+class GrandParent {
+	void fun() {
+		System.out.println("Grandparent");
+	}
+}
+
+class Parent1 extends GrandParent {
+	void fun() {
+		System.out.println("Parent1");
+	}
+}
+
+class Parent2 extends GrandParent {
+	void fun() {
+		System.out.println("Parent2");
+	}
+}
+
+class Test extends Parent1, Parent2 {
+
+	public static void main(String args[]) {
+
+		Test t = new Test();
+
+	// Now calling fun() method from its parent classes
+	// which will throw compilation error
+		t.fun();
+	}
+}
+
+Solution:
+
+-> Java 8 supports default methods where interfaces can provide a default implementation of methods
+-> class can implement two or more interfaces. In case both the implemented interfaces contain default methods with the same method signature,
+ the implementing class should explicitly specify which default method is to be used in some method excluding the main() of implementing class
+ using super keyword, 
+-> Or it should override the default method in the implementing class, or it should specify which default method is to be used in the default overridden method of the implementing class.
+
+Example:
+
+interface PI1 {
+
+	default void show()
+	{
+		System.out.println("Default PI1");
+	}
+}
+
+interface PI2 {
+
+	default void show()
+	{
+		System.out.println("Default PI2");
+	}
+}
+
+class TestClass implements PI1, PI2 {
+
+	@Override
+	public void show()
+	{
+
+		PI1.super.show();//Should not be used directly in the main method;
+
+		PI2.super.show();//Should not be used directly in the main method;
+	}
+
+	public void showOfPI1() {
+		PI1.super.show();//Should not be used directly in the main method;
+	}
+
+	public void showOfPI2() {
+		PI2.super.show(); //Should not be used directly in the main method;
+	}
+
+	public static void main(String args[])
+	{
+
+		// Creating object of this class in main() method
+		TestClass d = new TestClass();
+		d.show();
+		System.out.println("Now Executing showOfPI1() showOfPI2()");
+		d.showOfPI1();
+		d.showOfPI2();
+	}
+}
+
+
+
+-> Another feature that was added in JDK 8 is that we can now define static methods in interfaces 
+that can be called independently without an object. 
+
+Example:
+
+interface In1
+{
+	final int a = 10;
+	static void display()
+	{
+		System.out.println("hello");
+	}
+}
+
+class TestClass implements In1
+{
+	public static void main (String[] args)
+	{
+		In1.display();
+	}
+}
+
+New Features Added in Interfaces in JDK 9:
+
+From Java 9 onwards, interfaces can contain the following also:
+
+-> Static methods
+-> Private methods
+-> Private Static methods
+
+5)Encapsulation:
+
+-> It is defined as the wrapping up of data under a single unit
+-> It is the mechanism that binds together the code and the data it manipulates
+-> It is a protective shield that prevents the data from being accessed by the code outside this shield.
+
+* Technically, in encapsulation, the variables or the data in a class is hidden from any other class 
+and can be accessed only through any member function of the class in which they are declared.
+
+* In encapsulation, the data in a class is hidden from other classes, which is similar to what data-hiding does.
+ So, the terms “encapsulation” and “data-hiding” are used interchangeably.
+ 
+* Encapsulation can be achieved by declaring all the variables in a class as private 
+and writing public methods in the class to set and get the values of the variables.
+
+* the class is exposed to the end-user or the world without providing any details behind implementation using the abstraction concept, 
+so it is also known as a combination of data-hiding and abstraction.
+
+Example:
+
+class Person {
+
+	private String name;
+	private int age;
+
+	public String getName() { return name; }
+
+	public void setName(String name) { this.name = name; }
+
+	public int getAge() { return age; }
+
+	public void setAge(int age) { this.age = age; }
+}
+
+
+public class Main {
+
+	public static void main(String[] args)
+	{
+
+		Person person = new Person();
+		person.setName("John");
+		person.setAge(30);
+
+		System.out.println("Name: " + person.getName());
+		System.out.println("Age: " + person.getAge());
+	}
+}
+
+
+6) Polymorphism:
+
+-> Polymorphism as the ability of a message to be displayed in more than one form
+
+-> Real-life Illustration of Polymorphism in Java: 
+
+A person at the same time can have different characteristics. Like a man at the same time is a father, a husband, and an employee. So the same person possesses different behaviors in different situations. This is called polymorphism.
+
+-> In other words, polymorphism allows you to define one interface and have multiple implementations.
+
+Two Types:
+
+* Compile-time Polymorphism
+* Runtime Polymorphism
+
+Compile-time Polymorphism:
+
+-> It is also known as static polymorphism. This type of polymorphism is achieved by function overloading
+
+-> When there are multiple functions with the same name but different parameters in same class then these functions are said to be overloaded.
+
+-> Functions can be overloaded by changes in the number of arguments or/and a change in the type of arguments.
+ 
+ 
+Example 1:
+
+// Java Program for Method overloading
+// By using Different Types of Arguments
+
+class Helper {
+
+	static int Multiply(int a, int b)
+	{
+		return a * b;
+	}
+
+	static double Multiply(double a, double b)
+	{
+		return a * b;
+	}
+}
+
+class GFG {
+
+	public static void main(String[] args)
+	{
+		System.out.println(Helper.Multiply(2, 4));
+		System.out.println(Helper.Multiply(5.5, 6.3));
+	}
+}
+
+Output:
+8
+34.65
+
+Example 2:
+
+// Java program for Method Overloading
+// by Using Different Numbers of Arguments
+
+class Helper {
+
+	static int Multiply(int a, int b)
+	{
+		return a * b;
+	}
+
+	static int Multiply(int a, int b, int c)
+	{
+		return a * b * c;
+	}
+}
+
+class GFG {
+
+	public static void main(String[] args)
+	{
+
+		System.out.println(Helper.Multiply(2, 4));
+		System.out.println(Helper.Multiply(2, 7, 3));
+	}
+}
+
+Output:
+8
+42
+
+
+Runtime Polymorphism:
+
+-> Dynamic method dispatch is the mechanism by which a call to an overridden method is resolved at run time, rather than compile time this type of polymorphism is achieved by Method Overriding
+
+-> on the other hand, occurs when a derived class has a definition for one of the member functions of the base class. That base function is said to be overridden.
+ 
+-> When an overridden method is called through a superclass reference, Java determines which version(superclass/subclasses) of that method is to be executed based upon the type of the object being referred to at the time the call occurs. Thus, this determination is made at run time.
+
+-> At run-time, it depends on the type of the object being referred to (not the type of the reference variable) that determines which version of an overridden method will be executed
+
+-> A superclass reference variable can refer to a subclass object. This is also known as upcasting. Java uses this fact to resolve calls to overridden methods at run time.
+
+-> Therefore, if a superclass contains a method that is overridden by a subclass, then when different types of objects are referred to through a superclass reference variable, different versions of the method are executed
+
+Example:
+
+class A 
+{ 
+	void m1() 
+	{ 
+		System.out.println("Inside A's m1 method"); 
+	} 
+} 
+
+class B extends A 
+{ 
+	// overriding m1() 
+	void m1() 
+	{ 
+		System.out.println("Inside B's m1 method"); 
+	} 
+} 
+
+class C extends A 
+{ 
+	// overriding m1() 
+	void m1() 
+	{ 
+		System.out.println("Inside C's m1 method"); 
+	} 
+} 
+
+// Driver class 
+class Dispatch 
+{ 
+	public static void main(String args[]) 
+	{ 
+		A a = new A(); 
+
+		B b = new B(); 
+
+		C c = new C(); 
+
+		A ref; 
+		
+		ref = a; 
+
+		ref.m1(); 
+
+		ref = b; 
+
+		ref.m1(); 
+
+		ref = c; 
+
+		ref.m1(); 
+	} 
+}
+
+Output:
+
+Inside A's m1 method
+Inside B's m1 method
+Inside C's m1 method
+
+Explanation :
+
+The above program creates one superclass called A and it’s two subclasses B and C. These subclasses overrides m1( ) method.
+
+-> Inside the main() method in Dispatch class, initially objects of type A, B, and C are declared. 
+
+-> Now a reference of type A, called ref, is also declared, initially it will point to null.
+
+-> Now we are assigning a reference to each type of object (either A’s or B’s or C’s) to ref, one-by-one, and uses that reference to invoke m1( ). As the output shows, the version of m1( ) executed is determined by the type of object being referred to at the time of the call.
+
+Note: we can override methods only, not the variables(data members), so runtime polymorphism cannot be achieved by data members. 
+
+-> Static binding is done during compile-time while dynamic binding is done during run-time.
+
+-> private, final and static methods and variables uses static binding and bonded by compiler 
+while overridden methods are bonded during runtime based upon type of runtime object
+
+
+
+7) Coupling and Cohesion
+
+Coupling:
+
+In OOP, coupling refers to the degree of direct knowledge one class has of another class.
+
+-> Tight Coupling:
+	-> Here, classes are highly dependent on each other. This is generally discouraged as it makes the system more rigid and less adaptable to change.
+	-> For example, if Class A directly uses data or methods of Class B, any change in Class B can significantly impact Class A.
+	
+If one class is strongly interrelated to another class, it is said to have a tight coupling with that class.
+
+Example:
+
+public class College{
+	public void status() {
+		System.out.println("College is open today");
+	}
+}
+
+public class Student{
+	College obj = new College();
+	public void goToCollege() {
+		obj.status();
+	}
+}
+
+In the above code example, the student class is dependent on the college class. That is, any change in the college class requires student classes to change.
+
+Here, therefore, student class and college class are tightly coupled with each other.
+
+-> Loose Coupling:
+	-> This is the more desirable form of coupling in OOP. In this scenario, classes are designed to interact with each other but do so in a way that reduces their direct dependencies
+	->  using interfaces or abstract classes can help achieve loose coupling, allowing a class to communicate with another class without needing to know the intricate details of its implementation.
+
+if one class is weakly interrelated to another class, it is said to have loose coupling with that class
+
+Example:
+
+public interface College{
+	void status();
+}
+
+class CollegeStatus1 implements College{
+	public void status() {
+		System.out.println("College is open monday to friday");
+	}
+}
+
+class CollegeStatus2 implements College{
+	public void status() {
+		System.out.println("College is open on saturday");
+	}
+}
+
+public class Student{
+	College obj = new CollegeStatus1();
+	public void goToCollege() {
+		obj.status();
+	}
+}
+ 
+ 
+Explanation:
+
+In the above code example, CollegeStatus1 and CollegeStatus2 are loosely coupled. Here, student class is not directly or tightly coupled with a CollegeStatus1 or CollegeStatus2 class
+
+By applying a dependency injection mechanism, the loose coupling implementation is achieved to allow a student to go to college with any class which has implemented a college interface. 
+
+In addition, it means we can use CollegeStatus2 whenever the college is open on Saturday.
+
+Cohesion:
+
+-> Java Cohesion measures how the methods and the attributes of a class are meaningfully and strongly related to each other and how focused they are on performing a single well-defined task for the system
+
+->  This is used to indicate the degree to which a class has a single, well-focused responsibility.
+
+-> More cohesive classes are good to keep them for code reusability. Low cohesive classes are difficult to maintain as they have a less logical relationship between their methods and properties.
+
+-> It is always better to have highly cohesive classes to keep them well focused for a single work.
+
+Low cohesion:
+
+class Book{
+	int price = 299; //related attribute
+	String name = "Sam"; //unrelated attribute
+	
+	//related methods to Book class
+	public String author(String name) {
+		return name;
+	}
+	
+	public String title(String subject) {
+		return subject;
+	}
+	
+	public int id(int number) {
+		return number;
+	}
+	
+	//unrelated methods to Book class
+	public int age(int age) {
+		return age;
+	}
+}
+
+ 
+High Cohesion: When the class has a single well-defined purpose or task, it is said to be highly cohesive.
+
+class Book{
+	int price = 299; //related attribute
+	//related methods to Book class
+	public String author(String name) {
+		return name;
+	}
+	public String title(String subject) {
+		return subject;
+	}
+	public int id(int number) {
+		return number;
+	}
+}
+
+
+ 
+ 
+ 
+8) Association(Aggregation and Composition)
+
+-> Association is a relation between two separate classes that establishes with the help of their Objects.
+
+-> It specifies the relationship between two or more Objects. 
+
+-> It shows how objects communicate with each other and how they use the functionality and services provided by that communicated object
+
+-> Association can be one-to-one, one-to-many, many-to-one, and many-to-many.
+
+Example:
+
+import java.util.*;   
+ class Mobile {    
+    private String mobile_no;  
+    
+    public String getMobileNo() {  
+        return mobile_no;  
+    }  
+    public void setMobileNo(String mobile_no) {  
+        this.mobile_no = mobile_no;  
+    }  
+}  
+class Person {       
+    private String name;  
+    List<Mobile> numbers;  
+    public String getName() {  
+        return name;  
+    }  
+    public void setName(String name) {  
+        this.name = name;  
+    }  
+    public List<Mobile> getNumbers() {  
+        return numbers;  
+    }  
+    public void setNumbers(List<Mobile> numbers) {  
+        this.numbers = numbers;  
+    }  
+}  
+public class AssociationExample {  
+      public static void main(String[] args) {  
+            Person person = new Person();  
+            person.setName("Shubham Rastogi");  
+             
+           Mobile number1 = new Mobile();  
+            number1.setMobileNo("8868923136");  
+            Mobile number2 = new Mobile();  
+            number2.setMobileNo("8630023310");  
+      
+            List<Mobile> numberList = new ArrayList<Mobile>();  
+            numberList.add(number1);  
+            numberList.add(number2);  
+            person.setNumbers(numberList);  
+            System.out.println(person.getNumbers()+" are mobile numbers of the person "+  
+            person.getName());  
+        }  
+        
+ }  
+ 
+ Explanation:
+ 
+ In the above example, we create two separate classes, i.e., Person and Mobile, associated through their objects. 
+ 
+ A person can have many mobile numbers, so it defines the one-to-many relationship.
+ 
+ Types of Association:
+ 
+ 1.IS-A Association
+	Inheritance
+ 2.HAS-A Association
+	Aggregation
+	Composition
+	
+Aggregation:
+
+-> Represents a "has-a" relationship between objects.
+-> One object contains a reference to another object.
+-> Objects involved are loosely coupled and can exist independently.
+-> Deleting the containing object doesn't necessarily affect the referenced object.
+
+Example:
+
+class Engine {
+  // Engine properties and methods
+}
+
+class Car {
+  private Engine engine;
+
+  public Car(Engine engine) {
+    this.engine = engine;
+  }
+
+  // Car properties and methods using the engine
+}
+
+Explanation:
+
+-> In this example, Car has a reference to an Engine object. The car "has an" engine, but the engine can exist independently of the car. 
+
+-> If we destroy a Car instance, the Engine object will still be around unless explicitly garbage collected.
+	
+Composition:
+
+-> A stronger form of aggregation representing a "part-of" relationship.
+-> The containing object has ownership of the contained object.
+-> Objects are tightly coupled and have a dependent lifecycle.
+-> Deleting the containing object automatically destroys the contained object.
+
+Example:
+
+class Chapter {
+  // Chapter properties and methods
+}
+
+class Book {
+  private List<Chapter> chapters;
+
+  public Book(List<Chapter> chapters) {
+    this.chapters = chapters;
+  }
+
+  // Book properties and methods using chapters
+}
+
+Explanation:
+
+-> Here, a Book object has a list of Chapter objects. The chapters are considered "part of" the book and have a dependent lifecycle.
+
+-> When a Book instance is destroyed, the garbage collector will also destroy the Chapter objects it holds in the list.

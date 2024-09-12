@@ -1,0 +1,510 @@
+2) Set Interface:
+
+public interface Set<E> extends Collection<E>
+
+-> Set is a collection that does not allow duplicate elements. 
+-> It is part of the Java Collections Framework and is defined by the java.util.Set interface. 
+-> Sets are used to model mathematical set abstraction, and they provide various operations to manipulate sets of data.
+
+Key Characteristics of Set:
+
+-> No Duplicates: A Set cannot contain duplicate elements. If you try to add a duplicate element, the Set will ignore it.
+
+-> Unordered Collection: The order of elements in a Set is not guaranteed (except for some specific implementations like LinkedHashSet).
+
+-> Implements Collection Interface: Set extends the Collection interface, inheriting its methods and adding specific methods to handle sets.
+
+
+Methods in the Set Interface:
+
+Basic Operations:
+
+boolean add(E e):
+Adds the specified element to the set if it is not already present.
+Returns true if the set did not already contain the specified element.
+
+boolean remove(Object o):
+Removes the specified element from the set if it is present.
+Returns true if the set contained the specified element.
+
+boolean contains(Object o):
+Returns true if the set contains the specified element.
+
+int size():
+Returns the number of elements in the set.
+
+boolean isEmpty():
+Returns true if the set contains no elements.
+
+void clear():
+Removes all elements from the set.
+
+Bulk Operations:
+
+boolean addAll(Collection<? extends E> c):
+Adds all of the elements in the specified collection to the set if they're not already present.
+Returns true if the set changed as a result of the call.
+
+boolean removeAll(Collection<?> c):
+Removes from the set all of its elements that are contained in the specified collection.
+Returns true if the set changed as a result of the call.
+
+boolean retainAll(Collection<?> c):
+Retains only the elements in the set that are contained in the specified collection.
+Returns true if the set changed as a result of the call.
+
+boolean containsAll(Collection<?> c):
+Returns true if the set contains all of the elements in the specified collection.
+
+Array Operations:
+
+Object[] toArray():
+Returns an array containing all of the elements in the set.
+
+<T> T[] toArray(T[] a):
+Returns an array containing all of the elements in the set; the runtime type of the returned array is that of the specified array.
+
+Iteration:
+
+Iterator<E> iterator():
+Returns an iterator over the elements in the set.
+
+Default Methods (Since Java 8)
+
+Spliterator<E> spliterator():
+Creates a Spliterator over the elements in the set.
+Used for parallel processing and stream support.
+
+Stream<E> stream():
+Returns a sequential Stream with this set as its source.
+
+Stream<E> parallelStream():
+Returns a possibly parallel Stream with this set as its source.
+
+Example:
+
+import java.util.HashSet;
+import java.util.Set;
+
+public class SetExample {
+    public static void main(String[] args) {
+        // Creating a HashSet
+        Set<String> set = new HashSet<>();
+        
+        // Adding elements
+        set.add("Apple");
+        set.add("Banana");
+        set.add("Cherry");
+        
+        // Checking if the set contains an element
+        System.out.println("Set contains Apple: " + set.contains("Apple"));
+        
+        // Removing an element
+        set.remove("Banana");
+        
+        // Iterating over the elements
+        System.out.println("Elements in the set:");
+        for (String element : set) {
+            System.out.println(element);
+        }
+        
+        // Adding all elements from another collection
+        Set<String> anotherSet = new HashSet<>();
+        anotherSet.add("Date");
+        anotherSet.add("Elderberry");
+        set.addAll(anotherSet);
+        
+        // Retaining only elements that are also in another collection
+        Set<String> retainSet = new HashSet<>();
+        retainSet.add("Apple");
+        retainSet.add("Date");
+        set.retainAll(retainSet);
+        
+        // Checking the size of the set
+        System.out.println("Size of the set: " + set.size());
+        
+        // Converting the set to an array
+        Object[] array = set.toArray();
+        System.out.println("Elements in the array:");
+        for (Object obj : array) {
+            System.out.println(obj);
+        }
+        
+        // Clearing the set
+        set.clear();
+        System.out.println("Set is empty: " + set.isEmpty());
+    }
+}
+
+
+Implementations of Set interface:
+
+
+HashSet:
+
+-> Underlying Data Structure: Hash table.
+-> Order: No guaranteed order of elements.
+-> Performance: Provides constant-time performance for basic operations (add, remove, contains -> O(1)) & Iterate -> O(n).
+
+
+LinkedHashSet:
+
+-> Underlying Data Structure: Hash table and linked list.
+-> Order: Maintains insertion order.
+-> Performance: Slightly slower than HashSet due to maintaining a linked list (add, remove, contains -> O(1)) & Iterate -> O(n).
+
+TreeSet:
+
+-> Underlying Data Structure: Red-black tree.
+-> Order: Elements are sorted according to their natural ordering or a specified comparator.
+-> Performance: Logarithmic time complexity for basic operations (add, remove, contains -> O(Log n)) & Iterate -> O(n).
+
+
+AbstractSet: Skeleton implementation to create custom sets.
+
+ConcurrentHashMap.KeySetView: Concurrent access to map keys.
+
+ConcurrentSkipListSet: Concurrent sorted set.
+
+CopyOnWriteArraySet: Thread-safe, optimized for frequent reads.
+
+EnumSet: Efficient set for enums.
+
+HashSet: General-purpose set with fast access.
+
+JobStateReasons: Specific to job state reasons in printing.
+
+LinkedHashSet: Maintains insertion order.
+
+TreeSet: Sorted set using a red-black tree.
+
+AbstractSet:
+-> Provides a skeletal implementation of the Set interface to minimize the effort required to implement this interface.
+-> This class is designed to be extended to create concrete implementations of the Set interface. It implements equals and hashCode based on the elements of the set.
+
+ConcurrentHashMap.KeySetView:
+Type: Nested static class of ConcurrentHashMap
+Purpose: Represents a view of the keys of a ConcurrentHashMap as a Set.
+Key Features: Supports concurrent access and modifications.
+Usage: Typically used to view and operate on the keys of a ConcurrentHashMap.
+
+ConcurrentSkipListSet
+Type: Concrete class
+Underlying Data Structure: Skip list
+Key Features: Thread-safe, elements are sorted.
+Usage: Suitable for applications requiring a concurrent sorted set.
+
+CopyOnWriteArraySet
+Type: Concrete class
+Underlying Data Structure: Copy-on-write array
+Key Features: Thread-safe, optimized for cases where sets are read frequently and modified infrequently.
+Usage: Ideal for sets that are more frequently read than modified.
+
+EnumSet
+Type: Abstract class
+Purpose: Specialized set for use with enum types.
+Key Features: Very fast, all elements must come from a single enum type.
+Usage: Efficiently manage sets of enum constants.
+
+JobStateReasons
+Type: Concrete class
+Purpose: Used to describe the reasons for a job’s current state.
+Usage: Part of the Java Print Service API.
+
+
+HashSet:
+
+-> It is used to store a collection of unique elements.
+
+-> It is implemented using a hash table 
+
+-> offers constant-time performance for basic operations like adding, removing, and checking for the presence of an element.
+
+Unique Elements: 
+
+-> HashSet does not allow duplicate elements. 
+
+-> If you try to add a duplicate element, the add operation will simply fail without throwing an error.
+
+Null Values: 
+
+-> HashSet allows one null element.
+
+Unordered: 
+
+-> The elements in a HashSet are not ordered. 
+
+-> The order of the elements can change over time, especially after insertions and deletions.
+
+Non-Synchronized: 
+
+-> HashSet is not synchronized, which means it is not thread-safe. 
+
+-> If you need a thread-safe version, you can use Collections.synchronizedSet(new HashSet<E>()).
+
+Performance:
+
+Insertion -> O(1)
+Removal -> O(1)
+Retrieval -> O(1)
+
+Internal Working:
+
+-> HashSet is backed by a HashMap instance. Here's how it works internally:
+
+-> When you add an element to the HashSet, it uses the hashCode() method of the element to compute a hash value and determines the bucket location to store the element.
+
+-> Each bucket can hold multiple elements in case of hash collisions, which are typically stored in a linked list or a tree structure for better performance.
+
+-> The equals() method is used to check for element equality, ensuring no duplicates are added.
+
+When to Use:
+
+-> Use HashSet when you need a collection of unique elements and do not care about the order of the elements.
+
+-> It is ideal for scenarios where fast lookup, addition, and removal operations are required.
+
+Constructors:
+
+-> HashSet<E> set = new HashSet<>(); (Creates a new, empty set with a default initial capacity (16) and load factor (0.75).) 
+
+-> HashSet<E> set = new HashSet<>(initialCapacity); (Creates a new, empty set with the specified initial capacity and the default load factor.)
+
+-> HashSet<E> set = new HashSet<>(initialCapacity, loadFactor); (Creates a new, empty set with the specified initial capacity and load factor.)
+
+-> HashSet<E> set = new HashSet<>(Collection<? extends E> c); (Creates a new set containing the elements of the specified collection.)
+
+Example: 
+
+import java.util.HashSet;
+
+public class HashSetExample {
+    public static void main(String[] args) {
+        HashSet<String> set = new HashSet<>();
+        
+        // Adding elements
+        set.add("Apple");
+        set.add("Banana");
+        set.add("Cherry");
+        
+        // Check size
+        System.out.println("Size: " + set.size()); // Output: Size: 3
+        
+        // Check if an element exists
+        System.out.println("Contains Banana: " + set.contains("Banana")); // Output: Contains Banana: true
+        
+        // Remove an element
+        set.remove("Banana");
+        System.out.println("Contains Banana: " + set.contains("Banana")); // Output: Contains Banana: false
+        
+        // Iterate over elements
+        for (String fruit : set) {
+            System.out.println(fruit);
+        }
+        
+        // Clear the set
+        set.clear();
+        System.out.println("Size after clear: " + set.size()); // Output: Size after clear: 0
+    }
+}
+
+
+LinkedHashSet:
+
+-> It extends the HashSet class. 
+
+-> It maintains a linked list of the entries in the set, which defines the iteration order. 
+
+-> This means that elements are returned in the order in which they were inserted (insertion-order iteration).
+
+Unique Elements: 
+
+-> Like HashSet, LinkedHashSet does not allow duplicate elements. Each element must be unique.
+
+Null Values: 
+
+-> LinkedHashSet allows one null element.
+
+Insertion Order: 
+
+-> Maintains the order of elements based on their insertion. 
+
+-> This is the main difference from HashSet, which does not guarantee any order.
+
+Non-Synchronized: 
+
+-> LinkedHashSet is not synchronized, meaning it is not thread-safe. 
+
+-> If you need to make it thread-safe, you can wrap it using Collections.synchronizedSet(new LinkedHashSet<E>()).
+
+Performance:
+
+Insertion -> O(1)
+Removal -> O(1)
+Retrieval -> O(1)
+
+Internal Working:
+
+-> LinkedHashSet is implemented as a combination of a hash table and a linked list. Here’s how it works:
+
+-> Hash Table: Like HashSet, it uses a hash table to store elements. Each element's hash code is computed to determine its bucket location in the table.
+
+-> Linked List: Additionally, it maintains a doubly-linked list running through all of its entries. This linked list defines the iteration order, which is the order in which elements were inserted.
+
+When to Use:
+
+-> Use LinkedHashSet when you need a collection of unique elements and the order of elements is important.
+
+-> It is ideal for scenarios where you want to maintain the order of elements as they were inserted while still ensuring uniqueness and having fast lookup times
+
+
+Constructors:
+
+-> LinkedHashSet<E> set = new LinkedHashSet<>();(Creates a new, empty set with default initial capacity (16) and load factor (0.75).)
+
+-> LinkedHashSet<E> set = new LinkedHashSet<>(initialCapacity); (Creates a new, empty set with the specified initial capacity and the default load factor.)
+
+-> LinkedHashSet<E> set = new LinkedHashSet<>(initialCapacity, loadFactor); (Creates a new, empty set with the specified initial capacity and load factor.)
+
+LinkedHashSet<E> set = new LinkedHashSet<>(Collection<? extends E> c); (Creates a new set containing the elements of the specified collection, in the order they are returned by the collection's iterator.)
+
+Example:
+
+import java.util.LinkedHashSet;
+
+public class LinkedHashSetExample {
+    public static void main(String[] args) {
+        LinkedHashSet<String> set = new LinkedHashSet<>();
+        
+        // Adding elements
+        set.add("Apple");
+        set.add("Banana");
+        set.add("Cherry");
+        
+        // Check size
+        System.out.println("Size: " + set.size()); // Output: Size: 3
+        
+        // Check if an element exists
+        System.out.println("Contains Banana: " + set.contains("Banana")); // Output: Contains Banana: true
+        
+        // Remove an element
+        set.remove("Banana");
+        System.out.println("Contains Banana: " + set.contains("Banana")); // Output: Contains Banana: false
+        
+        // Iterate over elements
+        for (String fruit : set) {
+            System.out.println(fruit);
+        }
+        
+        // Clear the set
+        set.clear();
+        System.out.println("Size after clear: " + set.size()); // Output: Size after clear: 0
+    }
+}
+
+
+TreeSet:
+
+-> It implements the NavigableSet interface, which in turn extends the SortedSet interface
+
+-> TreeSet uses a self-balancing binary search tree (specifically a Red-Black tree) to store its elements.
+
+-> This ensures that the elements are sorted in ascending order, according to their natural order or a specified comparator.
+
+Unique Elements:
+
+-> TreeSet does not allow duplicate elements. Each element must be unique.
+
+Sorted Order: 
+
+-> Elements in a TreeSet are sorted in ascending order. 
+
+-> The order can be either the natural ordering of the elements or determined by a Comparator provided at the set's creation.
+
+NavigableSet: 
+
+-> TreeSet provides several methods to navigate the set (e.g., lower(), floor(), ceiling(), higher()).
+
+Non-Synchronized: 
+
+-> TreeSet is not synchronized, meaning it is not thread-safe. 
+
+-> If you need a thread-safe version, you can wrap it using Collections.synchronizedSortedSet(new TreeSet<E>()).
+
+Null Values: 
+
+-> TreeSet does not allow null elements. Attempting to add a null element will result in a NullPointerException.
+
+Peroformance:
+
+Insertion -> O(log(n))
+Removal -> O(log(n))
+Retrieval -> O(log(n))
+
+Internal Working:
+
+-> TreeSet is backed by a TreeMap, which is a Red-Black tree (a type of self-balancing binary search tree). Here’s how it works:
+
+-> Red-Black Tree: This ensures that the tree remains balanced, providing logarithmic time complexity for the basic operations (add, remove, and contains).
+
+-> Ordering: Elements are stored in a sorted manner. The sorting order can be the natural order of the elements (if they implement the Comparable interface) or determined by a Comparator provided at the time of TreeSet creation.
+
+When to Use:
+
+-> Use TreeSet when you need a collection of unique elements that are maintained in a sorted order.
+
+-> It is ideal for scenarios where you need to perform range operations, such as finding elements within a specific range or navigating through the set based on ordering.
+
+Constructors:
+
+-> TreeSet<E> set = new TreeSet<>(); (Creates a new, empty set that will be sorted according to the natural ordering of its elements.)
+
+-> TreeSet<E> set = new TreeSet<>(Comparator<? super E> comparator); (Creates a new, empty set that will be sorted according to the specified comparator.)
+
+-> TreeSet<E> set = new TreeSet<>(Collection<? extends E> c); (Creates a new set containing the elements of the specified collection, sorted according to the natural ordering of the elements.)
+
+-> TreeSet<E> set = new TreeSet<>(SortedSet<E> s); (Creates a new set containing the elements of the specified sorted set, with the same ordering)
+
+Example:
+
+import java.util.TreeSet;
+
+public class TreeSetExample {
+    public static void main(String[] args) {
+        TreeSet<String> set = new TreeSet<>();
+        
+        // Adding elements
+        set.add("Apple");
+        set.add("Banana");
+        set.add("Cherry");
+        
+        // Check size
+        System.out.println("Size: " + set.size()); // Output: Size: 3
+        
+        // Check if an element exists
+        System.out.println("Contains Banana: " + set.contains("Banana")); // Output: Contains Banana: true
+        
+        // Remove an element
+        set.remove("Banana");
+        System.out.println("Contains Banana: " + set.contains("Banana")); // Output: Contains Banana: false
+        
+        // Iterate over elements
+        for (String fruit : set) {
+            System.out.println(fruit);
+        }
+        
+        // NavigableSet operations
+        set.add("Banana");
+        System.out.println("Lower than Banana: " + set.lower("Banana")); // Output: Lower than Banana: Apple
+        System.out.println("Higher than Banana: " + set.higher("Banana")); // Output: Higher than Banana: Cherry
+        
+        // Clear the set
+        set.clear();
+        System.out.println("Size after clear: " + set.size()); // Output: Size after clear: 0
+    }
+}
+
+
+
+
+

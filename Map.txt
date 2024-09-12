@@ -1,0 +1,491 @@
+3) Map Interface:
+
+public interface Map<K,V>
+
+-> Map stores the data in the form of key-value pairs where each key is associated with value.
+
+-> It is part of Collection framework but it doesn't inherit Collection interface.
+
+Methods in the Map Interface:
+
+Basic Operations:
+
+put(K key, V value): Associates the specified value with the specified key in the map.
+
+get(Object key): Returns the value to which the specified key is mapped, or null if the map contains no mapping for the key.
+
+remove(Object key): Removes the mapping for a key from the map if it is present.
+
+containsKey(Object key): Returns true if the map contains a mapping for the specified key.
+
+containsValue(Object value): Returns true if the map maps one or more keys to the specified value.
+
+size(): Returns the number of key-value mappings in the map.
+
+isEmpty(): Returns true if the map contains no key-value mappings.
+
+clear(): Removes all of the mappings from the map.
+
+Bulk Operations:
+
+putAll(Map<? extends K, ? extends V> m): Copies all of the mappings from the specified map to this map.
+
+Collection Views:
+
+keySet(): Returns a Set view of the keys contained in this map.
+
+values(): Returns a Collection view of the values contained in this map.
+
+entrySet(): Returns a Set view of the mappings contained in this map.
+
+
+
+Example:
+
+import java.util.HashMap;
+import java.util.Map;
+
+public class HashMapExample {
+    public static void main(String[] args) {
+        Map<String, Integer> map = new HashMap<>();
+        map.put("One", 1);
+        map.put("Two", 2);
+        map.put("Three", 3);
+
+        System.out.println(map.get("One")); // Output: 1
+
+        for (String key : map.keySet()) {
+            System.out.println("Key: " + key + ", Value: " + map.get(key));
+        }
+    }
+}
+
+Implementations of Map Interface:
+
+HashMap:
+
+-> Backed by a hash table.
+ 
+-> Allows null values and a null key.
+
+-> Unordered, meaning it does not guarantee any specific order of the elements.
+
+-> Fast access and insertion due to hashing.
+
+LinkedHashMap:
+
+-> Extends HashMap and maintains a doubly-linked list running through all of its entries.
+
+-> Predictable iteration order (insertion order or access order).
+
+TreeMap:
+
+-> Implements NavigableMap and is backed by a Red-Black tree.
+
+-> Sorted according to the natural ordering of its keys or by a Comparator provided at map creation time.
+
+-> Does not allow null keys.
+
+Hashtable:
+
+-> Similar to HashMap but synchronized.
+
+-> Does not allow null keys or values.
+
+-> Considered legacy but still part of Java Collections Framework.
+
+ConcurrentHashMap
+
+-> Thread-safe implementation of HashMap.
+
+-> Allows concurrent read and write operations.
+
+
+HashMap:
+
+-> HashMap in Java is a part of the Java Collections Framework and is used to store data in key-value pairs. 
+
+-> It is implemented in the java.util package and is a powerful data structure due to its ability to allow the fast retrieval, insertion, and deletion of key-value pairs.
+
+Uses hashing function:
+
+->  HashMaps uses a hash function to map keys to indices in an array. This allows for a quick lookup of values based on keys.
+
+Stores key-value pairs: 
+
+-> Each element in a HashMap consists of a key-value pair. The key is used to look up the associated value.
+
+Supports null keys and values: 
+
+-> HashMaps allow for null values and keys. This means that a null key can be used to store a value, and a null value can be associated with a key.
+
+Not ordered: 
+
+-> HashMaps are not ordered, which means that the order in which elements are added to the map is not preserved. However, LinkedHashMap is a variation of HashMap that preserves the insertion order.
+
+Allows duplicates: 
+
+-> HashMaps allow for duplicate values, but not duplicate keys. If a duplicate key is added, the previous value associated with the key is overwritten.
+
+Thread-unsafe: 
+
+-> HashMaps are not thread-safe, which means that if multiple threads access the same hashmap simultaneously, it can lead to data inconsistencies. If thread safety is required, ConcurrentHashMap can be used.
+
+Capacity and load factor: 
+
+-> HashMaps have a capacity, which is the number of elements that it can hold, and a load factor, which is the measure of how full the hashmap can be before it is resized
+
+-> HashMap has a default initial capacity of 16 and a load factor of 0.75.
+
+Performance:
+
+Insertion -> O(1)
+Removal -> O(1)
+Retrieval -> O(1)
+
+Internal Working: (https://www.dineshonjava.com/internal-working-of-hashmap-in-java/)
+
+-> HashMap is implemented using an array of buckets. Each bucket corresponds to a unique hash code, which is calculated using the hashCode method of the key. Here's how it works:
+
+Hashing: When a key-value pair is inserted, the key's hash code is computed, and the resulting hash value is used to determine the bucket index.
+
+index = hashCode(key) & (n-1).
+
+capacity = number of buckets * load factor
+
+Collision Resolution: In case multiple keys map to the same bucket (collision), HashMap uses a linked list or a balanced tree to store these key-value pairs. As of Java 8, if the number of elements in a bucket exceeds a certain threshold, the linked list is converted to a tree (a balanced binary search tree) to improve performance.
+
+Rehashing: When the number of key-value pairs exceeds the load factor threshold (default 0.75), HashMap automatically increases its capacity and rehashes all the existing entries to the new buckets.
+
+A HashMap is an array of the node and these nodes are like a linked list’s node as the following:
+
+int hash
+K key
+V value
+Node next
+
+
+
+When to use:
+
+-> Use HashMap when you need a collection that maps keys to values and requires fast access, insertion, and deletion of elements.
+
+-> It is ideal for scenarios where the keys need to be unique, and the order of elements is not important.
+
+
+Constructors:
+
+-> HashMap<K, V> map = new HashMap<>(); (Creates a new, empty map with default initial capacity (16) and load factor (0.75).)
+
+-> HashMap<K, V> map = new HashMap<>(initialCapacity); (Creates a new, empty map with the specified initial capacity and default load factor.)
+
+-> HashMap<K, V> map = new HashMap<>(initialCapacity, loadFactor); (Creates a new, empty map with the specified initial capacity and load factor.)
+
+-> HashMap<K, V> map = new HashMap<>(Map<? extends K, ? extends V> m); (Creates a new map containing the mappings from the specified map.)
+
+
+Example:
+
+import java.util.HashMap;
+import java.util.Map;
+
+public class HashMapExample {
+    public static void main(String[] args) {
+        HashMap<String, String> map = new HashMap<>();
+        
+        // Adding elements
+        map.put("Apple", "Fruit");
+        map.put("Carrot", "Vegetable");
+        map.put("Milk", "Dairy");
+        
+        // Check size
+        System.out.println("Size: " + map.size()); // Output: Size: 3
+        
+        // Check if a key exists
+        System.out.println("Contains Apple: " + map.containsKey("Apple")); // Output: Contains Apple: true
+        
+        // Retrieve a value
+        System.out.println("Value for Apple: " + map.get("Apple")); // Output: Value for Apple: Fruit
+        
+        // Remove an element
+        map.remove("Carrot");
+        System.out.println("Contains Carrot: " + map.containsKey("Carrot")); // Output: Contains Carrot: false
+        
+        // Iterate over keys
+        System.out.println("Keys:");
+        for (String key : map.keySet()) {
+            System.out.println(key);
+        }
+        
+        // Iterate over values
+        System.out.println("Values:");
+        for (String value : map.values()) {
+            System.out.println(value);
+        }
+        
+        // Iterate over key-value pairs
+        System.out.println("Key-Value Pairs:");
+        for (Map.Entry<String, String> entry : map.entrySet()) {
+            System.out.println("Key: " + entry.getKey() + ", Value: " + entry.getValue());
+        }
+        
+        // Clear the map
+        map.clear();
+        System.out.println("Size after clear: " + map.size()); // Output: Size after clear: 0
+    }
+}
+
+
+LinkedHashMap:
+
+-> It extends HashMap with a linked list running through its entries, which defines the iteration order.
+
+-> It maintains a predictable iteration order based on insertion or access order, depending on the configuration.
+
+Ordered Entries: 
+
+-> LinkedHashMap maintains the order of elements based on their insertion order or access order.
+
+Unique Keys: 
+
+-> Each key is unique, and each key maps to exactly one value.
+
+Null Keys and Values: 
+
+-> LinkedHashMap allows one null key and multiple null values.
+
+Non-Synchronized: 
+
+-> LinkedHashMap is not synchronized, meaning it is not thread-safe. For concurrent access, you can wrap it using Collections.synchronizedMap(new LinkedHashMap<>()).
+
+Performance: 
+
+Insertion -> O(1)
+Removal -> O(1)
+Retrieval -> O(1)
+
+Access Order: 
+
+Optionally, LinkedHashMap can be configured to order elements based on access order rather than insertion order.
+
+Internal Working: (https://www.dineshonjava.com/internal-working-of-linkedhashmap-in-java/)
+
+-> LinkedHashMap is implemented as a combination of a hash table and a doubly linked list. Here's how it works:
+
+-> Hash Table: It uses a hash table to store the key-value pairs.
+
+-> Linked List: Additionally, it maintains a doubly linked list running through all of its entries. This linked list defines the iteration order, which can be based on insertion order or access order.
+
+Internally, the node of the LinkedHashMap represents as the below:
+
+int hash
+K key
+V value
+Node next
+Node previous
+
+-> Inserting first element Key-Value Pair as the below:
+
+map.put(new Key("Dinesh"), "Dinesh");
+
+This step will be executed as the following:
+
+-> First, it will calculate the hash code of Key {“Dinesh”}. As we have implemented hashCode() method for the Key class, hash code will be generated as 4501.
+
+-> Calculate index by using a generated hash code, according to the index calculation formula, it will be 5.
+Now it creates a node object as the following:
+{
+  int hash = 4501
+  Key key = {"Dinesh"}
+  Integer value = "Dinesh"
+  Node before = null
+  Node after = null
+}
+This node will be placed at index 5. As of now, we are supposing there is no node present at this index because it is a very first element.
+
+-> As LinkedHashMap will provide us with the retrieval order as insertion order of elements, it needs to keep track of last inserted object. It has two references head and tail which will keep track of the latest object inserted and the first object inserted. Because it is very first node i.e. {“Dinesh”} is added then head and tail will both point to the same object.
+
+When to Use:
+
+Constructors:
+
+-> LinkedHashMap<K, V> map = new LinkedHashMap<>(); (Creates a new, empty map with default initial capacity (16) and load factor (0.75).)
+
+-> LinkedHashMap<K, V> map = new LinkedHashMap<>(initialCapacity); (Creates a new, empty map with the specified initial capacity and default load factor.)
+
+-> LinkedHashMap<K, V> map = new LinkedHashMap<>(initialCapacity, loadFactor); (Creates a new, empty map with the specified initial capacity and load factor.) 
+
+-> LinkedHashMap<K, V> map = new LinkedHashMap<>(initialCapacity, loadFactor, accessOrder); (Creates a new, empty map with the specified initial capacity, load factor, and ordering mode (true for access order, false for insertion order)).
+
+-> LinkedHashMap<K, V> map = new LinkedHashMap<>(Map<? extends K, ? extends V> m); (Creates a new map containing the mappings from the specified map, ordered by the insertion order of the mappings.)
+
+Example:
+
+import java.util.LinkedHashMap;
+import java.util.Map;
+
+public class LinkedHashMapExample {
+    public static void main(String[] args) {
+        LinkedHashMap<String, String> map = new LinkedHashMap<>();
+        
+        // Adding elements
+        map.put("Apple", "Fruit");
+        map.put("Carrot", "Vegetable");
+        map.put("Milk", "Dairy");
+        
+        // Check size
+        System.out.println("Size: " + map.size()); // Output: Size: 3
+        
+        // Check if a key exists
+        System.out.println("Contains Apple: " + map.containsKey("Apple")); // Output: Contains Apple: true
+        
+        // Retrieve a value
+        System.out.println("Value for Apple: " + map.get("Apple")); // Output: Value for Apple: Fruit
+        
+        // Remove an element
+        map.remove("Carrot");
+        System.out.println("Contains Carrot: " + map.containsKey("Carrot")); // Output: Contains Carrot: false
+        
+        // Iterate over keys
+        System.out.println("Keys:");
+        for (String key : map.keySet()) {
+            System.out.println(key);
+        }
+        
+        // Iterate over values
+        System.out.println("Values:");
+        for (String value : map.values()) {
+            System.out.println(value);
+        }
+        
+        // Iterate over key-value pairs
+        System.out.println("Key-Value Pairs:");
+        for (Map.Entry<String, String> entry : map.entrySet()) {
+            System.out.println("Key: " + entry.getKey() + ", Value: " + entry.getValue());
+        }
+        
+        // Clear the map
+        map.clear();
+        System.out.println("Size after clear: " + map.size()); // Output: Size after clear: 0
+    }
+}
+
+
+TreeMap:
+
+-> TreeMap in Java is a part of the Java Collections Framework and implements the NavigableMap interface, which in turn extends the SortedMap interface. 
+
+-> TreeMap uses a Red-Black tree (a type of self-balancing binary search tree) to store its elements, ensuring that the keys are sorted in natural order or according to a specified comparator.
+
+Sorted Order: 
+
+-> TreeMap maintains its keys in sorted order, either by their natural ordering (if they implement Comparable) or by a Comparator provided at the time of creation.
+
+Unique Keys: 
+
+-> Each key in a TreeMap must be unique.
+
+Null Keys and Values: 
+
+-> TreeMap does not allow null keys. Attempting to insert a null key will result in a NullPointerException. However, it allows null values.
+
+NavigableMap: 
+
+-> TreeMap implements the NavigableMap interface, providing methods to navigate the map (e.g., lowerEntry(), floorEntry(), ceilingEntry(), higherEntry()).
+
+Non-Synchronized: 
+
+-> TreeMap is not synchronized. If multiple threads access a TreeMap concurrently, and at least one of the threads modifies the map structurally, it must be synchronized externally. This can be done by wrapping it using Collections.synchronizedSortedMap(new TreeMap<>()).
+
+
+Performance: 
+
+Insertion -> O(log(n))
+Removal -> O(log(n))
+Retrieval -> O(log(n))
+
+Internal Working of TreeMap
+TreeMap is implemented using a Red-Black tree:
+
+Red-Black Tree: A Red-Black tree is a type of self-balancing binary search tree that ensures the tree remains balanced, providing O(log n) time complexity for the basic operations (put, get, remove).
+Ordering: The keys are stored in a sorted manner. The sorting order can be the natural order of the keys (if they implement the Comparable interface) or determined by a Comparator provided at the time of TreeMap creation.
+
+When to Use:
+
+-> Use TreeMap when you need a map that maintains sorted order of the keys.
+
+-> It is ideal for scenarios where you need range views or need to navigate the map (e.g., finding the greatest key less than a given key).
+
+Constructors:
+
+-> TreeMap<K, V> map = new TreeMap<>();
+Creates a new, empty map that will be sorted according to the natural ordering of its keys.
+
+-> TreeMap<K, V> map = new TreeMap<>(Comparator<? super K> comparator);
+Creates a new, empty map that will be sorted according to the specified comparator.
+
+-> TreeMap<K, V> map = new TreeMap<>(Map<? extends K, ? extends V> m);
+Creates a new map containing the mappings from the specified map, sorted according to the natural ordering of the keys.
+
+-> TreeMap<K, V> map = new TreeMap<>(SortedMap<K, ? extends V> m);
+Creates a new map containing the mappings from the specified sorted map, with the same ordering.
+
+Example:
+
+import java.util.Map;
+import java.util.TreeMap;
+
+public class TreeMapExample {
+    public static void main(String[] args) {
+        TreeMap<String, String> map = new TreeMap<>();
+        
+        // Adding elements
+        map.put("Apple", "Fruit");
+        map.put("Carrot", "Vegetable");
+        map.put("Milk", "Dairy");
+        
+        // Check size
+        System.out.println("Size: " + map.size()); // Output: Size: 3
+        
+        // Check if a key exists
+        System.out.println("Contains Apple: " + map.containsKey("Apple")); // Output: Contains Apple: true
+        
+        // Retrieve a value
+        System.out.println("Value for Apple: " + map.get("Apple")); // Output: Value for Apple: Fruit
+        
+        // Remove an element
+        map.remove("Carrot");
+        System.out.println("Contains Carrot: " + map.containsKey("Carrot")); // Output: Contains Carrot: false
+        
+        // Iterate over keys
+        System.out.println("Keys:");
+        for (String key : map.keySet()) {
+            System.out.println(key);
+        }
+        
+        // Iterate over values
+        System.out.println("Values:");
+        for (String value : map.values()) {
+            System.out.println(value);
+        }
+        
+        // Iterate over key-value pairs
+        System.out.println("Key-Value Pairs:");
+        for (Map.Entry<String, String> entry : map.entrySet()) {
+            System.out.println("Key: " + entry.getKey() + ", Value: " + entry.getValue());
+        }
+        
+        // NavigableMap methods
+        map.put("Banana", "Fruit");
+        map.put("Eggplant", "Vegetable");
+        System.out.println("Lower Entry for Carrot: " + map.lowerEntry("Carrot")); // Output: Lower Entry for Carrot: Banana=Fruit
+        System.out.println("Higher Entry for Banana: " + map.higherEntry("Banana")); // Output: Higher Entry for Banana: Eggplant=Vegetable
+        
+        // Clear the map
+        map.clear();
+        System.out.println("Size after clear: " + map.size()); // Output: Size after clear: 0
+    }
+}
+
+
+

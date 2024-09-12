@@ -1,0 +1,798 @@
+Collection in Java:
+
+-> A collection is simply an object that groups multiple elements into a single unit.
+
+-> Collections are used to store, retrieve, manipulate, and communicate aggregate data
+
+-> Typically, they represent data items that form a natural group, such as a poker hand (a collection of cards), a mail folder (a collection of letters), or a telephone directory (a mapping of names to phone numbers)
+
+-> Collections provide powerful methods to add, remove, access, and iterate over elements efficiently.
+
+It has interfaces and implementations.
+
+Interfaces:
+
+1) List: An ordered collection that can contain duplicate elements
+2) Set: A collection that cannot contain duplicate elements.
+3) Queue: A collection used to hold multiple elements prior to processing
+4) Deque: A double-ended queue that allows element insertion and removal at both ends
+5) Map: An object that maps keys to values, cannot contain duplicate keys.
+
+1) List Interface:
+
+public interface List<E> extends Collection<E>
+
+-> List is a sequential(ordered) collection of objects.
+-> It maintains the order of elements based on their insertion order
+-> Elements are positioned using zero-based index
+-> Elements can be inserted or removed or retrieved from  any arbitrary position using integer index
+-> Users can insert elements at specific positions, access elements by their index, and search for elements within the list.
+
+Duplicates & Null values:
+
+-> lists typically allow duplicate elements.
+-> can contain multiple null elements if they allow null.
+
+
+Methods in List Interface:
+
+add(E e):Appends the specified element to the end of this list (optional operation).
+
+add(int index, E element):Inserts the specified element at the specified position in this list (optional operation).
+
+addAll(Collection<? extends E> c): Appends all of the elements in the specified collection to the end of this list, in the order that they are returned by the specified collection's iterator (optional operation).
+
+addAll(int index, Collection<? extends E> c):Inserts all of the elements in the specified collection into this list at the specified position (optional operation).
+
+clear():Removes all of the elements from this list (optional operation).
+
+contains(Object o):Returns true if this list contains the specified element.
+
+containsAll(Collection<?> c): Returns true if this list contains all of the elements of the specified collection.
+
+equals(Object o): Compares the specified object with this list for equality.
+
+get(int index): Returns the element at the specified position in this list.
+hashCode(): Returns the hash code value for this list.
+indexOf(Object o): Returns the index of the first occurrence of the specified element in this list, or -1 if this list does not contain the element.
+isEmpty(): Returns true if this list contains no elements.
+iterator(): Returns an iterator over the elements in this list in proper sequence.
+lastIndexOf(Object o): Returns the index of the last occurrence of the specified element in this list, or -1 if this list does not contain the element.
+listIterator(): Returns a list iterator over the elements in this list (in proper sequence).
+listIterator(int index): Returns a list iterator over the elements in this list (in proper sequence), starting at the specified position in the list.
+remove(int index): Removes the element at the specified position in this list (optional operation).
+remove(Object o): Removes the first occurrence of the specified element from this list, if it is present (optional operation).
+removeAll(Collection<?> c): Removes from this list all of its elements that are contained in the specified collection (optional operation).
+replaceAll(UnaryOperator<E> operator): Replaces each element of this list with the result of applying the operator to that element.
+retainAll(Collection<?> c): Retains only the elements in this list that are contained in the specified collection (optional operation).
+set(int index, E element): Replaces the element at the specified position in this list with the specified element (optional operation).
+size(): Returns the number of elements in this list.
+sort(Comparator<? super E> c): Sorts this list according to the order induced by the specified Comparator.
+spliterator(): Creates a Spliterator over the elements in this list.
+subList(int fromIndex, int toIndex): Returns a view of the portion of this list between the specified fromIndex, inclusive, and toIndex, exclusive.
+toArray(): Returns an array containing all of the elements in this list in proper sequence (from first to last element).
+toArray(T[] a): Returns an array containing all of the elements in this list in proper sequence (from first to last element); the runtime type of the returned array is that of the specified array.
+
+Implementations of List Interface:
+
+-> ArrayList: Resizable array implementation of the List interface.(dynamic array)
+
+-> LinkedList: Doubly-linked list implementation that implements both List and Deque interfaces.
+
+-> Vector: Synchronized resizable array.
+
+-> Stack: A subclass of Vector representing a LIFO stack.
+
+-> AbstractList:  skeletal implementation of the List interface to minimize the effort required to implement this interface backed by a "random access" data store (such as an array)
+
+-> AbstractSequentialList: skeletal implementation of the List interface, designed specifically for lists that are based on sequential access
+
+-> AttributeList: It is a specialized list used within the JMX(Java Management Extensions) API to manage attributes of MBeans.
+
+-> CopyOnWriteArrayList: It provides a thread-safe variant of ArrayList. This class is designed for use in scenarios where read operations are more frequent than write operations. A thread-safe variant of ArrayList in which all mutative operations (add, set, and so on) are implemented by making a fresh copy of the underlying array.
+
+-> RoleList: It is a specialized ArrayList designed to hold Role objects within the JMX relation service and used to manage roles in JMX, where each Role represents a role name and a list of MBeans associated with that role.
+
+-> RoleUnresolvedList: It is a specialized ArrayList designed to hold RoleUnresolved objects within the JMX relation service and used to manage unresolved roles in JMX, where each RoleUnresolved represents a role with an issue that prevents it from being resolved
+
+ArrayList:
+
+-> Internally uses resizable array which grows or shrinks as we add or delete elements
+-> ArrayList is a dynamic array implementation of the List interface.
+-> It allows all elements, including null, and provides constant-time access to elements by index.
+-> It is not synchronized and thus not thread-safe for concurrent modifications.
+-> ArrayList uses fail-fast iterators to detect concurrent modifications.
+-> It supports dynamic resizing, which grows the array automatically as new elements are added.
+
+Non-Synchronized:
+
+-> ArrayList is not synchronized, which means it is not thread-safe by default.
+
+-> If multiple threads access an ArrayList instance concurrently, it should be synchronized externally.
+
+To create a synchronized list, use Collections.synchronizedList(new ArrayList<>(...)).
+
+Fail-Fast Iterators:
+
+-> Iterators provided by ArrayList are fail-fast.
+
+-> If the list is structurally modified after the iterator is created (except through the iterator's own remove or add methods), the iterator will throw a ConcurrentModificationException.
+
+-> This helps detect concurrent modification issues early and cleanly.
+
+
+Performance:
+
+Insertion -> O(1) & if insertion causes restructring of internal array , it will be O(n)
+Removal -> O(1) & if removal causes restructring of internal array , it will be O(n) 
+Retrieval -> O(1)
+
+When to use:
+
+-> Use it when more search operations are need than insertion and removal.
+
+Syntax:
+
+public class ArrayList<E>
+extends AbstractList<E>
+implements List<E>, RandomAccess, Cloneable, Serializable
+
+Constructors:
+
+-> ArrayList(): Creates an empty list.
+
+-> ArrayList(int initialCapacity): Creates a list with the specified initial capacity.
+
+-> ArrayList(Collection<? extends E> c): Creates a list containing the elements of the specified collection.
+
+Important Methods:
+
+Adding Elements:
+
+boolean add(E e): Appends the specified element to the end of the list.
+void add(int index, E element): Inserts the specified element at the specified position.
+
+Accessing Elements:
+E get(int index): Returns the element at the specified position.
+E set(int index, E element): Replaces the element at the specified position with the specified element.
+
+Removing Elements:
+E remove(int index): Removes the element at the specified position.
+boolean remove(Object o): Removes the first occurrence of the specified element.
+
+Other Key Methods:
+int size(): Returns the number of elements.
+boolean isEmpty(): Checks if the list is empty.
+void clear(): Removes all elements from the list.
+boolean contains(Object o): Checks if the list contains the specified element.
+int indexOf(Object o): Returns the index of the first occurrence of the specified element.
+int lastIndexOf(Object o): Returns the index of the last occurrence of the specified element.
+Object clone(): Returns a shallow copy of the ArrayList.
+void ensureCapacity(int minCapacity): Increases the capacity of the ArrayList instance.
+
+Internal Implementation:
+
+import java.util.Arrays;
+import java.util.ConcurrentModificationException;
+import java.util.NoSuchElementException;
+
+public class MyArrayList<E> {
+    private static final int DEFAULT_CAPACITY = 10;
+    private static final Object[] EMPTY_ELEMENTDATA = {};
+    private static final int MAX_ARRAY_SIZE = Integer.MAX_VALUE - 8;
+
+    private transient Object[] elementData;
+    private int size;
+    private transient int modCount = 0;
+
+    public MyArrayList() {
+        this.elementData = EMPTY_ELEMENTDATA;
+    }
+
+    public MyArrayList(int initialCapacity) {
+        if (initialCapacity > 0) {
+            this.elementData = new Object[initialCapacity];
+        } else if (initialCapacity == 0) {
+            this.elementData = EMPTY_ELEMENTDATA;
+        } else {
+            throw new IllegalArgumentException("Illegal Capacity: " + initialCapacity);
+        }
+    }
+
+    public boolean add(E e) {
+        ensureCapacityInternal(size + 1);
+        elementData[size++] = e;
+        return true;
+    }
+
+    public E get(int index) {
+        rangeCheck(index);
+        return elementData(index);
+    }
+
+    public E remove(int index) {
+        rangeCheck(index);
+        modCount++;
+        E oldValue = elementData(index);
+
+        int numMoved = size - index - 1;
+        if (numMoved > 0)
+            System.arraycopy(elementData, index + 1, elementData, index, numMoved);
+        elementData[--size] = null;
+
+        return oldValue;
+    }
+
+    public void clear() {
+        modCount++;
+        for (int i = 0; i < size; i++)
+            elementData[i] = null;
+        size = 0;
+    }
+
+    private void ensureCapacityInternal(int minCapacity) {
+        if (elementData == EMPTY_ELEMENTDATA) {
+            minCapacity = Math.max(DEFAULT_CAPACITY, minCapacity);
+        }
+        ensureExplicitCapacity(minCapacity);
+    }
+
+    private void ensureExplicitCapacity(int minCapacity) {
+        modCount++;
+        if (minCapacity - elementData.length > 0)
+            grow(minCapacity);
+    }
+
+    private void grow(int minCapacity) {
+        int oldCapacity = elementData.length;
+        int newCapacity = oldCapacity + (oldCapacity >> 1);
+        if (newCapacity - minCapacity < 0)
+            newCapacity = minCapacity;
+        if (newCapacity - MAX_ARRAY_SIZE > 0)
+            newCapacity = hugeCapacity(minCapacity);
+        elementData = Arrays.copyOf(elementData, newCapacity);
+    }
+
+    private static int hugeCapacity(int minCapacity) {
+        if (minCapacity < 0) // overflow
+            throw new OutOfMemoryError();
+        return (minCapacity > MAX_ARRAY_SIZE) ? Integer.MAX_VALUE : MAX_ARRAY_SIZE;
+    }
+
+    private void rangeCheck(int index) {
+        if (index >= size)
+            throw new IndexOutOfBoundsException(outOfBoundsMsg(index));
+    }
+
+    private String outOfBoundsMsg(int index) {
+        return "Index: " + index + ", Size: " + size;
+    }
+
+    @SuppressWarnings("unchecked")
+    E elementData(int index) {
+        return (E) elementData[index];
+    }
+
+    public int size() {
+        return size;
+    }
+
+    public boolean isEmpty() {
+        return size == 0;
+    }
+
+    public boolean contains(Object o) {
+        return indexOf(o) >= 0;
+    }
+
+    public int indexOf(Object o) {
+        if (o == null) {
+            for (int i = 0; i < size; i++)
+                if (elementData[i] == null)
+                    return i;
+        } else {
+            for (int i = 0; i < size; i++)
+                if (o.equals(elementData[i]))
+                    return i;
+        }
+        return -1;
+    }
+
+    public int lastIndexOf(Object o) {
+        if (o == null) {
+            for (int i = size - 1; i >= 0; i--)
+                if (elementData[i] == null)
+                    return i;
+        } else {
+            for (int i = size - 1; i >= 0; i--)
+                if (o.equals(elementData[i]))
+                    return i;
+        }
+        return -1;
+    }
+
+    public Object clone() {
+        try {
+            MyArrayList<?> v = (MyArrayList<?>) super.clone();
+            v.elementData = Arrays.copyOf(elementData, size);
+            v.modCount = 0;
+            return v;
+        } catch (CloneNotSupportedException e) {
+            throw new InternalError(e);
+        }
+    }
+
+    public Object[] toArray() {
+        return Arrays.copyOf(elementData, size);
+    }
+
+    public <T> T[] toArray(T[] a) {
+        if (a.length < size)
+            return (T[]) Arrays.copyOf(elementData, size, a.getClass());
+        System.arraycopy(elementData, 0, a, 0, size);
+        if (a.length > size)
+            a[size] = null;
+        return a;
+    }
+
+    public E set(int index, E element) {
+        rangeCheck(index);
+        E oldValue = elementData(index);
+        elementData[index] = element;
+        return oldValue;
+    }
+
+    public void add(int index, E element) {
+        rangeCheckForAdd(index);
+        ensureCapacityInternal(size + 1);
+        System.arraycopy(elementData, index, elementData, index + 1, size - index);
+        elementData[index] = element;
+        size++;
+    }
+
+    private void rangeCheckForAdd(int index) {
+        if (index > size || index < 0)
+            throw new IndexOutOfBoundsException(outOfBoundsMsg(index));
+    }
+
+    // Additional methods can be implemented as needed
+}
+
+Example:
+
+import java.util.ArrayList;
+import java.util.List;
+
+public class ArrayListExample {
+    public static void main(String[] args) {
+        // Creating an ArrayList
+        List<String> fruits = new ArrayList<>();
+
+        // Adding elements
+        fruits.add("Apple");
+        fruits.add("Banana");
+        fruits.add("Cherry");
+        System.out.println("Fruits: " + fruits); 
+		// Output: [Apple, Banana, Cherry]
+
+        // Inserting an element at a specific position
+        fruits.add(1, "Orange");
+        System.out.println("After adding Orange at index 1: " + fruits); 
+		// Output: [Apple, Orange, Banana, Cherry]
+
+        // Accessing elements
+        System.out.println("Element at index 2: " + fruits.get(2)); 
+		// Output: Banana
+
+        // Modifying elements
+        fruits.set(2, "Grape");
+        System.out.println("After setting Grape at index 2: " + fruits); 
+		// Output: [Apple, Orange, Grape, Cherry]
+
+        // Removing elements
+        fruits.remove("Orange");
+        System.out.println("After removing Orange: " + fruits); 
+		// Output: [Apple, Grape, Cherry]
+
+        // Checking size
+        System.out.println("Size of the list: " + fruits.size()); 
+		// Output: 3
+
+        // Iterating over elements
+        for (String fruit : fruits) {
+            System.out.println(fruit);
+        }
+        // Output:
+        // Apple
+        // Grape
+        // Cherry
+    }
+}
+
+
+
+LinkedList:
+
+-> It is a linear data structure where elements are stored in nodes, and each node contains a reference (or link) to the next node in the sequence.
+
+-> This allows for efficient insertions and deletions as compared to other list implementations like ArrayList, which requires shifting elements.
+
+Non-Synchronized:
+
+-> It is not synchronized, which means it is not thread-safe by default.
+
+-> If multiple threads access an LinkedList instance concurrently, it should be synchronized externally.
+
+To create a synchronized list, use Collections.synchronizedList(new LinkedList<>(...)).
+
+Fail-Fast Iterators:
+
+-> Iterators provided by LinkedList are fail-fast.
+
+-> If the list is structurally modified after the iterator is created (except through the iterator's own remove or add methods), the iterator will throw a ConcurrentModificationException.
+
+-> This helps detect concurrent modification issues early and cleanly.
+
+Performance:
+
+Insertion -> O(1)
+Removal -> O(1)
+Retrieval -> O(n)
+
+When to use:
+
+-> Use it when insertion and removal are needed frequently.
+
+Syntax:
+
+public class LinkedList<E>
+extends AbstractSequentialList<E>
+implements List<E>, Deque<E>, Cloneable, Serializable
+
+Constructors: 
+
+-> LinkedList() - Constructs an empty list.
+
+-> LinkedList(Collection<? extends E> c) - Constructs a list containing the elements of the specified collection, in the order they are returned by the collection's iterator.
+
+Basic Methods:
+
+boolean add(E e): Appends the specified element to the end of the list.
+void add(int index, E element): Inserts the specified element at the specified position in the list.
+E get(int index): Returns the element at the specified position in the list.
+E set(int index, E element): Replaces the element at the specified position in the list with the specified element.
+E remove(int index): Removes the element at the specified position in the list and returns it.
+boolean remove(Object o): Removes the first occurrence of the specified element from the list, if it is present.
+int size(): Returns the number of elements in the list.
+void clear(): Removes all elements from the list.
+
+Positional Access Methods:
+
+void addFirst(E e): Inserts the specified element at the beginning of the list.
+void addLast(E e): Appends the specified element to the end of the list.
+E getFirst(): Returns the first element in the list.
+E getLast(): Returns the last element in the list.
+E removeFirst(): Removes and returns the first element from the list.
+E removeLast(): Removes and returns the last element from the list.
+
+Queue Operations:
+
+boolean offer(E e): Adds the specified element as the tail (last element) of the list.
+E poll(): Retrieves and removes the head (first element) of the list, or returns null if the list is empty.
+E peek(): Retrieves, but does not remove, the head (first element) of the list, or returns null if the list is empty.
+
+Deque Operations:
+
+void push(E e): Pushes an element onto the stack represented by this list (inserts at the front).
+E pop(): Pops an element from the stack represented by this list (removes from the front).
+E element(): Retrieves, but does not remove, the head (first element) of the list.
+
+Iteration Methods:
+
+Iterator<E> iterator(): Returns an iterator over the elements in the list in proper sequence.
+ListIterator<E> listIterator(int index): Returns a list iterator over the elements in this list (in proper sequence), starting at the specified 
+position in the list.
+
+Bulk Operations:
+
+boolean addAll(Collection<? extends E> c): Appends all of the elements in the specified collection to the end of this list.
+boolean addAll(int index, Collection<? extends E> c): Inserts all of the elements in the specified collection into this list, starting at the specified position.
+
+Searching Methods:
+
+boolean contains(Object o): Returns true if this list contains the specified element.
+int indexOf(Object o): Returns the index of the first occurrence of the specified element in this list, or -1 if the list does not contain the element.
+int lastIndexOf(Object o): Returns the index of the last occurrence of the specified element in this list, or -1 if the list does not contain the element.
+
+Conversion Methods:
+
+Object[] toArray(): Returns an array containing all of the elements in this list in proper sequence (from first to last element).
+<T> T[] toArray(T[] a): Returns an array containing all of the elements in this list in proper sequence; the runtime type of the returned array is that of the specified array.
+
+Internal Implementation:
+
+public class MyLinkedList<E> {
+    
+    private static class Node<E> {
+        E data;
+        Node<E> prev;
+        Node<E> next;
+        
+        Node(E element, Node<E> prev, Node<E> next) {
+            this.data = element;
+            this.prev = prev;
+            this.next = next;
+        }
+    }
+    
+    private Node<E> head;
+    private Node<E> tail;
+    private int size;
+    
+    public MyLinkedList() {
+        head = null;
+        tail = null;
+        size = 0;
+    }
+    
+    public int size() {
+        return size;
+    }
+    
+    public boolean isEmpty() {
+        return size == 0;
+    }
+	
+	 public void add(E element) {
+        addLast(element);
+    }
+    
+	
+    public void addFirst(E element) {
+        Node<E> newNode = new Node<>(element, null, head);
+        if (head != null) {
+            head.prev = newNode;
+        }
+        head = newNode;
+        if (tail == null) {
+            tail = newNode;
+        }
+        size++;
+    }
+    
+    public void addLast(E element) {
+        Node<E> newNode = new Node<>(element, tail, null);
+        if (tail != null) {
+            tail.next = newNode;
+        }
+        tail = newNode;
+        if (head == null) {
+            head = newNode;
+        }
+        size++;
+    }
+    
+    public E removeFirst() {
+        if (isEmpty()) {
+            throw new NoSuchElementException("List is empty");
+        }
+        E removedElement = head.data;
+        head = head.next;
+        if (head != null) {
+            head.prev = null;
+        } else {
+            tail = null;
+        }
+        size--;
+        return removedElement;
+    }
+    
+    public E removeLast() {
+        if (isEmpty()) {
+            throw new NoSuchElementException("List is empty");
+        }
+        E removedElement = tail.data;
+        tail = tail.prev;
+        if (tail != null) {
+            tail.next = null;
+        } else {
+            head = null;
+        }
+        size--;
+        return removedElement;
+    }
+	
+	public void add(int index, E element) {
+    if (index < 0 || index > size) {
+        throw new IndexOutOfBoundsException("Index: " + index + ", Size: " + size);
+    }
+    if (index == 0) {
+        addFirst(element);
+    } else if (index == size) {
+        addLast(element);
+    } else {
+        Node<E> current = getNode(index);
+        Node<E> newNode = new Node<>(element, current.prev, current);
+        current.prev.next = newNode;
+        current.prev = newNode;
+        size++;
+    }
+}
+
+public E remove(int index) {
+    if (index < 0 || index >= size) {
+        throw new IndexOutOfBoundsException("Index: " + index + ", Size: " + size);
+    }
+    if (index == 0) {
+        return removeFirst();
+    } else if (index == size - 1) {
+        return removeLast();
+    } else {
+        Node<E> current = getNode(index);
+        current.prev.next = current.next;
+        current.next.prev = current.prev;
+        size--;
+        return current.data;
+    }
+}
+
+public E set(int index, E element) {
+    if (index < 0 || index >= size) {
+        throw new IndexOutOfBoundsException("Index: " + index + ", Size: " + size);
+    }
+    Node<E> current = getNode(index);
+    E oldElement = current.data;
+    current.data = element;
+    return oldElement;
+}
+
+
+private Node<E> getNode(int index) {
+    Node<E> current;
+    if (index < size / 2) {
+        current = head;
+        for (int i = 0; i < index; i++) {
+            current = current.next;
+        }
+    } else {
+        current = tail;
+        for (int i = size - 1; i > index; i--) {
+            current = current.prev;
+        }
+    }
+    return current;
+}
+
+    
+    // Other methods like get, add at index, remove at index, etc. can be implemented similarly.
+    
+    public void printList() {
+        Node<E> current = head;
+        while (current != null) {
+            System.out.print(current.data + " ");
+            current = current.next;
+        }
+        System.out.println();
+    }
+}
+
+
+Example:
+
+import java.util.LinkedList;
+
+public class LinkedListExample {
+    public static void main(String[] args) {
+        LinkedList<String> list = new LinkedList<>();
+
+        // Adding elements
+        list.add("Apple");
+        list.add("Banana");
+        list.add("Cherry");
+
+        // Adding elements at specific positions
+        list.addFirst("Orange");
+        list.addLast("Grape");
+
+        // Accessing elements
+        System.out.println("First element: " + list.getFirst()); // Output: Orange
+        System.out.println("Last element: " + list.getLast()); // Output: Grape
+        System.out.println("Element at index 2: " + list.get(2)); // Output: Banana
+
+        // Modifying elements
+        list.set(2, "Mango");
+        System.out.println("List after modification: " + list); // Output: [Orange, Apple, Mango, Cherry, Grape]
+
+        // Removing elements
+        list.removeFirst();
+        list.removeLast();
+        System.out.println("List after removal: " + list); // Output: [Apple, Mango, Cherry]
+
+        // Iterating over the list
+        for (String fruit : list) {
+            System.out.println(fruit);
+        }
+        // Output:
+        // Apple
+        // Mango
+        // Cherry
+    }
+}
+
+
+Vector:
+
+-> Vector is a synchronized dynamic array implementation in Java.
+-> It provides thread safety at the cost of performance overhead.
+-> Vector is part of the legacy collections framework and is less commonly used in modern Java development.
+-> If thread safety is not required, ArrayList is generally preferred for better performance.
+
+
+Synchronized:
+
+Vector is synchronized, meaning it is thread-safe and can be used in a concurrent environment. 
+
+However, this synchronization comes with a performance cost.
+
+
+Performance:
+Insertion -> O(1) & if insertion causes restructring of internal array , it will be O(n)
+Removal -> O(1) & if removal causes restructring of internal array , it will be O(n) 
+Retrieval -> O(1)
+
+When to use:
+
+-> Use it when you need synchronized list.
+
+Syntax:
+
+public class Vector<E>
+extends AbstractList<E>
+implements List<E>, RandomAccess, Cloneable, Serializable
+
+Example:
+
+import java.util.Vector;
+import java.util.Enumeration;
+
+public class VectorExample {
+    public static void main(String[] args) {
+        // Creating a Vector
+        Vector<String> vector = new Vector<>();
+
+        // Adding elements to the Vector
+        vector.add("Apple");
+        vector.add("Banana");
+        vector.add("Cherry");
+        vector.add("Date");
+        
+        // Displaying the size and capacity of the Vector
+        System.out.println("Size: " + vector.size());
+        System.out.println("Capacity: " + vector.capacity());
+
+        // Accessing elements from the Vector
+        System.out.println("First element: " + vector.get(0));
+        
+        // Removing an element from the Vector
+        vector.remove("Banana");
+
+		Iterator<String> iterator = vector.iterator();
+        System.out.println("Elements in the Vector:");
+        while (iterator.hasNext()) {
+            System.out.println(enumeration.next());
+        }
+
+        // Checking if the Vector contains a specific element
+        if (vector.contains("Cherry")) {
+            System.out.println("Vector contains Cherry");
+        } else {
+            System.out.println("Vector does not contain Cherry");
+        }
+    }
+}
+
+
+Set:
+
+
+
