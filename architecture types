@@ -1,0 +1,58 @@
+Event-Driven Architecture Pattern
+Event-Driven Architecture is an agile approach in which services (operations) of the software are triggered by events. 
+When a user takes action in the application built using the EDA approach, a state change happens and a reaction is generated that is called an event.
+
+Example:
+
+A new user fills the signup form and clicks the signup button on Facebook and then a FB account is created for him, which is an event.
+
+Advantages:
+
+Scalability: System can scale horizontally by adding more consumers.
+Real-time Processing: This enables real-time processing and immediate response to events.
+Flexibility: New event consumers can be added without modifying existing components.
+Disadvantages:
+
+Complexity: The architecture can be complex to design, implement, and debug.
+Complex Testing: Testing event-driven systems can be complicated compared to synchronous systems.
+Reliability: Ensuring reliability requires additional mechanisms to handle failed events.
+
+Microservices Architecture Pattern
+The collection of small services that are combined to form the actual application is the concept of microservices pattern. 
+Instead of building a bigger application, small programs are built for every service (function) of an application independently. 
+And those small programs are bundled together to be a full-fledged application. 
+So adding new features and modifying existing microservices without affecting other microservices are no longer a challenge when an application is built in a microservices pattern. 
+Modules in the application of microservices patterns are loosely coupled. So they are easily understandable, modifiable and scalable.  
+
+Advantages:
+
+Scalability: Each service can be scaled independently based on demand.
+Faster Delivery: Independent services allows teams to develop, test, and deploy features faster.
+Easier Maintenance: Services can be updated and maintained independently.
+Disadvantages:
+
+Complex Management: Managing multiple services requires robust monitoring and management tools.
+Network Congestion: Increased network traffic between services can lead to congestion and overhead.
+Security: Securing multiple services and their communication increases the probability of attack.
+
+
+Layered Architecture Pattern
+As the name suggests, components(code) in this pattern are separated into layers of subtasks and they are arranged one above another. 
+Each layer has unique tasks to do and all the layers are independent of one another.
+Since each layer is independent, one can modify the code inside a layer without affecting others. 
+It is the most commonly used pattern for designing the majority of software. This layer is also known as ‘N-tier architecture’. Basically, this pattern has 4 layers.  
+
+Presentation layer: The user interface layer where we see and enter data into an application.)
+Business layer: This layer is responsible for executing business logic as per the request.)
+Application layer: This layer acts as a medium for communication between the ‘presentation layer’ and ‘data layer’.
+Data layer: This layer has a database for managing data.)
+Advantages:
+
+Scalability: Individual layers in the architecture can be scaled independently to meet performance needs.
+Flexibility: Different technologies can be used within each layer without affecting others.
+Maintainability: Changes in one layer do not necessarily impact other layers, thus simplifying the maintenance.
+Disadvantages:
+
+Complexity: Adding more layers to the architecture can make the system more complex and difficult to manage.
+Performance Overhead: Multiple layers can introduce latency due to additional communication between the layers.
+Strict Layer Separation: Strict layer separation can sometimes lead to inefficiencies and increased development effort
