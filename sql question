@@ -6,6 +6,21 @@ Here are some SQL interview questions that are commonly asked for backend develo
    - Explain the difference between JOIN types (INNER JOIN, LEFT JOIN, RIGHT JOIN, FULL OUTER JOIN).
    - How would you find the second-highest salary from an Employee table?
    - Write a query to fetch only the first three characters of a string column.
+(SELECT – Retrieving Data from a Table
+WHERE – Filtering Results
+ORDER BY – Sorting Results
+INSERT INTO – Inserting Data into a Table
+UPDATE – Modifying Existing Data
+DELETE – Deleting Data from a Table
+JOIN – Combining Data from Multiple Tables
+GROUP BY – Grouping Data
+HAVING – Filtering Groups
+DISTINCT – Removing Duplicate Values
+LIMIT – Limiting the Number of Results
+ALTER TABLE – Modifying Table Structure
+CREATE TABLE – Creating a New Table
+DROP TABLE – Deleting a Table
+)
 
 ### 2. *Data Modeling and Relationships*
    - How do you define a many-to-many relationship in SQL? Explain with an example.
