@@ -1,0 +1,59 @@
+. Consumer<T>
+Description: Represents an operation that accepts a single input argument and returns no result. It is typically used for operations that have side effects, such as modifying an object or printing output.
+Method: void accept(T t)
+Example Usage:
+java
+Copy code
+import java.util.function.Consumer;
+
+public class ConsumerExample {
+    public static void main(String[] args) {
+        Consumer<String> printConsumer = message -> System.out.println(message);
+        printConsumer.accept("Hello, World!");  // Output: Hello, World!
+    }
+}
+Predicate<T>
+Description: Represents a boolean-valued function of one argument. It is often used for filtering or matching operations.
+Method: boolean test(T t)
+Example Usage:
+java
+Copy code
+import java.util.function.Predicate;
+
+public class PredicateExample {
+    public static void main(String[] args) {
+        Predicate<Integer> isEven = num -> num % 2 == 0;
+        System.out.println(isEven.test(4));  // Output: true
+        System.out.println(isEven.test(7));  // Output: false
+    }
+}
+
+Function<T, R>
+Description: Represents a function that takes one argument and produces a result. It is used when you want to transform or map one type to another.
+Method: R apply(T t)
+Example Usage:
+java
+Copy code
+import java.util.function.Function;
+
+public class FunctionExample {
+    public static void main(String[] args) {
+        Function<Integer, String> intToString = num -> "Number: " + num;
+        System.out.println(intToString.apply(5));  // Output: Number: 5
+    }
+}
+
+Supplier<T>
+Description: Represents a supplier of results. It takes no input and returns a result. It is typically used for generating values on demand, such as in factory methods.
+Method: T get()
+Example Usage:
+java
+Copy code
+import java.util.function.Supplier;
+
+public class SupplierExample {
+    public static void main(String[] args) {
+        Supplier<Double> randomValueSupplier = () -> Math.random();
+        System.out.println(randomValueSupplier.get());  // Output: random number between 0 and 1
+    }
+}
