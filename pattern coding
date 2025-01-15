@@ -1,0 +1,2154 @@
+slidign algorthim 
+
+1. Maximum Sum Subarray of Size 'K' (Easy)
+The idea is to find the maximum sum of a contiguous subarray of size K from an array of integers.
+
+Approach:
+Use a sliding window of size K to calculate the sum of the first subarray.
+Slide the window one element at a time, subtracting the element that goes out of the window and adding the new element that comes into the window.
+Keep track of the maximum sum encountered.
+Code:
+java
+Copy code
+public class MaximumSumSubarray {
+    public static int findMaxSumSubarray(int[] nums, int k) {
+        if (nums == null || nums.length < k) return 0;
+
+        int windowSum = 0, maxSum = 0;
+
+        // Calculate the sum of the first window
+        for (int i = 0; i < k; i++) {
+            windowSum += nums[i];
+        }
+
+        maxSum = windowSum;
+
+        // Slide the window and update the sum
+        for (int i = k; i < nums.length; i++) {
+            windowSum += nums[i] - nums[i - k];
+            maxSum = Math.max(maxSum, windowSum);
+        }
+
+        return maxSum;
+    }
+
+    public static void main(String[] args) {
+        int[] nums = {2, 1, 5, 1, 3, 2};
+        int k = 3;
+        System.out.println("Maximum sum of subarray of size K: " + findMaxSumSubarray(nums, k));  // Output: 9
+    }
+}
+
+2. Longest Substring with 'K' Distinct Characters (Medium)
+In this problem, the goal is to find the length of the longest substring with at most K distinct characters.
+
+Approach:
+Use a sliding window to maintain a substring that contains at most K distinct characters.
+Use a map (or dictionary) to track the count of characters in the current window.
+If the number of distinct characters exceeds K, move the left pointer to shrink the window.
+Code:
+java
+Copy code
+import java.util.HashMap;
+
+public class LongestSubstringWithKDistinct {
+    public static int longestSubstringWithKDistinct(String s, int k) {
+        if (k == 0) return 0;
+
+        HashMap<Character, Integer> charCountMap = new HashMap<>();
+        int left = 0, maxLength = 0;
+
+        for (int right = 0; right < s.length(); right++) {
+            // Add the current character to the map
+            charCountMap.put(s.charAt(right), charCountMap.getOrDefault(s.charAt(right), 0) + 1);
+
+            // Shrink the window if there are more than K distinct characters
+            while (charCountMap.size() > k) {
+                char leftChar = s.charAt(left);
+                charCountMap.put(leftChar, charCountMap.get(leftChar) - 1);
+                if (charCountMap.get(leftChar) == 0) {
+                    charCountMap.remove(leftChar);
+                }
+                left++;
+            }
+
+            // Update the maximum length of the substring
+            maxLength = Math.max(maxLength, right - left + 1);
+        }
+
+        return maxLength;
+    }
+
+    public static void main(String[] args) {
+        String s = "eceba";
+        int k = 2;
+        System.out.println("Longest substring with K distinct characters: " + longestSubstringWithKDistinct(s, k));  // Output: 3
+    }
+}
+
+. String Anagrams (Hard)
+In this problem, the goal is to find all starting indices of string p's anagrams in string s.
+
+Approach:
+Use two sliding windows:
+One for the pattern p.
+One for the current window in the string s.
+Use a frequency map to keep track of the characters in the current window and compare it with the frequency map of the pattern p.
+If both maps match, then the current window is an anagram of p.
+Code:
+java
+Copy code
+import java.util.HashMap;
+import java.util.ArrayList;
+import java.util.List;
+
+public class StringAnagrams {
+    public static List<Integer> findAnagrams(String s, String p) {
+        List<Integer> result = new ArrayList<>();
+        if (s == null || p == null || s.length() < p.length()) return result;
+
+        // Frequency map for pattern p
+        HashMap<Character, Integer> pMap = new HashMap<>();
+        for (char c : p.toCharArray()) {
+            pMap.put(c, pMap.getOrDefault(c, 0) + 1);
+        }
+
+        // Sliding window for string s
+        HashMap<Character, Integer> sMap = new HashMap<>();
+        int left = 0, right = 0, pLength = p.length();
+
+        // Initialize window
+        while (right < pLength) {
+            sMap.put(s.charAt(right), sMap.getOrDefault(s.charAt(right), 0) + 1);
+            right++;
+        }
+
+        // Check if the window matches the pattern
+        if (sMap.equals(pMap)) {
+            result.add(0);
+        }
+
+        // Slide the window across the string s
+        while (right < s.length()) {
+            // Add the new character to the window
+            sMap.put(s.charAt(right), sMap.getOrDefault(s.charAt(right), 0) + 1);
+
+            // Remove the old character from the window
+            sMap.put(s.charAt(left), sMap.get(s.charAt(left)) - 1);
+            if (sMap.get(s.charAt(left)) == 0) {
+                sMap.remove(s.charAt(left));
+            }
+
+            left++;
+            right++;
+
+            // Check if the window matches the pattern
+            if (sMap.equals(pMap)) {
+                result.add(left);
+            }
+        }
+
+        return result;
+    }
+
+    public static void main(String[] args) {
+        String s = "cbaebabacd";
+        String p = "abc";
+        List<Integer> anagramIndices = findAnagrams(s, p);
+        System.out.println("Anagram indices: " + anagramIndices);  // Output: [0, 6]
+    }
+}
+
+ Two Pointers or Iterators 
+ 
+ 1. Squaring a Sorted Array (Easy)
+Given a sorted array, the goal is to return a new array where each element is the square of the original element, also sorted in non-decreasing order.
+
+Approach:
+Use two pointers: one starting from the beginning (left) and the other from the end (right) of the array.
+Compare the absolute values of the elements at the two pointers.
+Square the larger value and place it in the result array, moving the corresponding pointer inward.
+This allows you to build the result array from the largest square to the smallest square.
+Code:
+java
+Copy code
+import java.util.Arrays;
+
+public class SquaringSortedArray {
+    public static int[] sortedSquares(int[] nums) {
+        int n = nums.length;
+        int[] result = new int[n];
+        int left = 0, right = n - 1, index = n - 1;
+
+        while (left <= right) {
+            int leftSquare = nums[left] * nums[left];
+            int rightSquare = nums[right] * nums[right];
+            
+            if (leftSquare > rightSquare) {
+                result[index] = leftSquare;
+                left++;
+            } else {
+                result[index] = rightSquare;
+                right--;
+            }
+            index--;
+        }
+
+        return result;
+    }
+
+    public static void main(String[] args) {
+        int[] nums = {-4, -1, 0, 3, 10};
+        System.out.println("Sorted squared array: " + Arrays.toString(sortedSquares(nums)));
+    }
+}
+Explanation:
+
+Start with two pointers at the leftmost and rightmost positions of the array.
+Compare the squares of the elements at these two positions.
+Place the larger of the two squares in the result array and move the corresponding pointer.
+Repeat until all elements are processed.
+
+2. Triplets that Sum to Zero (Medium)
+In this problem, we need to find all unique triplets in an array that sum to zero.
+
+Approach:
+Sort the array first.
+Use the first pointer (i) to iterate through the array and then use two additional pointers (left and right) to find pairs that sum to -nums[i].
+If the sum of the triplet is zero, add it to the result and move both left and right pointers to avoid duplicates.
+Code:
+java
+Copy code
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+
+public class TripletsSumToZero {
+    public static List<List<Integer>> threeSum(int[] nums) {
+        List<List<Integer>> result = new ArrayList<>();
+        if (nums == null || nums.length < 3) return result;
+
+        Arrays.sort(nums);
+
+        for (int i = 0; i < nums.length - 2; i++) {
+            // Skip duplicate elements for the first pointer.
+            if (i > 0 && nums[i] == nums[i - 1]) continue;
+
+            int left = i + 1, right = nums.length - 1;
+
+            while (left < right) {
+                int sum = nums[i] + nums[left] + nums[right];
+                if (sum == 0) {
+                    result.add(Arrays.asList(nums[i], nums[left], nums[right]));
+                    // Skip duplicate elements for the second and third pointers.
+                    while (left < right && nums[left] == nums[left + 1]) left++;
+                    while (left < right && nums[right] == nums[right - 1]) right--;
+                    left++;
+                    right--;
+                } else if (sum < 0) {
+                    left++;
+                } else {
+                    right--;
+                }
+            }
+        }
+
+        return result;
+    }
+
+    public static void main(String[] args) {
+        int[] nums = {-1, 0, 1, 2, -1, -4};
+        List<List<Integer>> triplets = threeSum(nums);
+        System.out.println("Triplets that sum to zero: " + triplets);
+    }
+}
+Explanation:
+
+First, the array is sorted.
+The outer loop iterates through each element of the array, treating it as the potential first element of the triplet.
+Two pointers (left and right) are used to find pairs that sum to the negative of the current element.
+If a valid triplet is found, the pointers are moved, and duplicates are skipped by checking adjacent elements.
+
+
+3. Comparing Strings that Contain Backspaces (Medium)
+Given two strings s and t that may contain the special character #, which means to backspace (delete the last character typed), we need to compare whether the resulting strings (after applying backspaces) are equal.
+
+Approach:
+Use two pointers starting from the end of each string.
+Traverse both strings in reverse order and simulate the backspace by skipping characters when # is encountered.
+Compare the characters at the current positions of the two strings.
+Code:
+java
+Copy code
+public class CompareStringsWithBackspaces {
+    public static boolean backspaceCompare(String s, String t) {
+        int i = s.length() - 1, j = t.length() - 1;
+
+        while (i >= 0 || j >= 0) {
+            // Process the first string (s)
+            if (i >= 0 && s.charAt(i) == '#') {
+                int backCount = 2; // For the # character
+                while (i >= 0 && s.charAt(i) == '#') {
+                    backCount--;
+                    i--;
+                    if (backCount == 0) break;
+                }
+            }
+            // Process the second string (t)
+            if (j >= 0 && t.charAt(j) == '#') {
+                int backCount = 2; // For the # character
+                while (j >= 0 && t.charAt(j) == '#') {
+                    backCount--;
+                    j--;
+                    if (backCount == 0) break;
+                }
+            }
+
+            if (i >= 0 && j >= 0 && s.charAt(i) != t.charAt(j)) {
+                return false;
+            }
+            
+            if (i >= 0) i--;
+            if (j >= 0) j--;
+        }
+
+        return true;
+    }
+
+    public static void main(String[] args) {
+        String s = "ab#c", t = "ad#c";
+        System.out.println("Strings are equal after applying backspaces: " + backspaceCompare(s, t));  // Output: true
+    }
+}
+Explanation:
+
+Two pointers (i and j) are used to traverse the two strings from the end.
+If # is encountered, we skip over it (simulate the backspace).
+Compare the characters of both strings. If they differ, return false.
+If both strings are processed completely, return true. 
+
+ Fast and Slow pointers 
+ 1. Linked List Cycle (Easy)
+The goal is to determine if a given linked list has a cycle. A cycle occurs when a node's next pointer points to one of the previous nodes in the list.
+
+Approach:
+Use two pointers: a slow pointer (slow) that moves one step at a time, and a fast pointer (fast) that moves two steps at a time.
+If there is a cycle, the fast pointer will eventually meet the slow pointer. If the fast pointer reaches the end of the list (null), there is no cycle.
+Code:
+java
+Copy code
+class ListNode {
+    int val;
+    ListNode next;
+    ListNode(int x) { val = x; }
+}
+
+public class LinkedListCycle {
+    public static boolean hasCycle(ListNode head) {
+        if (head == null || head.next == null) return false;
+
+        ListNode slow = head;
+        ListNode fast = head;
+
+        while (fast != null && fast.next != null) {
+            slow = slow.next;               // Move slow by 1 step
+            fast = fast.next.next;          // Move fast by 2 steps
+
+            if (slow == fast) {             // Cycle detected
+                return true;
+            }
+        }
+
+        return false; // No cycle
+    }
+
+    public static void main(String[] args) {
+        // Example: Create a linked list with a cycle
+        ListNode head = new ListNode(1);
+        head.next = new ListNode(2);
+        head.next.next = new ListNode(3);
+        head.next.next.next = new ListNode(4);
+        head.next.next.next.next = head.next;  // Creating a cycle
+
+        System.out.println("Has cycle: " + hasCycle(head));  // Output: true
+    }
+}
+Explanation:
+
+The slow pointer moves one step at a time, and the fast pointer moves two steps.
+If there is a cycle, the two pointers will eventually meet. If not, the fast pointer will reach null indicating the end of the list.
+
+2. Palindrome Linked List (Medium)
+This problem involves checking whether a linked list is a palindrome. A linked list is a palindrome if it reads the same forward and backward.
+
+Approach:
+Use the slow pointer to find the middle of the list (the point where the two halves split).
+Reverse the second half of the list.
+Compare the first half and the reversed second half to check if the list is a palindrome.
+Code:
+java
+Copy code
+class ListNode {
+    int val;
+    ListNode next;
+    ListNode(int x) { val = x; }
+}
+
+public class PalindromeLinkedList {
+    public static boolean isPalindrome(ListNode head) {
+        if (head == null || head.next == null) return true;
+
+        // Step 1: Find the middle of the list using slow and fast pointers
+        ListNode slow = head;
+        ListNode fast = head;
+        while (fast != null && fast.next != null) {
+            slow = slow.next;
+            fast = fast.next.next;
+        }
+
+        // Step 2: Reverse the second half of the list
+        ListNode prev = null;
+        ListNode curr = slow;
+        while (curr != null) {
+            ListNode next = curr.next;
+            curr.next = prev;
+            prev = curr;
+            curr = next;
+        }
+
+        // Step 3: Compare the first half and the reversed second half
+        ListNode left = head;
+        ListNode right = prev;
+        while (right != null) {
+            if (left.val != right.val) {
+                return false;
+            }
+            left = left.next;
+            right = right.next;
+        }
+
+        return true;
+    }
+
+    public static void main(String[] args) {
+        // Example: Create a palindrome linked list
+        ListNode head = new ListNode(1);
+        head.next = new ListNode(2);
+        head.next.next = new ListNode(2);
+        head.next.next.next = new ListNode(1);
+
+        System.out.println("Is palindrome: " + isPalindrome(head));  // Output: true
+    }
+}
+Explanation:
+
+The slow pointer finds the middle of the list.
+The second half of the list is reversed.
+The first half of the list is compared with the reversed second half.
+If all corresponding values match, the list is a palindrome.
+
+3. Cycle in a Circular Array (Hard)
+In this problem, we are given a circular array, and the goal is to detect if there is a cycle in the array (i.e., if we can eventually return to the starting index).
+
+Approach:
+Use two pointers, slow and fast, to detect the cycle.
+The slow pointer moves one step at a time, and the fast pointer moves two steps.
+If there is a cycle, the two pointers will eventually meet. If no cycle exists, the fast pointer will move out of bounds.
+Code:
+java
+Copy code
+public class CycleInCircularArray {
+    public static boolean hasCycle(int[] nums) {
+        if (nums == null || nums.length == 0) return false;
+
+        int n = nums.length;
+        for (int i = 0; i < n; i++) {
+            if (nums[i] == 0) continue;  // Skip already visited indices
+
+            int slow = i, fast = i;
+            while (nums[fast] * nums[slow] > 0 && nums[fast] * nums[fast] > 0) {
+                slow = (slow + nums[slow] + n) % n;
+                fast = (fast + nums[fast] + n) % n;
+                fast = (fast + nums[fast] + n) % n;
+
+                if (slow == fast) {
+                    return true;
+                }
+            }
+        }
+
+        return false;  // No cycle
+    }
+
+    public static void main(String[] args) {
+        int[] nums = {2, -1, 1, 2, 2};
+        System.out.println("Has cycle: " + hasCycle(nums));  // Output: true
+    }
+}
+Explanation:
+
+We iterate through the array, using a two-pointer approach.
+The slow pointer moves one step, and the fast pointer moves two steps.
+The modulo operation ensures that we stay within bounds, as the array is circular.
+If slow and fast pointers meet, it means there is a cycle.
+
+The Merge Intervals pattern is often used when dealing with intervals or ranges that can overlap. The main idea is to combine or merge overlapping intervals and return a set of non-overlapping intervals. This pattern is helpful when you are asked to:
+
+Combine intervals that overlap or are adjacent.
+Determine the intersection of intervals.
+Find the union of intervals, where some may overlap.
+Maximize or minimize a certain property based on intervals, such as the maximum load or usage.
+The key to solving merge intervals problems is to:
+
+Sort the intervals based on their start time (or end time, depending on the problem).
+Iterate through the sorted intervals and either merge or keep separate based on their overlap.
+
+1. Intervals Intersection (Medium)
+Given two lists of intervals, you need to return the intervals where they overlap.
+
+Approach:
+Sort both lists of intervals by start time.
+Use two pointers, one for each list, and traverse them:
+If the current interval from list 1 overlaps with the current interval from list 2, add the overlapping interval to the result list.
+If the current interval from list 1 ends before the current interval from list 2 starts, move the pointer in list 1 forward.
+If the current interval from list 2 ends before the current interval from list 1 starts, move the pointer in list 2 forward.
+Code:
+java
+Copy code
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+
+public class IntervalsIntersection {
+    public static int[][] intervalIntersection(int[][] A, int[][] B) {
+        List<int[]> result = new ArrayList<>();
+        int i = 0, j = 0;
+
+        while (i < A.length && j < B.length) {
+            // Find the overlap between A[i] and B[j]
+            int start = Math.max(A[i][0], B[j][0]);
+            int end = Math.min(A[i][1], B[j][1]);
+
+            if (start <= end) {
+                result.add(new int[] {start, end});
+            }
+
+            // Move the pointer with the smaller end time
+            if (A[i][1] < B[j][1]) {
+                i++;
+            } else {
+                j++;
+            }
+        }
+
+        return result.toArray(new int[result.size()][]);
+    }
+
+    public static void main(String[] args) {
+        int[][] A = {{0, 2}, {5, 10}, {13, 15}};
+        int[][] B = {{1, 5}, {8, 12}, {14, 16}};
+        
+        int[][] intersections = intervalIntersection(A, B);
+        for (int[] interval : intersections) {
+            System.out.println(Arrays.toString(interval));
+        }
+    }
+}
+Explanation:
+
+The intervals from both lists are compared by their start and end times.
+Overlapping intervals are found when start <= end.
+The algorithm efficiently processes the intervals by moving the pointer for the list with the smaller end time.
+
+2. Maximum CPU Load (Hard)
+In this problem, we are given a list of intervals where each interval represents the start and end time of a CPU task. We need to find the maximum CPU load at any given time. Essentially, we want to track how many tasks are running at the same time.
+
+Approach:
+Sort the intervals based on start time (or end time).
+Use two pointers (or events) to keep track of when tasks start and when they end.
+Keep a running count of active tasks (CPU load) and update the maximum load encountered during the traversal of the events.
+Code:
+java
+Copy code
+import java.util.*;
+
+public class MaximumCPULoad {
+    public static int maxCPULoad(int[][] tasks) {
+        // Step 1: Create a list of events (start and end times)
+        List<int[]> events = new ArrayList<>();
+        for (int[] task : tasks) {
+            events.add(new int[]{task[0], 1});  // 1 means task starts
+            events.add(new int[]{task[1], -1}); // -1 means task ends
+        }
+
+        // Step 2: Sort the events: first by time, then by type (end before start)
+        events.sort((a, b) -> a[0] == b[0] ? a[1] : a[0] - b[0]);
+
+        // Step 3: Traverse the events and calculate maximum load
+        int currentLoad = 0, maxLoad = 0;
+        for (int[] event : events) {
+            currentLoad += event[1]; // Add 1 if a task starts, subtract 1 if it ends
+            maxLoad = Math.max(maxLoad, currentLoad);
+        }
+
+        return maxLoad;
+    }
+
+    public static void main(String[] args) {
+        int[][] tasks = {{1, 4}, {2, 5}, {3, 6}, {5, 8}, {7, 9}};
+        System.out.println("Maximum CPU Load: " + maxCPULoad(tasks));  // Output: 4
+    }
+}
+Explanation:
+
+Events creation: Each task contributes two events, one for the start time (1 for start) and one for the end time (-1 for end).
+Sorting events: The events are sorted first by time, and for events occurring at the same time, end events (-1) are handled before start events (1).
+CPU load tracking: As we process the events, we adjust the current load by adding 1 for a start event and subtracting 1 for an end event. We track the maximum load encountered.
+
+The Cyclic Sort pattern is typically used for problems where you are working with a sorted array or sequence where the elements are within a specific range (typically from 1 to N or 0 to N-1), and the task is to rearrange, identify missing or duplicate elements, or find other specific values in the array.
+
+This algorithm is efficient because it works by placing each element in its correct position (based on its value) using the properties of the array. It is often used when:
+
+The problem asks you to find missing or duplicate numbers.
+The array contains numbers in a specific range (e.g., from 1 to N).
+The problem involves finding a number in a sorted or rotated array.
+Key Characteristics of Cyclic Sort:
+Array elements belong to a specific range: The array contains numbers within a fixed range, such as [1, 2, ..., N].
+No extra space or minimal space is allowed: Cyclic sort often works in-place.
+The goal is to place each number in its corresponding index: The number 1 should be in index 0, 2 should be in index 1, and so on.
+
+1. Find the Missing Number (Easy)
+Given an array of n integers where the integers are in the range from 1 to n+1 (inclusive) and all numbers are present except one, the goal is to find the missing number.
+
+Approach:
+The idea is to cyclically sort the array so that each number is placed at the index corresponding to its value (i.e., nums[i] should be placed at index nums[i] - 1).
+If a number is already at the correct index or is a duplicate, we skip it.
+After cyclic sort, we can find the missing number by identifying which index doesn't have the expected value.
+Code:
+java
+Copy code
+public class FindMissingNumber {
+    public static int findMissingNumber(int[] nums) {
+        int i = 0;
+        while (i < nums.length) {
+            int correctIndex = nums[i] - 1;
+            // If the current element is in the correct position and it's not a duplicate
+            if (nums[i] > 0 && nums[i] <= nums.length && nums[i] != nums[correctIndex]) {
+                // Swap nums[i] with nums[correctIndex]
+                int temp = nums[i];
+                nums[i] = nums[correctIndex];
+                nums[correctIndex] = temp;
+            } else {
+                i++;
+            }
+        }
+
+        // After the cyclic sort, find the missing number
+        for (i = 0; i < nums.length; i++) {
+            if (nums[i] != i + 1) {
+                return i + 1;
+            }
+        }
+
+        return nums.length + 1; // If no number is missing, return n+1
+    }
+
+    public static void main(String[] args) {
+        int[] nums = {3, 1, 4, 2};
+        System.out.println("Missing number: " + findMissingNumber(nums));  // Output: 5
+    }
+}
+Explanation:
+
+Cyclic sort is applied by swapping elements to their correct positions (nums[i] == i + 1).
+Once sorted, the missing number is the first index where the element does not match its expected value.
+If all elements are placed correctly, the missing number is n+1.
+
+2. Find the Smallest Missing Positive Number (Medium)
+Given an unsorted array of integers, find the smallest missing positive integer (1-based index). The numbers can be positive, negative, or zero.
+
+Approach:
+Cyclically sort the numbers so that every positive integer x is placed at the index x - 1 (i.e., nums[i] should be i + 1).
+After sorting, the smallest missing positive integer will be the first index where the number does not match i + 1.
+Code:
+java
+Copy code
+public class SmallestMissingPositive {
+    public static int firstMissingPositive(int[] nums) {
+        int i = 0;
+        while (i < nums.length) {
+            int correctIndex = nums[i] - 1;
+            // Swap nums[i] with nums[correctIndex] if nums[i] is in the correct range and not at the correct index
+            if (nums[i] > 0 && nums[i] <= nums.length && nums[i] != nums[correctIndex]) {
+                int temp = nums[i];
+                nums[i] = nums[correctIndex];
+                nums[correctIndex] = temp;
+            } else {
+                i++;
+            }
+        }
+
+        // After cyclic sort, the first place where the number is not equal to i+1, return i+1
+        for (i = 0; i < nums.length; i++) {
+            if (nums[i] != i + 1) {
+                return i + 1;
+            }
+        }
+
+        return nums.length + 1;  // If no missing positive number, return n+1
+    }
+
+    public static void main(String[] args) {
+        int[] nums = {3, 4, -1, 1};
+        System.out.println("Smallest missing positive number: " + firstMissingPositive(nums));  // Output: 2
+    }
+}
+Explanation:
+
+The array is cyclically sorted such that each number x (where 1 <= x <= n) is placed at index x - 1.
+After sorting, the first index where nums[i] != i + 1 indicates the smallest missing positive number.
+If all indices contain the expected values, the missing number is n + 1.
+
+
+
+
+
+The In-place Reversal of a Linked List pattern is used when you're asked to reverse a linked list or a part of it without using extra memory or modifying the existing memory structure. This is particularly useful when you are asked to reverse the entire list or a sublist in-place, meaning you must modify the list's pointers rather than creating a new list or array.
+
+When to use this pattern:
+You need to reverse a linked list (or part of it) in-place: The problem specifically requires you to reverse a linked list using constant space, i.e., without allocating new memory for another list or array.
+The task is to reverse portions or sublists of the linked list (e.g., reversing a sublist between two given positions).
+The task involves modifying the links or pointers directly in a linked list (without creating new nodes).
+Key Concept:
+The core idea of in-place reversal is to reverse the links (pointers) within the existing linked list. This requires:
+
+Reversing the direction of the pointers as you traverse the list.
+Using a few pointers (e.g., prev, current, and next) to reverse the links one by one.
+Ensuring the list is modified without the need for extra memory (i.e., without using additional data structures like arrays or other linked lists).
+
+1. Reverse a Sub-list (Medium)
+Given a singly linked list and two integers m and n, you need to reverse the nodes of the linked list from position m to position n. The reversal should be done in-place, without using extra space.
+
+Approach:
+Traverse the list to reach the node just before position m (let’s call it prevM).
+Reverse the sublist between positions m and n. This can be done by using three pointers (prev, current, and next).
+After the reversal, link the nodes before and after the reversed sublist to maintain the integrity of the linked list.
+Code:
+java
+Copy code
+class ListNode {
+    int val;
+    ListNode next;
+    ListNode(int x) { val = x; }
+}
+
+public class ReverseSublist {
+    public static ListNode reverseBetween(ListNode head, int m, int n) {
+        if (head == null || m == n) return head;
+        
+        // Create a dummy node to handle edge case when reversing from the head
+        ListNode dummy = new ListNode(0);
+        dummy.next = head;
+        ListNode prevM = dummy;
+
+        // Move prevM to the node just before position m
+        for (int i = 1; i < m; i++) {
+            prevM = prevM.next;
+        }
+
+        // Reverse the sublist from m to n
+        ListNode current = prevM.next;
+        ListNode next = null;
+        ListNode prev = null;
+        for (int i = 0; i < n - m + 1; i++) {
+            next = current.next;
+            current.next = prev;
+            prev = current;
+            current = next;
+        }
+
+        // Reconnect the reversed sublist with the rest of the list
+        prevM.next.next = current;  // connect the end of reversed sublist
+        prevM.next = prev;          // connect the start of reversed sublist
+
+        return dummy.next;
+    }
+
+    public static void printList(ListNode head) {
+        while (head != null) {
+            System.out.print(head.val + " ");
+            head = head.next;
+        }
+        System.out.println();
+    }
+
+    public static void main(String[] args) {
+        // Example: Create a linked list
+        ListNode head = new ListNode(1);
+        head.next = new ListNode(2);
+        head.next.next = new ListNode(3);
+        head.next.next.next = new ListNode(4);
+        head.next.next.next.next = new ListNode(5);
+
+        System.out.println("Original List:");
+        printList(head);
+
+        head = reverseBetween(head, 2, 4);
+
+        System.out.println("List after reversal:");
+        printList(head);  // Output: 1 4 3 2 5
+    }
+}
+Explanation:
+
+Step 1: We first move to the node just before position m using a pointer prevM.
+Step 2: We reverse the sublist from position m to n using the three pointers prev, current, and next.
+Step 3: After reversing the sublist, we connect the reversed sublist back to the rest of the list using prevM.next and current.
+This solution modifies the linked list in-place, which is the key requirement.
+
+2. Reverse Every K-Element Sub-list (Medium)
+Given a linked list and an integer k, you need to reverse every group of k nodes in the linked list. If the number of nodes remaining is less than k, leave them as they are.
+
+Approach:
+Traverse the list in groups of k: For every group of k nodes, reverse the nodes in that group.
+Use a dummy node to handle edge cases, such as when the first group is reversed.
+Reversing logic: Apply the same in-place reversal as before, but for every k nodes in a group.
+Code:
+java
+Copy code
+public class ReverseKGroup {
+    public static ListNode reverseKGroup(ListNode head, int k) {
+        if (head == null || k == 1) return head;
+
+        // Create a dummy node to handle the case when the head needs to be reversed
+        ListNode dummy = new ListNode(0);
+        dummy.next = head;
+        ListNode prevGroupEnd = dummy;
+        ListNode current = head;
+
+        // Find the length of the list
+        int length = 0;
+        while (current != null) {
+            length++;
+            current = current.next;
+        }
+
+        // Reverse every k nodes in the list
+        current = dummy.next;
+        while (length >= k) {
+            ListNode groupStart = current;
+            ListNode groupEnd = current;
+            for (int i = 1; i < k; i++) {
+                groupEnd = groupEnd.next;
+            }
+            ListNode nextGroupStart = groupEnd.next;
+
+            // Reverse the group
+            ListNode prev = nextGroupStart;
+            ListNode temp = groupStart;
+            while (temp != nextGroupStart) {
+                ListNode next = temp.next;
+                temp.next = prev;
+                prev = temp;
+                temp = next;
+            }
+
+            // Connect the previous group to the current reversed group
+            prevGroupEnd.next = groupEnd;
+            groupStart.next = nextGroupStart;
+            prevGroupEnd = groupStart;
+
+            // Move current to the next group
+            current = nextGroupStart;
+
+            length -= k;
+        }
+
+        return dummy.next;
+    }
+
+    public static void printList(ListNode head) {
+        while (head != null) {
+            System.out.print(head.val + " ");
+            head = head.next;
+        }
+        System.out.println();
+    }
+
+    public static void main(String[] args) {
+        // Example: Create a linked list
+        ListNode head = new ListNode(1);
+        head.next = new ListNode(2);
+        head.next.next = new ListNode(3);
+        head.next.next.next = new ListNode(4);
+        head.next.next.next.next = new ListNode(5);
+
+        System.out.println("Original List:");
+        printList(head);
+
+        head = reverseKGroup(head, 3);
+
+        System.out.println("List after reversing every 3 elements:");
+        printList(head);  // Output: 3 2 1 4 5
+    }
+}
+Explanation:
+
+Step 1: We traverse the list in groups of k nodes.
+Step 2: For each group, we reverse the nodes in-place using the same approach as the previous problem.
+Step 3: After reversing each group, we connect the groups to maintain the linked list structure.
+This solution modifies the linked list in-place, ensuring that memory usage is constant and no extra space is used.
+
+
+Tree BFS (Breadth-First Search) Pattern
+Tree BFS is typically used when you're asked to traverse a tree level by level, also known as level order traversal. In BFS, all the nodes at the current level are visited before moving on to the next level. This is particularly useful when the structure of the tree or graph is important in terms of layers or levels.
+
+When to Use Tree BFS:
+You should use Tree BFS when:
+
+The problem asks for a level-by-level traversal of a tree, where you need to visit all nodes at the current depth before moving on to the next.
+The order of nodes matters by level (i.e., processing nodes level by level).
+The tree could be large and needs a non-recursive solution, as BFS uses an iterative approach.
+Key Idea:
+
+BFS can be efficiently implemented using a queue. You add the root node to the queue and start processing it.
+For each node, you dequeue it, process it, and then enqueue its children (left and right) to visit them later in the subsequent iterations.
+
+1. Binary Tree Level Order Traversal (Easy)
+The problem asks you to traverse a binary tree level by level, returning the nodes' values for each level as a separate list (i.e., a list of lists).
+
+Approach:
+Use a queue to manage the nodes at each level.
+Start with the root node and process nodes level by level.
+For each node, enqueue its children (left and right), and process each level completely before moving to the next level.
+Code:
+java
+Copy code
+import java.util.*;
+
+class TreeNode {
+    int val;
+    TreeNode left, right;
+    TreeNode(int x) {
+        val = x;
+        left = right = null;
+    }
+}
+
+public class BinaryTreeLevelOrderTraversal {
+
+    public static List<List<Integer>> levelOrder(TreeNode root) {
+        List<List<Integer>> result = new ArrayList<>();
+        if (root == null) return result;
+
+        Queue<TreeNode> queue = new LinkedList<>();
+        queue.offer(root);
+
+        while (!queue.isEmpty()) {
+            int levelSize = queue.size();
+            List<Integer> currentLevel = new ArrayList<>();
+
+            for (int i = 0; i < levelSize; i++) {
+                TreeNode node = queue.poll();
+                currentLevel.add(node.val);
+
+                // Enqueue the left and right children
+                if (node.left != null) queue.offer(node.left);
+                if (node.right != null) queue.offer(node.right);
+            }
+
+            result.add(currentLevel);
+        }
+
+        return result;
+    }
+
+    // Helper function to print the result
+    public static void printLevelOrder(List<List<Integer>> result) {
+        for (List<Integer> level : result) {
+            System.out.println(level);
+        }
+    }
+
+    public static void main(String[] args) {
+        // Create a simple binary tree
+        TreeNode root = new TreeNode(1);
+        root.left = new TreeNode(2);
+        root.right = new TreeNode(3);
+        root.left.left = new TreeNode(4);
+        root.left.right = new TreeNode(5);
+        root.right.right = new TreeNode(6);
+
+        List<List<Integer>> result = levelOrder(root);
+        printLevelOrder(result);
+    }
+}
+Explanation:
+
+A queue is used to maintain the nodes at each level. The algorithm starts with the root and processes each level one at a time.
+For each node, we add its value to the currentLevel list and enqueue its left and right children (if they exist) for processing in the next iteration.
+After processing all nodes at the current level, the currentLevel list is added to the result.
+Output:
+
+csharp
+Copy code
+[1]
+[2, 3]
+[4, 5, 6]
+
+
+2. Zigzag Level Order Traversal (Medium)
+The problem asks you to traverse a binary tree in a zigzag (or spiral) pattern. This means:
+
+The first level should be traversed from left to right.
+The second level should be traversed from right to left.
+The third level should again be traversed from left to right, and so on.
+Approach:
+Similar to the level order traversal, but we need to alternate the direction of traversal at each level.
+We can achieve this by maintaining a flag (leftToRight) to control the direction of traversal for each level.
+Use a deque (double-ended queue) to allow adding elements at both ends (left and right).
+Code:
+java
+Copy code
+import java.util.*;
+
+public class ZigzagLevelOrderTraversal {
+
+    public static List<List<Integer>> zigzagLevelOrder(TreeNode root) {
+        List<List<Integer>> result = new ArrayList<>();
+        if (root == null) return result;
+
+        Deque<TreeNode> queue = new LinkedList<>();
+        queue.offer(root);
+        boolean leftToRight = true;
+
+        while (!queue.isEmpty()) {
+            int levelSize = queue.size();
+            List<Integer> currentLevel = new ArrayList<>();
+
+            for (int i = 0; i < levelSize; i++) {
+                TreeNode node = queue.poll();
+
+                if (leftToRight) {
+                    currentLevel.add(node.val);
+                } else {
+                    currentLevel.add(0, node.val); // Add to the front for right-to-left traversal
+                }
+
+                // Enqueue children for the next level
+                if (node.left != null) queue.offer(node.left);
+                if (node.right != null) queue.offer(node.right);
+            }
+
+            result.add(currentLevel);
+            leftToRight = !leftToRight; // Alternate the direction
+        }
+
+        return result;
+    }
+
+    // Helper function to print the result
+    public static void printZigzagOrder(List<List<Integer>> result) {
+        for (List<Integer> level : result) {
+            System.out.println(level);
+        }
+    }
+
+    public static void main(String[] args) {
+        // Create a simple binary tree
+        TreeNode root = new TreeNode(1);
+        root.left = new TreeNode(2);
+        root.right = new TreeNode(3);
+        root.left.left = new TreeNode(4);
+        root.left.right = new TreeNode(5);
+        root.right.right = new TreeNode(6);
+
+        List<List<Integer>> result = zigzagLevelOrder(root);
+        printZigzagOrder(result);
+    }
+}
+Explanation:
+
+A deque is used instead of a regular queue so we can add elements to both ends of the list (addFirst and addLast).
+The leftToRight flag alternates after each level, controlling whether we add values from left to right or right to left.
+For each level, we process nodes in the current direction (either left-to-right or right-to-left), and at the end of the level, we toggle the leftToRight flag.
+Output:
+
+csharp
+Copy code
+[1]
+[3, 2]
+[4, 5, 6]
+
+Tree DFS (Depth-First Search) Pattern
+Tree DFS is used when you need to traverse a tree deeply, visiting each branch of the tree before backtracking. The traversal can happen in different orders, such as in-order, preorder, or postorder traversal.
+
+When to Use Tree DFS:
+You should consider using Tree DFS when:
+
+You are asked to traverse the tree in specific orders (in-order, preorder, postorder).
+
+In preorder traversal, you process the root node first, then the left subtree, and then the right subtree.
+In in-order traversal, you process the left subtree, then the root node, and then the right subtree.
+In postorder traversal, you process the left subtree, then the right subtree, and finally the root node.
+You need to search for something deeper in the tree, especially when the solution is closer to a leaf node. DFS is suitable in scenarios where the problem requires visiting deeper nodes before checking alternatives (like finding paths or solving problems based on tree depth).
+
+You need to explore all the nodes in a tree (e.g., to find all paths, compute values like sum, maximum, etc., or look for paths that satisfy specific conditions).
+
+DFS typically uses recursion (or a stack if you need an iterative version), as it allows you to explore deeper levels of the tree before moving back up.
+
+Key Tree DFS Traversals:
+Preorder (Root, Left, Right)
+In-order (Left, Root, Right)
+Postorder (Left, Right, Root)
+
+1. Sum of Path Numbers (Medium)
+The problem asks you to find the sum of all path numbers from the root to the leaves of a binary tree. Each path from root to leaf forms a number by concatenating the node values. You need to compute the sum of all such numbers.
+
+Approach:
+Perform a DFS starting from the root.
+At each node, accumulate the value along the current path.
+When you reach a leaf, compute the number formed by the path, add it to the sum, and backtrack.
+This problem is suited for DFS because you need to explore all possible root-to-leaf paths.
+Code:
+java
+Copy code
+class TreeNode {
+    int val;
+    TreeNode left, right;
+    TreeNode(int x) {
+        val = x;
+        left = right = null;
+    }
+}
+
+public class SumOfPathNumbers {
+
+    public static int sumNumbers(TreeNode root) {
+        return dfs(root, 0);
+    }
+
+    private static int dfs(TreeNode node, int currentSum) {
+        // Base case: if the node is null, return 0 (no path)
+        if (node == null) {
+            return 0;
+        }
+
+        // Update current sum by adding the current node's value
+        currentSum = currentSum * 10 + node.val;
+
+        // If it's a leaf node, return the current sum
+        if (node.left == null && node.right == null) {
+            return currentSum;
+        }
+
+        // Recursively calculate the sum for left and right subtrees
+        return dfs(node.left, currentSum) + dfs(node.right, currentSum);
+    }
+
+    public static void main(String[] args) {
+        // Example: Create a binary tree
+        TreeNode root = new TreeNode(1);
+        root.left = new TreeNode(2);
+        root.right = new TreeNode(3);
+        root.left.left = new TreeNode(4);
+        root.left.right = new TreeNode(5);
+
+        System.out.println("Sum of Path Numbers: " + sumNumbers(root));  // Output: 262
+    }
+}
+Explanation:
+
+DFS is used to traverse from the root to the leaves.
+At each node, the current path sum is updated by appending the node's value (currentSum = currentSum * 10 + node.val).
+Once we reach a leaf node, we return the accumulated sum.
+The result is the sum of all root-to-leaf paths.
+Output:
+
+mathematica
+Copy code
+Sum of Path Numbers: 262
+
+
+2. All Paths for a Sum (Medium)
+This problem asks you to find all paths from the root to leaf nodes where the sum of the nodes' values equals a given target sum.
+
+Approach:
+Perform a DFS to explore all root-to-leaf paths.
+At each node, accumulate the sum of the path.
+If you reach a leaf and the accumulated sum matches the target, store that path.
+This problem is also suited for DFS because you are searching for paths, and you need to explore all possible paths before finding those that satisfy the condition.
+Code:
+java
+Copy code
+import java.util.*;
+
+class TreeNode {
+    int val;
+    TreeNode left, right;
+    TreeNode(int x) {
+        val = x;
+        left = right = null;
+    }
+}
+
+public class AllPathsForSum {
+
+    public static List<List<Integer>> pathSum(TreeNode root, int sum) {
+        List<List<Integer>> result = new ArrayList<>();
+        List<Integer> currentPath = new ArrayList<>();
+        dfs(root, sum, currentPath, result);
+        return result;
+    }
+
+    private static void dfs(TreeNode node, int remainingSum, List<Integer> currentPath, List<List<Integer>> result) {
+        // Base case: if the node is null, return
+        if (node == null) {
+            return;
+        }
+
+        // Add the current node's value to the current path
+        currentPath.add(node.val);
+
+        // If it's a leaf node and the sum matches, add the current path to the result
+        if (node.left == null && node.right == null && remainingSum == node.val) {
+            result.add(new ArrayList<>(currentPath));
+        }
+
+        // Recursively search for the target sum in the left and right subtrees
+        dfs(node.left, remainingSum - node.val, currentPath, result);
+        dfs(node.right, remainingSum - node.val, currentPath, result);
+
+        // Backtrack: remove the current node from the path before returning
+        currentPath.remove(currentPath.size() - 1);
+    }
+
+    public static void main(String[] args) {
+        // Example: Create a binary tree
+        TreeNode root = new TreeNode(5);
+        root.left = new TreeNode(4);
+        root.right = new TreeNode(8);
+        root.left.left = new TreeNode(11);
+        root.left.left.left = new TreeNode(7);
+        root.left.left.right = new TreeNode(2);
+        root.right.left = new TreeNode(13);
+        root.right.right = new TreeNode(4);
+        root.right.right.right = new TreeNode(1);
+
+        List<List<Integer>> result = pathSum(root, 22);
+        System.out.println("All paths for sum 22:");
+        for (List<Integer> path : result) {
+            System.out.println(path);
+        }
+    }
+}
+Explanation:
+
+DFS is used to traverse the tree and find all root-to-leaf paths.
+The remainingSum is updated by subtracting the current node's value at each step.
+If we reach a leaf node and the remainingSum becomes 0, it means we've found a valid path, so we add it to the result.
+We backtrack by removing the node from the current path after exploring both its left and right subtrees.
+Output:
+
+less
+Copy code
+All paths for sum 22:
+[5, 4, 11, 2]
+[5, 8, 4, 5]
+
+
+Two Heaps Pattern
+The Two Heaps pattern is often used when problems involve finding the smallest/largest elements in a dynamic stream of numbers or elements, such as finding the median, or when there are operations involving priority queues. This pattern efficiently handles dynamic updates to sets of data and allows quick retrieval of certain statistical values like the minimum, maximum, or median.
+
+When to Use Two Heaps:
+You should use the Two Heaps pattern in the following cases:
+
+Priority Queue or Scheduling Problems: When you're tasked with finding the smallest/largest elements in a dynamic set of numbers, you may be able to use two heaps (a max-heap and a min-heap) to efficiently handle the updates and queries.
+Finding the Median: If the problem requires finding the median in a dynamic set of numbers or a stream of numbers, two heaps (one max-heap and one min-heap) can maintain the balance needed to find the median in constant time.
+Binary Tree or Heap-based Data Structures: Sometimes, problems involving heap-based binary trees (or priority queues) can be simplified using the two heaps pattern.
+Finding smallest/largest elements: This pattern is effective when you need to track and retrieve the smallest or largest elements from a stream of data as new elements are added.
+Key Concepts for Two Heaps:
+Max-heap stores the smaller half of the elements. The largest element in the max-heap is the root.
+Min-heap stores the larger half of the elements. The smallest element in the min-heap is the root.
+By maintaining the two heaps, you can efficiently balance the elements and ensure that:
+The max-heap always contains the smaller half of the numbers.
+The min-heap always contains the larger half of the numbers.
+The median can be retrieved as:
+
+If the heaps are balanced (equal size), the median is the average of the top elements of both heaps.
+If one heap contains more elements than the other, the median is the top element of the heap with more elements.
+ Problem Example Using Two Heaps:
+1. Find the Median of a Number Stream (Medium)
+The problem asks you to find the median of a stream of integers. The challenge is that you need to maintain the median as new numbers are added to the stream. You are supposed to output the median after each insertion.
+
+Approach:
+Max-heap stores the smaller half of the numbers (invert the values to simulate a max-heap using a min-heap).
+Min-heap stores the larger half of the numbers.
+When a new number arrives, decide where to insert it (either in the max-heap or the min-heap) and balance the heaps if necessary.
+The median can be calculated by:
+If the heaps are of equal size, the median is the average of the roots of the two heaps.
+If one heap has more elements, the median is the root of the larger heap.
+Code:
+java
+Copy code
+import java.util.*;
+
+public class MedianFinder {
+
+    // Max-heap (smaller half)
+    private PriorityQueue<Integer> maxHeap;
+    // Min-heap (larger half)
+    private PriorityQueue<Integer> minHeap;
+
+    public MedianFinder() {
+        // Max-heap to store the smaller half of the numbers
+        maxHeap = new PriorityQueue<>(Collections.reverseOrder());
+        // Min-heap to store the larger half of the numbers
+        minHeap = new PriorityQueue<>();
+    }
+
+    // Adds a number into the data structure
+    public void addNum(int num) {
+        // If the number is smaller than or equal to the max of the maxHeap
+        if (maxHeap.isEmpty() || num <= maxHeap.peek()) {
+            maxHeap.offer(num);
+        } else {
+            minHeap.offer(num);
+        }
+
+        // Balance the heaps, ensure they differ in size by at most 1
+        if (maxHeap.size() > minHeap.size() + 1) {
+            minHeap.offer(maxHeap.poll());
+        } else if (minHeap.size() > maxHeap.size()) {
+            maxHeap.offer(minHeap.poll());
+        }
+    }
+
+    // Returns the median of all elements so far
+    public double findMedian() {
+        if (maxHeap.size() > minHeap.size()) {
+            return maxHeap.peek();
+        } else {
+            return (maxHeap.peek() + minHeap.peek()) / 2.0;
+        }
+    }
+
+    public static void main(String[] args) {
+        MedianFinder medianFinder = new MedianFinder();
+
+        // Stream of numbers
+        int[] numbers = {1, 2, 3, 4, 5, 6};
+
+        for (int num : numbers) {
+            medianFinder.addNum(num);
+            System.out.println("Current Median: " + medianFinder.findMedian());
+        }
+    }
+}
+Explanation:
+We use a max-heap (maxHeap) to store the smaller half of the numbers (the root of the max-heap is the largest of the smaller half).
+We use a min-heap (minHeap) to store the larger half of the numbers (the root of the min-heap is the smallest of the larger half).
+When adding a new number:
+If it is smaller than or equal to the largest number in the max-heap, it goes into the max-heap.
+Otherwise, it goes into the min-heap.
+After adding a new number, we balance the heaps if their sizes differ by more than 1.
+If the max-heap has more than 1 extra element, move the largest element from the max-heap to the min-heap.
+If the min-heap has more elements than the max-heap, move the smallest element from the min-heap to the max-heap.
+Median calculation:
+If the heaps have the same size, the median is the average of the roots of the two heaps.
+If the max-heap has more elements, the median is the root of the max-heap.
+Example Output:
+mathematica
+Copy code
+Current Median: 1.0
+Current Median: 1.5
+Current Median: 2.0
+Current Median: 2.5
+Current Median: 3.0
+Current Median: 3.5
+
+Subsets Pattern
+The Subsets pattern is commonly used when you're asked to generate combinations or permutations from a given set of elements. This pattern is often seen in problems where the goal is to explore all possible subsets of a set, or to find specific subsets that meet certain criteria (e.g., unique subsets, subsets with certain sums, etc.).
+
+How to Identify the Subsets Pattern:
+You can identify the Subsets pattern when:
+
+You are asked to find combinations or permutations of a given set or list.
+
+Combinations are subsets where the order of elements doesn't matter.
+Permutations involve all possible arrangements of elements, where order matters.
+The problem requires you to explore all possible subsets of a set.
+
+Often used in problems like finding all subsets, subsets of a certain size, or unique subsets.
+The problem asks you to generate subsets under constraints.
+
+This could involve conditions like generating subsets that meet a sum condition, subsets without duplicates, or subsets of specific lengths.
+You are given a set, array, or string and asked to compute something like:
+
+All subsets (power set).
+Subsets with specific properties (e.g., subsets that sum to a particular value, subsets with unique elements).
+Common Approaches to Solve Subsets Problems:
+Backtracking:
+
+This is the most common technique for generating subsets, where you explore each element and recursively decide whether to include it or exclude it from the current subset.
+Backtracking allows for efficient exploration of all possible combinations or subsets.
+Bit Manipulation:
+
+This approach uses the binary representation of numbers to represent subsets. Each bit of an integer can correspond to an element being included or excluded from a subset.
+This method is often used for problems where you need all subsets and can be more efficient in certain cases.
+Dynamic Programming (for subset sum problems):
+
+Sometimes you are asked to find subsets that meet specific conditions (e.g., subsets whose sum is equal to a target). DP is used in these cases to build up solutions incrementally.
+Iterative Approach:
+
+Start with the empty subset, and for each element in the original set, add it to all existing subsets to generate new subsets.
+
+1. Subsets With Duplicates (Easy)
+This problem asks you to find all possible subsets of a given set, with duplicates allowed. In this case, some elements may be repeated, so the solution must ensure that only unique subsets are returned.
+
+Approach:
+Sort the input to handle duplicates.
+Use backtracking to explore all subsets, and ensure that you only include a subset if it hasn’t been included previously.
+Keep track of the start index for each level of recursion to avoid revisiting elements in the same subset.
+Code:
+java
+Copy code
+import java.util.*;
+
+public class SubsetsWithDuplicates {
+
+    public static List<List<Integer>> subsetsWithDup(int[] nums) {
+        List<List<Integer>> result = new ArrayList<>();
+        Arrays.sort(nums);  // Sort to easily handle duplicates
+        backtrack(result, new ArrayList<>(), nums, 0);
+        return result;
+    }
+
+    private static void backtrack(List<List<Integer>> result, List<Integer> tempList, int[] nums, int start) {
+        result.add(new ArrayList<>(tempList));  // Add current subset to the result
+        for (int i = start; i < nums.length; i++) {
+            // Skip duplicates
+            if (i > start && nums[i] == nums[i - 1]) continue;
+            tempList.add(nums[i]);  // Include nums[i] in the current subset
+            backtrack(result, tempList, nums, i + 1);  // Explore further with next elements
+            tempList.remove(tempList.size() - 1);  // Backtrack by removing nums[i]
+        }
+    }
+
+    public static void main(String[] args) {
+        int[] nums = {1, 2, 2};
+        List<List<Integer>> result = subsetsWithDup(nums);
+        System.out.println(result);
+    }
+}
+Explanation:
+Backtracking is used to explore all subsets of the array.
+The array is sorted first to handle duplicates efficiently by skipping over the same element when it occurs consecutively.
+For each element, we decide to include or exclude it in the current subset, and this decision is explored recursively.
+The base case is when we’ve considered all elements, at which point we add the current subset to the result.
+Output:
+css
+Copy code
+[[], [1], [1, 2], [1, 2, 2], [2], [2, 2]]
+
+2. String Permutations by Changing Case (Medium)
+In this problem, you're given a string, and you need to return all possible permutations of the string where each letter can be either lowercase or uppercase.
+
+Approach:
+This problem is similar to generating subsets but requires handling both lowercase and uppercase for each character.
+Use backtracking to explore both possibilities for each character in the string.
+Start from the first character and recursively decide whether to pick the lowercase or uppercase version of it.
+Code:
+java
+Copy code
+import java.util.*;
+
+public class StringPermutationsCaseChange {
+
+    public static List<String> letterCasePermutation(String s) {
+        List<String> result = new ArrayList<>();
+        backtrack(result, new StringBuilder(), s, 0);
+        return result;
+    }
+
+    private static void backtrack(List<String> result, StringBuilder temp, String s, int start) {
+        if (start == s.length()) {
+            result.add(temp.toString());
+            return;
+        }
+        
+        // Include the current character as lowercase
+        temp.append(Character.toLowerCase(s.charAt(start)));
+        backtrack(result, temp, s, start + 1);
+        temp.deleteCharAt(temp.length() - 1);  // Backtrack
+        
+        // Include the current character as uppercase
+        temp.append(Character.toUpperCase(s.charAt(start)));
+        backtrack(result, temp, s, start + 1);
+        temp.deleteCharAt(temp.length() - 1);  // Backtrack
+    }
+
+    public static void main(String[] args) {
+        String s = "a1b2";
+        List<String> result = letterCasePermutation(s);
+        System.out.println(result);
+    }
+}
+Explanation:
+The backtracking function explores two possibilities for each character in the string: lowercase and uppercase.
+We recursively decide which case to use, and then backtrack after exploring both options.
+The final list of permutations is built as the recursion progresses.
+Output:
+csharp
+Copy code
+[a1b2, A1b2, a1B2, A1B2]
+
+Problems Featuring the Modified Binary Search Pattern: 
+
+1. Order-agnostic Binary Search (Easy)
+This problem asks you to perform a binary search in a sorted array that may be sorted in ascending or descending order. The goal is to find the position of a given key in the array, regardless of whether the array is sorted in ascending or descending order.
+
+Approach:
+First, determine if the array is sorted in ascending or descending order.
+If it is ascending, you can proceed with a regular binary search.
+If it is descending, you modify the search conditions to account for the reverse order (swap the comparisons of key < arr[middle] and key > arr[middle]).
+After determining the order, perform the search as usual.
+Code:
+java
+Copy code
+public class OrderAgnosticBinarySearch {
+
+    public static int orderAgnosticBinarySearch(int[] arr, int key) {
+        int start = 0;
+        int end = arr.length - 1;
+        
+        // Determine if the array is sorted in ascending or descending order
+        boolean isAscending = arr[start] < arr[end];
+        
+        while (start <= end) {
+            int middle = start + (end - start) / 2;
+            
+            if (arr[middle] == key) {
+                return middle; // Key found
+            }
+            
+            if (isAscending) {
+                // Ascending order
+                if (arr[middle] > key) {
+                    end = middle - 1;
+                } else {
+                    start = middle + 1;
+                }
+            } else {
+                // Descending order
+                if (arr[middle] < key) {
+                    end = middle - 1;
+                } else {
+                    start = middle + 1;
+                }
+            }
+        }
+        
+        return -1; // Key not found
+    }
+
+    public static void main(String[] args) {
+        int[] arr = {9, 7, 5, 3, 1};
+        int key = 5;
+        int result = orderAgnosticBinarySearch(arr, key);
+        System.out.println("Key found at index: " + result);
+    }
+}
+Explanation:
+First, we check whether the array is sorted in ascending or descending order by comparing the first and last elements.
+Based on this, the search is adjusted:
+If ascending, we use the usual binary search comparisons.
+If descending, we reverse the comparisons (key < arr[middle] and key > arr[middle]).
+The search runs in O(log n) time, which is optimal for this type of problem.
+Example Output:
+mathematica
+Copy code
+Key found at index: 2
+ 
+ 2. Search in a Sorted Infinite Array (Medium)
+In this problem, the array is sorted but infinite. You are asked to find the position of a given key in the array. The challenge is that you cannot know the array's size beforehand.
+
+Approach:
+You can use exponential search to first find the range within which the element could potentially exist.
+Once a suitable range is identified, use the Modified Binary Search within that range to find the key.
+The exponential search works by expanding the range exponentially until you find a boundary, then performing a binary search within the range.
+Code:
+java
+Copy code
+public class SearchInSortedInfiniteArray {
+
+    public static int searchInInfiniteArray(int[] arr, int key) {
+        int start = 0;
+        int end = 1;
+        
+        // Exponentially find the end index
+        while (arr[end] < key) {
+            start = end;
+            end = 2 * end;
+        }
+        
+        // Now perform binary search between start and end
+        return binarySearch(arr, key, start, end);
+    }
+
+    private static int binarySearch(int[] arr, int key, int start, int end) {
+        while (start <= end) {
+            int middle = start + (end - start) / 2;
+            
+            if (arr[middle] == key) {
+                return middle; // Key found
+            }
+            if (arr[middle] < key) {
+                start = middle + 1;
+            } else {
+                end = middle - 1;
+            }
+        }
+        
+        return -1; // Key not found
+    }
+
+    public static void main(String[] args) {
+        // Example of an infinite array (assuming the array is very large)
+        int[] arr = {1, 3, 5, 7, 9, 11, 13, 15, 17, 19, 21, 23, 25}; // Example finite representation
+        int key = 17;
+        int result = searchInInfiniteArray(arr, key);
+        System.out.println("Key found at index: " + result);
+    }
+}
+Explanation:
+We first use an exponential search to find a suitable range where the key might exist. This is done by doubling the end pointer until the value at arr[end] is greater than or equal to the target.
+Once the range is identified, we perform a binary search between the start and end indices.
+Example Output:
+mathematica
+Copy code
+Key found at index: 8
+
+Top K Elements Pattern
+The Top K Elements pattern is used when you are asked to find the top K largest, smallest, or most frequent elements from a collection (usually an array or list). This pattern is widely applicable in a variety of problems where you need to identify the most important or most frequent elements in a set, often within the constraints of time or space complexity.
+
+How to Identify the Top K Elements Pattern:
+You should use the Top K Elements pattern when:
+
+You need to find the top/smallest/frequent K elements of a set or collection.
+Sorting is not efficient enough, especially when K is much smaller than the size of the array.
+The problem requires you to maintain a limited set of elements (e.g., the top K largest numbers or the K most frequent numbers).
+Efficient extraction is needed for large data sets or real-time data, such as finding the K largest elements or the K most frequent elements.
+Key Steps for Solving Top K Elements Problems:
+Heap (Priority Queue):
+
+A min-heap (for largest elements) or max-heap (for smallest elements) is commonly used.
+If finding the K largest elements, maintain a min-heap of size K. If the heap exceeds K, remove the smallest element.
+If finding the K smallest elements, maintain a max-heap of size K. If the heap exceeds K, remove the largest element.
+Sorting:
+
+You can always sort the array and select the first/last K elements (depending on whether you're looking for the largest or smallest).
+This approach is straightforward but not efficient if K is much smaller than the size of the array.
+Quickselect:
+
+Quickselect is a variant of the quicksort algorithm, and it allows you to find the Kth largest/smallest element in O(n) time.
+Once the Kth element is found, the remaining K elements can be gathered around it.
+Hashmap + Sorting (for frequency):
+
+When dealing with frequent elements, use a hashmap to count occurrences and then use a heap or sorting to find the top K most frequent elements.
+
+Problems Featuring Top K Elements Pattern:
+1. Top 'K' Numbers (Easy)
+In this problem, you are asked to find the top K largest numbers from a given array of numbers.
+
+Approach:
+Min-heap: Maintain a heap of size K. For each element in the array:
+If the heap has fewer than K elements, simply add the element.
+If the heap has K elements, check if the current element is greater than the smallest element in the heap (which is the root in a min-heap). If so, remove the smallest element and add the current element.
+Code:
+java
+Copy code
+import java.util.*;
+
+public class TopKNumbers {
+
+    public static List<Integer> topKNumbers(int[] nums, int K) {
+        // Min-heap to store the top K largest elements
+        PriorityQueue<Integer> minHeap = new PriorityQueue<>(K);
+
+        for (int num : nums) {
+            if (minHeap.size() < K) {
+                minHeap.offer(num);
+            } else if (num > minHeap.peek()) {
+                minHeap.poll(); // Remove the smallest element
+                minHeap.offer(num); // Add the current element
+            }
+        }
+
+        // Convert heap to a list
+        List<Integer> result = new ArrayList<>(minHeap);
+        return result;
+    }
+
+    public static void main(String[] args) {
+        int[] nums = {1, 5, 12, 2, 11, 5, 7};
+        int K = 3;
+        List<Integer> result = topKNumbers(nums, K);
+        System.out.println(result);
+    }
+}
+Explanation:
+We use a min-heap to store the top K elements.
+Each time we encounter a new element, we check if it’s greater than the smallest element in the heap (i.e., the root). If so, we replace it.
+The heap will always store the top K largest elements.
+Finally, we return the elements in the heap.
+Example Output:
+csharp
+Copy code
+[7, 11, 12]
+
+2. Top 'K' Frequent Numbers (Medium)
+In this problem, you need to find the top K most frequent numbers in an array. If there is a tie in frequencies, return the numbers in any order.
+
+Approach:
+HashMap: Use a hashmap to count the frequency of each element.
+Max-heap: Use a max-heap to keep track of the top K most frequent elements. For each element, add it to the heap by its frequency count.
+Code:
+java
+Copy code
+import java.util.*;
+
+public class TopKFrequentNumbers {
+
+    public static List<Integer> topKFrequent(int[] nums, int K) {
+        // HashMap to store the frequency of each element
+        Map<Integer, Integer> frequencyMap = new HashMap<>();
+        for (int num : nums) {
+            frequencyMap.put(num, frequencyMap.getOrDefault(num, 0) + 1);
+        }
+
+        // Max-heap to store the K most frequent elements
+        PriorityQueue<Map.Entry<Integer, Integer>> maxHeap = new PriorityQueue<>(
+            (a, b) -> b.getValue() - a.getValue()  // Sort by frequency
+        );
+
+        for (Map.Entry<Integer, Integer> entry : frequencyMap.entrySet()) {
+            maxHeap.offer(entry);
+        }
+
+        // Get the top K frequent elements
+        List<Integer> result = new ArrayList<>();
+        for (int i = 0; i < K; i++) {
+            result.add(maxHeap.poll().getKey());
+        }
+
+        return result;
+    }
+
+    public static void main(String[] args) {
+        int[] nums = {1, 1, 1, 2, 2, 3};
+        int K = 2;
+        List<Integer> result = topKFrequent(nums, K);
+        System.out.println(result);
+    }
+}
+Explanation:
+HashMap is used to store the frequency count of each number.
+We then use a max-heap (implemented using a priority queue) to keep track of the top K most frequent elements. The heap sorts elements by their frequency in descending order.
+We return the top K frequent numbers by polling from the heap.
+Example Output:
+csharp
+Copy code
+[1, 2]
+
+K-way Merge Pattern
+The K-way Merge pattern is commonly used when dealing with multiple sorted arrays, lists, or streams. The primary goal is to merge these K sorted sequences into a single sorted sequence efficiently. The pattern utilizes a min-heap (or priority queue) to ensure that the smallest element from the K arrays is always picked first.
+
+How to Identify the K-way Merge Pattern:
+You should use the K-way Merge pattern when:
+
+Multiple sorted arrays or lists need to be merged into a single sorted result.
+The problem involves merging K sorted sequences efficiently.
+Sorting or finding the smallest element in sorted arrays or matrices is a core requirement.
+Key Steps for Solving K-way Merge Problems:
+Min-Heap (Priority Queue):
+
+Insert the first element from each of the K sorted arrays or lists into a min-heap.
+Each element in the heap is paired with an index to track from which array it came.
+Heap Operations:
+
+Extract the smallest element (top) from the heap.
+Add the smallest element to the merged result (a list or array).
+Insert the next element from the same array (from which the smallest element was taken) into the heap.
+Repeat this process until the heap is empty and all elements are merged.
+Efficiency:
+
+The min-heap ensures that extracting the smallest element and adding new elements to the heap happens in O(log K) time.
+This approach avoids the inefficient O(K * N) time complexity that would arise from sorting all elements at once.
+
+1. Merge K Sorted Lists (Medium)
+In this problem, you are given K sorted linked lists. You are required to merge them into a single sorted linked list.
+
+Approach:
+Use a min-heap to store the first element of each list. The heap will ensure that the smallest element is always at the top.
+Extract the smallest element from the heap, add it to the merged list, and insert the next element from the same list into the heap.
+Repeat this process until all elements are merged.
+Code:
+java
+Copy code
+import java.util.*;
+
+class ListNode {
+    int val;
+    ListNode next;
+    ListNode(int val) { this.val = val; }
+}
+
+public class MergeKSortedLists {
+
+    public static ListNode mergeKLists(ListNode[] lists) {
+        // Min-heap to store the nodes
+        PriorityQueue<ListNode> minHeap = new PriorityQueue<>(Comparator.comparingInt(a -> a.val));
+
+        // Insert the first node of each list into the min heap
+        for (ListNode list : lists) {
+            if (list != null) {
+                minHeap.offer(list);
+            }
+        }
+
+        ListNode dummy = new ListNode(0);
+        ListNode current = dummy;
+
+        // Extract the smallest element and add the next element from the same list to the heap
+        while (!minHeap.isEmpty()) {
+            ListNode smallest = minHeap.poll();
+            current.next = smallest;
+            current = current.next;
+
+            if (smallest.next != null) {
+                minHeap.offer(smallest.next);
+            }
+        }
+
+        return dummy.next;
+    }
+
+    public static void printList(ListNode head) {
+        while (head != null) {
+            System.out.print(head.val + " ");
+            head = head.next;
+        }
+        System.out.println();
+    }
+
+    public static void main(String[] args) {
+        // Example usage
+        ListNode l1 = new ListNode(1);
+        l1.next = new ListNode(4);
+        l1.next.next = new ListNode(5);
+
+        ListNode l2 = new ListNode(1);
+        l2.next = new ListNode(3);
+        l2.next.next = new ListNode(4);
+
+        ListNode l3 = new ListNode(2);
+        l3.next = new ListNode(6);
+
+        ListNode[] lists = {l1, l2, l3};
+        ListNode mergedList = mergeKLists(lists);
+        printList(mergedList);
+    }
+}
+Explanation:
+We use a min-heap to store the nodes of the linked lists.
+The heap allows us to efficiently extract the smallest element and add the next element from the same list.
+We construct the merged list by iterating over the heap and extracting elements.
+Example Output:
+Copy code
+1 1 2 3 4 4 5 6
+
+2. K Pairs with Largest Sums (Hard)
+In this problem, you are given two sorted arrays and are required to find the K pairs with the largest sums. The key is to efficiently find the pairs without generating all possible pairs.
+
+Approach:
+Use a max-heap to store pairs of elements from both arrays.
+Start by adding the largest possible pair (i.e., the last element from both arrays).
+Extract the top pair from the heap and insert the next possible pair (moving the index in the first or second array).
+Code:
+java
+Copy code
+import java.util.*;
+
+public class KPairsWithLargestSums {
+
+    public static List<int[]> kLargestPairs(int[] A, int[] B, int K) {
+        List<int[]> result = new ArrayList<>();
+        if (A.length == 0 || B.length == 0 || K == 0) return result;
+
+        // Max-heap to store pairs (sum, indexA, indexB)
+        PriorityQueue<int[]> maxHeap = new PriorityQueue<>((a, b) -> (b[0] - a[0]));  // Sort by sum descending
+
+        // Insert the first pair into the heap
+        maxHeap.offer(new int[]{A[A.length - 1] + B[B.length - 1], A.length - 1, B.length - 1});
+
+        // For each pair, try inserting the next pair by moving indices
+        while (K > 0 && !maxHeap.isEmpty()) {
+            int[] pair = maxHeap.poll();
+            int sum = pair[0], i = pair[1], j = pair[2];
+
+            result.add(new int[]{A[i], B[j]});
+            K--;
+
+            // Move to the next pair in the first array
+            if (i > 0) {
+                maxHeap.offer(new int[]{A[i - 1] + B[j], i - 1, j});
+            }
+
+            // Move to the next pair in the second array
+            if (j > 0) {
+                maxHeap.offer(new int[]{A[i] + B[j - 1], i, j - 1});
+            }
+        }
+
+        return result;
+    }
+
+    public static void main(String[] args) {
+        int[] A = {1, 7, 11};
+        int[] B = {2, 4, 6};
+        int K = 3;
+        List<int[]> result = kLargestPairs(A, B, K);
+
+        for (int[] pair : result) {
+            System.out.println(Arrays.toString(pair));
+        }
+    }
+}
+Explanation:
+We use a max-heap to store the sum of the current pair and their indices.
+Initially, we insert the largest possible pair into the heap.
+We then repeatedly extract the largest sum pair and attempt to add the next pair by moving the indices of A or B (either move left in A or right in B).
+The result is a list of pairs with the K largest sums.
+Example Output:
+csharp
+Copy code
+[11, 6]
+[7, 6]
+[11, 4]
+
+
+
+Topological Sort Pattern
+Topological Sort is used for directed acyclic graphs (DAGs) where each edge represents a dependency. The goal is to find a linear ordering of vertices such that for every directed edge 
+𝑢
+→
+𝑣
+u→v, vertex 
+𝑢
+u comes before 
+𝑣
+v in the ordering. This is commonly used in scheduling tasks, resolving dependencies, and ordering items that have prerequisite constraints.
+
+How to Identify the Topological Sort Pattern:
+You should use the Topological Sort pattern when:
+
+A directed graph has no cycles (i.e., it’s a DAG).
+The problem involves dependencies between tasks or events, and you need to determine the order in which tasks or events should occur.
+The problem asks for a sorted order of objects or tasks that follow a certain dependency (like tasks in project scheduling).
+Object ordering is required based on some dependencies.
+Key Steps for Solving Topological Sort Problems:
+The Topological Sort pattern is generally solved using one of two main algorithms:
+
+Kahn’s Algorithm (using BFS and in-degrees)
+DFS-based Algorithm
+Steps Using Kahn’s Algorithm (BFS + In-degree Counting):
+Graph Representation:
+
+Represent the graph using adjacency lists (a HashMap of lists or a HashMap of sets).
+Calculate the in-degree of each vertex (the number of incoming edges).
+Find Sources (Vertices with In-degree = 0):
+
+Initialize a queue (or priority queue) to store all vertices that have 0 in-degree (i.e., no dependencies).
+Process Sources:
+
+While the queue is not empty, remove a vertex (source) from the queue.
+Add the vertex to the sorted list (result).
+For each child of the current vertex, decrement its in-degree by 1. If a child’s in-degree becomes 0, add it to the queue.
+Check for Cycles:
+
+If the number of vertices processed is less than the total number of vertices in the graph, then there is a cycle in the graph, and topological sort is not possible.
+
+Problems Featuring the Topological Sort Pattern:
+1. Task Scheduling (Medium)
+In this problem, you are given a list of tasks and their dependencies. The goal is to find an order in which the tasks can be completed. If there is a circular dependency, the problem is unsolvable.
+
+Approach:
+Construct a graph where each task is a node.
+For each task pair 
+𝐴
+→
+𝐵
+A→B, there is an edge from 
+𝐴
+A to 
+𝐵
+B (indicating 
+𝐵
+B depends on 
+𝐴
+A).
+Use Kahn’s Algorithm (BFS) to find the topological order.
+Code:
+java
+Copy code
+import java.util.*;
+
+public class TaskScheduling {
+
+    public static List<Integer> scheduleTasks(int numTasks, int[][] prerequisites) {
+        // Step 1: Build the graph and calculate in-degrees
+        Map<Integer, List<Integer>> graph = new HashMap<>();
+        int[] inDegree = new int[numTasks];
+        
+        for (int[] prereq : prerequisites) {
+            int task = prereq[0];
+            int dependency = prereq[1];
+            
+            graph.putIfAbsent(dependency, new ArrayList<>());
+            graph.get(dependency).add(task);
+            inDegree[task]++;
+        }
+
+        // Step 2: Find all the sources (tasks with in-degree 0)
+        Queue<Integer> queue = new LinkedList<>();
+        for (int i = 0; i < numTasks; i++) {
+            if (inDegree[i] == 0) {
+                queue.offer(i);
+            }
+        }
+
+        // Step 3: Process the tasks in topological order
+        List<Integer> result = new ArrayList<>();
+        while (!queue.isEmpty()) {
+            int task = queue.poll();
+            result.add(task);
+
+            // Decrement in-degree of all children
+            if (graph.containsKey(task)) {
+                for (int child : graph.get(task)) {
+                    inDegree[child]--;
+                    if (inDegree[child] == 0) {
+                        queue.offer(child);
+                    }
+                }
+            }
+        }
+
+        // If the result size is less than the number of tasks, there's a cycle
+        if (result.size() != numTasks) {
+            return new ArrayList<>();  // Cycle detected, no solution
+        }
+
+        return result;
+    }
+
+    public static void main(String[] args) {
+        int numTasks = 4;
+        int[][] prerequisites = {{1, 0}, {2, 1}, {3, 2}};
+        List<Integer> result = scheduleTasks(numTasks, prerequisites);
+        
+        if (result.isEmpty()) {
+            System.out.println("No valid task scheduling exists.");
+        } else {
+            System.out.println("Task schedule: " + result);
+        }
+    }
+}
+Explanation:
+Graph Construction: We build the graph and also keep track of in-degrees for each task.
+Find Sources: All tasks with in-degree 0 (no dependencies) are initially added to the queue.
+Topological Sorting: Process the queue, and for each task, decrease the in-degree of its dependent tasks. If a dependent task's in-degree becomes 0, it is added to the queue.
+Cycle Detection: If we don’t process all tasks, it means there is a cycle, and no valid order is possible.
+Example Output:
+arduino
+Copy code
+Task schedule: [0, 1, 2, 3]
+If there was a cycle, it would print:
+
+arduino
+Copy code
+No valid task scheduling exists.
+
+2. Minimum Height of a Tree (Hard)
+In this problem, you are given a directed acyclic graph (DAG), and you need to find the minimum height of a tree that can be built from the graph. This is related to finding the longest path in a DAG, which can be done using topological sort.
+
+Approach:
+Topologically sort the graph.
+Use dynamic programming to calculate the longest path from each node (essentially calculating the height of the tree rooted at each node).
+Code:
+java
+Copy code
+import java.util.*;
+
+public class MinHeightOfTree {
+
+    public static int minHeight(int numNodes, int[][] edges) {
+        // Step 1: Build the graph and calculate in-degrees
+        Map<Integer, List<Integer>> graph = new HashMap<>();
+        int[] inDegree = new int[numNodes];
+        
+        for (int[] edge : edges) {
+            int from = edge[0];
+            int to = edge[1];
+            
+            graph.putIfAbsent(from, new ArrayList<>());
+            graph.get(from).add(to);
+            inDegree[to]++;
+        }
+
+        // Step 2: Find all sources (in-degree = 0)
+        Queue<Integer> queue = new LinkedList<>();
+        for (int i = 0; i < numNodes; i++) {
+            if (inDegree[i] == 0) {
+                queue.offer(i);
+            }
+        }
+
+        // Step 3: Perform topological sort and compute minimum height
+        int[] dp = new int[numNodes];  // dp[i] will store the longest path to node i
+        int minHeight = 0;
+
+        while (!queue.isEmpty()) {
+            int node = queue.poll();
+            for (int neighbor : graph.getOrDefault(node, new ArrayList<>())) {
+                inDegree[neighbor]--;
+                if (inDegree[neighbor] == 0) {
+                    queue.offer(neighbor);
+                }
+
+                // Update the longest path for the neighbor
+                dp[neighbor] = Math.max(dp[neighbor], dp[node] + 1);
+                minHeight = Math.max(minHeight, dp[neighbor]);
+            }
+        }
+
+        return minHeight;
+    }
+
+    public static void main(String[] args) {
+        int numNodes = 6;
+        int[][] edges = {{0, 1}, {0, 2}, {1, 3}, {2, 3}, {3, 4}, {4, 5}};
+        int minHeight = minHeight(numNodes, edges);
+        System.out.println("Minimum height of the tree: " + minHeight);
+    }
+}
+Explanation:
+Graph Construction: Build the graph from the given edges and compute in-degrees.
+Topological Sort: Use Kahn’s algorithm to find the topological order.
+Dynamic Programming: Use the dp array to compute the longest path from each node, and track the maximum path length encountered.
+Return the Result: The longest path found is the height of the tree.
+Example Output:
+arduino
+Copy code
+Minimum height of the tree: 3
