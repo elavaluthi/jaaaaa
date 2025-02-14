@@ -1,0 +1,32 @@
+question:
+	1.di
+	2.how to add http2 (by defualt in spring 2.X it comes with http2)
+	3. how to get properties value (@value("${app_name}")
+	4.how to load external propreies (@propertySOurce(path))
+	5.how to add acutuor endpoint (management.exposure.web.enpoint.include:env)
+	6.SpringBoot Database Connectivity  
+	7.GitHub Server Deployment 
+	8 Wrapper Classes  
+	9 Exception Handling  
+	10 Singleton Design Pattern in Java and Singleton Bean Scope in Spring  
+	11 StackOverFlow Error regarding the Memory Error  
+	12 String Manipulations 
+	13 Design Pattern followed by Spring Framework.
+	14 Microservices/Rest API/Restful services all are same
+    15 Postman testing of microservices
+	16 Spring Batch/ Job scheduler
+	17 Java 1.8 predicate ,consumer ,supplier ,function Single Abstract method functional interfaces
+	18 Program Big(o) notation
+	19 Algorithm analysis
+    20 Spring Rest Client --Rest Template
+    21 Queryparam and Path variable
+    22 Stream and Parallel Stream
+	23 how to microserivice comunication with each other (restful api )
+	24 types of communication (sync(microserivice usign rest templete ) , async (kafka)
+	25 Circuit Breaker Pattern(open,closed and half-open)
+	26 architectural styles (event driven (kafka), microserivice , soa )
+	27 SLDC (agile)
+    28 TDA (Test Driven Arch)
+	29 spring scurity(http security)  and oauth(config value (client-id , client-securt ,redirct url , scope ))
+	30 junint(unit and intergated testing)
+	31 hibernate / jpa 
