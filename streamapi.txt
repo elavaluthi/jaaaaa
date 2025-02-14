@@ -1,0 +1,754 @@
+import java.util.*;
+import java.util.stream.*;
+
+public class StreamExamples {
+    public static void main(String[] args) {
+        List<Integer> numbers = Arrays.asList(1, 2, 3, 4, 5, 6, 7, 8, 9, 10);
+        
+        // 1. Find the sum of all even numbers in the list
+        int sumEven = numbers.stream()
+                             .filter(n -> n % 2 == 0)
+                             .mapToInt(Integer::intValue)
+                             .sum();
+        System.out.println("Sum of even numbers: " + sumEven);  // Output: 30
+        
+        // 2. Filter all the numbers that are greater than 5
+        List<Integer> greaterThanFive = numbers.stream()
+                                               .filter(n -> n > 5)
+                                               .collect(Collectors.toList());
+        System.out.println("Numbers greater than 5: " + greaterThanFive);  // Output: [6, 7, 8, 9, 10]
+        
+        // 3. Square each number in the list
+        List<Integer> squaredNumbers = numbers.stream()
+                                              .map(n -> n * n)
+                                              .collect(Collectors.toList());
+        System.out.println("Squared numbers: " + squaredNumbers);  // Output: [1, 4, 9, 16, 25, 36, 49, 64, 81, 100]
+        
+        // 4. Sort the list in descending order
+        List<Integer> sortedDesc = numbers.stream()
+                                          .sorted(Comparator.reverseOrder())
+                                          .collect(Collectors.toList());
+        System.out.println("Sorted in descending order: " + sortedDesc);  // Output: [10, 9, 8, 7, 6, 5, 4, 3, 2, 1]
+        
+        // 5. Find the first number greater than 5
+        Optional<Integer> firstGreaterThanFive = numbers.stream()
+                                                        .filter(n -> n > 5)
+                                                        .findFirst();
+        firstGreaterThanFive.ifPresent(n -> System.out.println("First number greater than 5: " + n));  // Output: 6
+        
+        // 6. Find the product of all numbers in the list using reduce
+        int product = numbers.stream()
+                             .reduce(1, (a, b) -> a * b);  // Starting with 1 as identity
+        System.out.println("Product of all numbers: " + product);  // Output: 3628800
+        
+        // 7. Get the maximum and minimum value from the list
+        Optional<Integer> max = numbers.stream().max(Integer::compareTo);
+        Optional<Integer> min = numbers.stream().min(Integer::compareTo);
+        max.ifPresent(m -> System.out.println("Max value: " + m));  // Output: 10
+        min.ifPresent(m -> System.out.println("Min value: " + m));  // Output: 1
+        
+        // 8. Count the number of even numbers
+        long countEven = numbers.stream()
+                                .filter(n -> n % 2 == 0)
+                                .count();
+        System.out.println("Number of even numbers: " + countEven);  // Output: 5
+        
+        // 9. Check if all numbers are greater than 0
+        boolean allGreaterThanZero = numbers.stream().allMatch(n -> n > 0);
+        System.out.println("All numbers are greater than 0: " + allGreaterThanZero);  // Output: true
+        
+        // 10. Check if there is any number that is a multiple of 5
+        boolean anyMultipleOfFive = numbers.stream().anyMatch(n -> n % 5 == 0);
+        System.out.println("Any number multiple of 5: " + anyMultipleOfFive);  // Output: true
+    }
+}
+
+
+
+import java.util.*;
+import java.util.stream.*;
+
+public class StreamExamples {
+    public static void main(String[] args) {
+        List<String> words = Arrays.asList("apple", "bat", "cat", "dog", "elephant", "ant");
+
+        // 1. Filter words that are longer than 3 characters
+        List<String> longWords = words.stream()
+                                      .filter(word -> word.length() > 3)
+                                      .collect(Collectors.toList());
+        System.out.println("Words longer than 3 characters: " + longWords);  // Output: [apple, bat, cat, elephant]
+
+        // 2. Convert all words to uppercase
+        List<String> upperCaseWords = words.stream()
+                                           .map(String::toUpperCase)
+                                           .collect(Collectors.toList());
+        System.out.println("Words in uppercase: " + upperCaseWords);  // Output: [APPLE, BAT, CAT, DOG, ELEPHANT, ANT]
+
+        // 3. Sort the words by length
+        List<String> sortedByLength = words.stream()
+                                           .sorted(Comparator.comparingInt(String::length))
+                                           .collect(Collectors.toList());
+        System.out.println("Words sorted by length: " + sortedByLength);  // Output: [bat, cat, ant, dog, apple, elephant]
+
+        // 4. Find the first word that starts with 'a'
+        Optional<String> firstWithA = words.stream()
+                                          .filter(word -> word.startsWith("a"))
+                                          .findFirst();
+        firstWithA.ifPresent(word -> System.out.println("First word starting with 'a': " + word));  // Output: apple
+
+        // 5. Check if any word starts with 'e'
+        boolean anyStartsWithE = words.stream()
+                                      .anyMatch(word -> word.startsWith("e"));
+        System.out.println("Any word starts with 'e': " + anyStartsWithE);  // Output: true
+
+        // 6. Count the number of words starting with 'a'
+        long countStartsWithA = words.stream()
+                                     .filter(word -> word.startsWith("a"))
+                                     .count();
+        System.out.println("Number of words starting with 'a': " + countStartsWithA);  // Output: 2
+
+        // 7. Get the longest word in the list
+        Optional<String> longestWord = words.stream()
+                                            .max(Comparator.comparingInt(String::length));
+        longestWord.ifPresent(word -> System.out.println("Longest word: " + word));  // Output: elephant
+
+        // 8. Concatenate all words into a single string separated by commas
+        String concatenatedWords = words.stream()
+                                        .collect(Collectors.joining(", "));
+        System.out.println("Concatenated words: " + concatenatedWords);  // Output: apple, bat, cat, dog, elephant, ant
+
+        // 9. Create a Map with word lengths as keys and lists of words as values
+        Map<Integer, List<String>> wordsByLength = words.stream()
+                                                        .collect(Collectors.groupingBy(String::length));
+        System.out.println("Words grouped by length: " + wordsByLength);  // Output: {3=[bat, cat, dog, ant], 5=[apple], 8=[elephant]}
+        
+        // 10. Remove duplicates and create a distinct list (even though the input doesn't have duplicates)
+        List<String> distinctWords = words.stream()
+                                          .distinct()
+                                          .collect(Collectors.toList());
+        System.out.println("Distinct words: " + distinctWords);  // Output: [apple, bat, cat, dog, elephant, ant]
+    }
+}
+
+
+import java.util.*;
+import java.util.stream.*;
+
+public class StreamExamples {
+    public static void main(String[] args) {
+        List<Integer> numbers = Arrays.asList(10, 20, 5, 15, 25);
+        
+        // 1. **Sum of all numbers**
+        int sum = numbers.stream()
+                         .mapToInt(Integer::intValue)
+                         .sum();
+        System.out.println("Sum of numbers: " + sum);  // Output: 75
+        
+        // 2. **Sum of squares of all numbers**
+        int sumOfSquares = numbers.stream()
+                                  .mapToInt(n -> n * n)
+                                  .sum();
+        System.out.println("Sum of squares: " + sumOfSquares);  // Output: 875
+        
+        // 3. **Filter numbers greater than or equal to 15**
+        List<Integer> greaterThanFifteen = numbers.stream()
+                                                  .filter(n -> n >= 15)
+                                                  .collect(Collectors.toList());
+        System.out.println("Numbers greater than or equal to 15: " + greaterThanFifteen);  // Output: [20, 15, 25]
+
+        // 4. **Filter odd numbers**
+        List<Integer> oddNumbers = numbers.stream()
+                                          .filter(n -> n % 2 != 0)
+                                          .collect(Collectors.toList());
+        System.out.println("Odd numbers: " + oddNumbers);  // Output: [5, 15, 25]
+
+        // 5. **Double each number**
+        List<Integer> doubledNumbers = numbers.stream()
+                                              .map(n -> n * 2)
+                                              .collect(Collectors.toList());
+        System.out.println("Doubled numbers: " + doubledNumbers);  // Output: [20, 40, 10, 30, 50]
+        
+        // 6. **Sort numbers in ascending order**
+        List<Integer> sortedAsc = numbers.stream()
+                                         .sorted()
+                                         .collect(Collectors.toList());
+        System.out.println("Sorted in ascending order: " + sortedAsc);  // Output: [5, 10, 15, 20, 25]
+        
+        // 7. **Sort numbers in descending order**
+        List<Integer> sortedDesc = numbers.stream()
+                                          .sorted(Comparator.reverseOrder())
+                                          .collect(Collectors.toList());
+        System.out.println("Sorted in descending order: " + sortedDesc);  // Output: [25, 20, 15, 10, 5]
+
+        // 8. **Find the first number greater than 10**
+        Optional<Integer> firstGreaterThanTen = numbers.stream()
+                                                       .filter(n -> n > 10)
+                                                       .findFirst();
+        firstGreaterThanTen.ifPresent(n -> System.out.println("First number greater than 10: " + n));  // Output: 20
+        
+        // 9. **Find the maximum number**
+        Optional<Integer> max = numbers.stream().max(Integer::compareTo);
+        max.ifPresent(n -> System.out.println("Maximum number: " + n));  // Output: 25
+        
+        // 10. **Find the minimum number**
+        Optional<Integer> min = numbers.stream().min(Integer::compareTo);
+        min.ifPresent(n -> System.out.println("Minimum number: " + n));  // Output: 5
+        
+        // 11. **Find the product of all numbers using reduce**
+        int product = numbers.stream()
+                             .reduce(1, (a, b) -> a * b);  // Identity value = 1
+        System.out.println("Product of numbers: " + product);  // Output: 15000
+        
+        // 12. **Check if all numbers are greater than 0**
+        boolean allGreaterThanZero = numbers.stream().allMatch(n -> n > 0);
+        System.out.println("All numbers are greater than 0: " + allGreaterThanZero);  // Output: true
+        
+        // 13. **Check if any number is divisible by 5**
+        boolean anyDivisibleByFive = numbers.stream().anyMatch(n -> n % 5 == 0);
+        System.out.println("Any number divisible by 5: " + anyDivisibleByFive);  // Output: true
+        
+        // 14. **Count how many numbers are greater than 10**
+        long countGreaterThanTen = numbers.stream()
+                                          .filter(n -> n > 10)
+                                          .count();
+        System.out.println("Numbers greater than 10: " + countGreaterThanTen);  // Output: 3
+        
+        // 15. **Check if no number is less than 5**
+        boolean noneLessThanFive = numbers.stream().noneMatch(n -> n < 5);
+        System.out.println("No number is less than 5: " + noneLessThanFive);  // Output: true
+        
+        // 16. **Create a list of numbers reduced by 5**
+        List<Integer> reducedByFive = numbers.stream()
+                                             .map(n -> n - 5)
+                                             .collect(Collectors.toList());
+        System.out.println("Numbers reduced by 5: " + reducedByFive);  // Output: [5, 15, 0, 10, 20]
+        
+        // 17. **Convert each number to a string**
+        List<String> stringNumbers = numbers.stream()
+                                           .map(String::valueOf)
+                                           .collect(Collectors.toList());
+        System.out.println("Numbers as strings: " + stringNumbers);  // Output: [10, 20, 5, 15, 25]
+
+        // 18. **Get a distinct list (remove duplicates)**
+        List<Integer> duplicateNumbers = Arrays.asList(10, 20, 10, 15, 20);
+        List<Integer> distinctNumbers = duplicateNumbers.stream()
+                                                        .distinct()
+                                                        .collect(Collectors.toList());
+        System.out.println("Distinct numbers: " + distinctNumbers);  // Output: [10, 20, 15]
+        
+        // 19. **Join all numbers into a single string with a comma separator**
+        String joinedNumbers = numbers.stream()
+                                      .map(String::valueOf)
+                                      .collect(Collectors.joining(", "));
+        System.out.println("Joined numbers: " + joinedNumbers);  // Output: 10, 20, 5, 15, 25
+        
+        // 20. **Group numbers by their remainder when divided by 5**
+        Map<Integer, List<Integer>> groupedByRemainder = numbers.stream()
+                                                               .collect(Collectors.groupingBy(n -> n % 5));
+        System.out.println("Grouped by remainder (mod 5): " + groupedByRemainder);
+        // Output: {0=[10, 20, 25], 1=[5], 3=[15]}
+        
+        // 21. **Create a map of numbers as keys and their square as values**
+        Map<Integer, Integer> numberSquares = numbers.stream()
+                                                    .collect(Collectors.toMap(n -> n, n -> n * n));
+        System.out.println("Map of numbers and their squares: " + numberSquares);  // Output: {10=100, 20=400, 5=25, 15=225, 25=625}
+        
+        // 22. **FlatMap example - list of lists of numbers (flatten to one list)**
+        List<List<Integer>> listOfLists = Arrays.asList(
+                Arrays.asList(10, 20),
+                Arrays.asList(5, 15),
+                Arrays.asList(25)
+        );
+        List<Integer> flatList = listOfLists.stream()
+                                           .flatMap(List::stream)
+                                           .collect(Collectors.toList());
+        System.out.println("Flattened list: " + flatList);  // Output: [10, 20, 5, 15, 25]
+    }
+}
+
+import java.util.*;
+import java.util.stream.*;
+
+public class StreamExamples {
+    public static void main(String[] args) {
+        List<String> words = Arrays.asList("apple", "banana", "cherry", "avocado", "blueberry");
+
+        // 1. **Find the length of each word**
+        List<Integer> wordLengths = words.stream()
+                                        .map(String::length)
+                                        .collect(Collectors.toList());
+        System.out.println("Lengths of words: " + wordLengths);  // Output: [5, 6, 6, 7, 10]
+
+        // 2. **Filter words that start with the letter 'b'**
+        List<String> wordsStartingWithB = words.stream()
+                                               .filter(word -> word.startsWith("b"))
+                                               .collect(Collectors.toList());
+        System.out.println("Words starting with 'b': " + wordsStartingWithB);  // Output: [banana, blueberry]
+
+        // 3. **Filter words that contain the letter 'a'**
+        List<String> wordsContainingA = words.stream()
+                                             .filter(word -> word.contains("a"))
+                                             .collect(Collectors.toList());
+        System.out.println("Words containing 'a': " + wordsContainingA);  // Output: [apple, banana, avocado, blueberry]
+
+        // 4. **Convert all words to uppercase**
+        List<String> uppercaseWords = words.stream()
+                                           .map(String::toUpperCase)
+                                           .collect(Collectors.toList());
+        System.out.println("Words in uppercase: " + uppercaseWords);  // Output: [APPLE, BANANA, CHERRY, AVOCADO, BLUEBERRY]
+
+        // 5. **Sort words by their length (ascending)**
+        List<String> sortedByLength = words.stream()
+                                           .sorted(Comparator.comparingInt(String::length))
+                                           .collect(Collectors.toList());
+        System.out.println("Words sorted by length (ascending): " + sortedByLength);  // Output: [apple, banana, cherry, avocado, blueberry]
+
+        // 6. **Sort words alphabetically**
+        List<String> sortedAlphabetically = words.stream()
+                                                 .sorted()
+                                                 .collect(Collectors.toList());
+        System.out.println("Words sorted alphabetically: " + sortedAlphabetically);  // Output: [apple, avocado, banana, blueberry, cherry]
+
+        // 7. **Find the word with the maximum length**
+        Optional<String> maxLengthWord = words.stream()
+                                              .max(Comparator.comparingInt(String::length));
+        maxLengthWord.ifPresent(word -> System.out.println("Word with the maximum length: " + word));  // Output: blueberry
+
+        // 8. **Find the word with the minimum length**
+        Optional<String> minLengthWord = words.stream()
+                                              .min(Comparator.comparingInt(String::length));
+        minLengthWord.ifPresent(word -> System.out.println("Word with the minimum length: " + word));  // Output: apple
+
+        // 9. **Check if all words contain the letter 'e'**
+        boolean allContainE = words.stream().allMatch(word -> word.contains("e"));
+        System.out.println("All words contain 'e': " + allContainE);  // Output: true
+
+        // 10. **Check if any word starts with the letter 'a'**
+        boolean anyStartsWithA = words.stream().anyMatch(word -> word.startsWith("a"));
+        System.out.println("Any word starts with 'a': " + anyStartsWithA);  // Output: true
+
+        // 11. **Count how many words have more than 5 characters**
+        long countGreaterThanFive = words.stream()
+                                         .filter(word -> word.length() > 5)
+                                         .count();
+        System.out.println("Words with more than 5 characters: " + countGreaterThanFive);  // Output: 2
+
+        // 12. **Concatenate all words into a single string with a space separator**
+        String concatenatedWords = words.stream()
+                                        .collect(Collectors.joining(" "));
+        System.out.println("Concatenated words: " + concatenatedWords);  // Output: apple banana cherry avocado blueberry
+
+        // 13. **Group words by their first letter**
+        Map<Character, List<String>> groupedByFirstLetter = words.stream()
+                                                                 .collect(Collectors.groupingBy(word -> word.charAt(0)));
+        System.out.println("Words grouped by first letter: " + groupedByFirstLetter);
+        // Output: {a=[apple, avocado], b=[banana, blueberry], c=[cherry]}
+
+        // 14. **Create a map of words and their lengths**
+        Map<String, Integer> wordLengthsMap = words.stream()
+                                                   .collect(Collectors.toMap(word -> word, String::length));
+        System.out.println("Map of words and their lengths: " + wordLengthsMap);
+        // Output: {apple=5, banana=6, cherry=6, avocado=7, blueberry=10}
+
+        // 15. **Remove duplicates and get unique words**
+        List<String> duplicateWords = Arrays.asList("apple", "banana", "cherry", "apple", "banana");
+        List<String> uniqueWords = duplicateWords.stream()
+                                                 .distinct()
+                                                 .collect(Collectors.toList());
+        System.out.println("Unique words: " + uniqueWords);  // Output: [apple, banana, cherry]
+
+        // 16. **Find the first word that contains the letter 'v'**
+        Optional<String> firstWordWithV = words.stream()
+                                               .filter(word -> word.contains("v"))
+                                               .findFirst();
+        firstWordWithV.ifPresent(word -> System.out.println("First word containing 'v': " + word));  // Output: avocado
+
+        // 17. **Convert all words to their first letter (extract the first letter of each word)**
+        List<String> firstLetters = words.stream()
+                                         .map(word -> word.substring(0, 1))
+                                         .collect(Collectors.toList());
+        System.out.println("First letters of each word: " + firstLetters);  // Output: [a, b, c, a, b]
+
+        // 18. **Flatten a list of lists (example with lists of fruits)**
+        List<List<String>> listOfLists = Arrays.asList(
+                Arrays.asList("apple", "banana"),
+                Arrays.asList("cherry", "avocado"),
+                Arrays.asList("blueberry")
+        );
+        List<String> flattenedList = listOfLists.stream()
+                                                .flatMap(List::stream)
+                                                .collect(Collectors.toList());
+        System.out.println("Flattened list: " + flattenedList);  // Output: [apple, banana, cherry, avocado, blueberry]
+
+        // 19. **Find the longest word**
+        Optional<String> longestWord = words.stream()
+                                           .max(Comparator.comparingInt(String::length));
+        longestWord.ifPresent(word -> System.out.println("Longest word: " + word));  // Output: blueberry
+
+        // 20. **Find the shortest word**
+        Optional<String> shortestWord = words.stream()
+                                            .min(Comparator.comparingInt(String::length));
+        shortestWord.ifPresent(word -> System.out.println("Shortest word: " + word));  // Output: apple
+    }
+}
+
+
+
+import java.util.*;
+import java.util.stream.*;
+
+public class PersonStreamExamples {
+    public static void main(String[] args) {
+        List<Person> people = Arrays.asList(
+            new Person("Alice", 25),
+            new Person("Bob", 35),
+            new Person("Charlie", 40),
+            new Person("David", 29)
+        );
+
+        // 1. **Filter people older than 30**
+        List<Person> olderThan30 = people.stream()
+                                         .filter(person -> person.getAge() > 30)
+                                         .collect(Collectors.toList());
+        System.out.println("People older than 30: " + olderThan30);  
+        // Output: [Person{name='Bob', age=35}, Person{name='Charlie', age=40}]
+
+        // 2. **Find the youngest person**
+        Optional<Person> youngestPerson = people.stream()
+                                                .min(Comparator.comparingInt(Person::getAge));
+        youngestPerson.ifPresent(person -> System.out.println("Youngest person: " + person)); 
+        // Output: Youngest person: Person{name='Alice', age=25}
+
+        // 3. **Find the oldest person**
+        Optional<Person> oldestPerson = people.stream()
+                                              .max(Comparator.comparingInt(Person::getAge));
+        oldestPerson.ifPresent(person -> System.out.println("Oldest person: " + person)); 
+        // Output: Oldest person: Person{name='Charlie', age=40}
+
+        // 4. **Get a list of people's names**
+        List<String> names = people.stream()
+                                   .map(Person::getName)
+                                   .collect(Collectors.toList());
+        System.out.println("Names of people: " + names);  
+        // Output: [Alice, Bob, Charlie, David]
+
+        // 5. **Check if there is any person under 30**
+        boolean anyUnder30 = people.stream()
+                                   .anyMatch(person -> person.getAge() < 30);
+        System.out.println("Any person under 30? " + anyUnder30); 
+        // Output: true
+
+        // 6. **Check if all people are over 20**
+        boolean allOver20 = people.stream()
+                                  .allMatch(person -> person.getAge() > 20);
+        System.out.println("All people are over 20? " + allOver20); 
+        // Output: true
+
+        // 7. **Find the average age of people**
+        OptionalDouble averageAge = people.stream()
+                                          .mapToInt(Person::getAge)
+                                          .average();
+        averageAge.ifPresent(avg -> System.out.println("Average age: " + avg)); 
+        // Output: Average age: 32.25
+
+        // 8. **Count the number of people over 30**
+        long countOver30 = people.stream()
+                                 .filter(person -> person.getAge() > 30)
+                                 .count();
+        System.out.println("Number of people over 30: " + countOver30);  
+        // Output: 2
+
+        // 9. **Sort people by age (ascending)**
+        List<Person> sortedByAge = people.stream()
+                                         .sorted(Comparator.comparingInt(Person::getAge))
+                                         .collect(Collectors.toList());
+        System.out.println("People sorted by age: " + sortedByAge); 
+        // Output: [Person{name='Alice', age=25}, Person{name='David', age=29}, Person{name='Bob', age=35}, Person{name='Charlie', age=40}]
+
+        // 10. **Sort people by name (alphabetically)**
+        List<Person> sortedByName = people.stream()
+                                          .sorted(Comparator.comparing(Person::getName))
+                                          .collect(Collectors.toList());
+        System.out.println("People sorted by name: " + sortedByName); 
+        // Output: [Person{name='Alice', age=25}, Person{name='Bob', age=35}, Person{name='Charlie', age=40}, Person{name='David', age=29}]
+
+        // 11. **Group people by age**
+        Map<Integer, List<Person>> groupByAge = people.stream()
+                                                      .collect(Collectors.groupingBy(Person::getAge));
+        System.out.println("People grouped by age: " + groupByAge); 
+        // Output: {25=[Person{name='Alice', age=25}], 35=[Person{name='Bob', age=35}], 40=[Person{name='Charlie', age=40}], 29=[Person{name='David', age=29}]}
+
+        // 12. **Find the person with the name starting with 'A'**
+        Optional<Person> personWithA = people.stream()
+                                             .filter(person -> person.getName().startsWith("A"))
+                                             .findFirst();
+        personWithA.ifPresent(person -> System.out.println("Person with name starting with 'A': " + person)); 
+        // Output: Person with name starting with 'A': Person{name='Alice', age=25}
+
+        // 13. **Check if there are any people named 'Charlie'**
+        boolean hasCharlie = people.stream()
+                                   .anyMatch(person -> person.getName().equals("Charlie"));
+        System.out.println("Is there a person named Charlie? " + hasCharlie);  
+        // Output: true
+
+        // 14. **Get the sum of all people's ages**
+        int totalAge = people.stream()
+                             .mapToInt(Person::getAge)
+                             .sum();
+        System.out.println("Total age of all people: " + totalAge); 
+        // Output: 129
+
+        // 15. **Get a string of all people's names joined by commas**
+        String namesJoined = people.stream()
+                                   .map(Person::getName)
+                                   .collect(Collectors.joining(", "));
+        System.out.println("People's names: " + namesJoined); 
+        // Output: Alice, Bob, Charlie, David
+
+        // 16. **Create a map of names and ages**
+        Map<String, Integer> nameAgeMap = people.stream()
+                                                .collect(Collectors.toMap(Person::getName, Person::getAge));
+        System.out.println("Map of names and ages: " + nameAgeMap); 
+        // Output: {Alice=25, Bob=35, Charlie=40, David=29}
+
+        // 17. **Flatten a list of lists of people (example with nested lists)**
+        List<List<Person>> nestedLists = Arrays.asList(
+            Arrays.asList(new Person("Alice", 25), new Person("Bob", 35)),
+            Arrays.asList(new Person("Charlie", 40), new Person("David", 29))
+        );
+        List<Person> flattenedList = nestedLists.stream()
+                                                .flatMap(List::stream)
+                                                .collect(Collectors.toList());
+        System.out.println("Flattened list of people: " + flattenedList);  
+        // Output: [Person{name='Alice', age=25}, Person{name='Bob', age=35}, Person{name='Charlie', age=40}, Person{name='David', age=29}]
+    }
+}
+
+
+
+
+import java.util.*;
+import java.util.stream.*;
+
+public class StreamExamples {
+    public static void main(String[] args) {
+        List<String> words = Arrays.asList("apple", "banana", null, "avocado", "pear");
+
+        // 1. **Filter out null values**
+        List<String> nonNullWords = words.stream()
+                                         .filter(Objects::nonNull)
+                                         .collect(Collectors.toList());
+        System.out.println("Non-null words: " + nonNullWords);  
+        // Output: [apple, banana, avocado, pear]
+
+        // 2. **Find the first non-null word**
+        Optional<String> firstNonNull = words.stream()
+                                             .filter(Objects::nonNull)
+                                             .findFirst();
+        firstNonNull.ifPresent(word -> System.out.println("First non-null word: " + word)); 
+        // Output: First non-null word: apple
+
+        // 3. **Convert all words to uppercase (ignoring null values)**
+        List<String> uppercasedWords = words.stream()
+                                            .filter(Objects::nonNull)
+                                            .map(String::toUpperCase)
+                                            .collect(Collectors.toList());
+        System.out.println("Uppercased words: " + uppercasedWords);  
+        // Output: [APPLE, BANANA, AVOCADO, PEAR]
+
+        // 4. **Count the non-null words**
+        long nonNullCount = words.stream()
+                                 .filter(Objects::nonNull)
+                                 .count();
+        System.out.println("Number of non-null words: " + nonNullCount);  
+        // Output: 4
+
+        // 5. **Check if all words are non-null**
+        boolean allNonNull = words.stream()
+                                  .allMatch(Objects::nonNull);
+        System.out.println("Are all words non-null? " + allNonNull);  
+        // Output: false
+
+        // 6. **Check if any word is null**
+        boolean anyNull = words.stream()
+                               .anyMatch(Objects::isNull);
+        System.out.println("Is there any null word? " + anyNull);  
+        // Output: true
+
+        // 7. **Join non-null words into a single string**
+        String joinedWords = words.stream()
+                                  .filter(Objects::nonNull)
+                                  .collect(Collectors.joining(", "));
+        System.out.println("Joined words (non-null): " + joinedWords);  
+        // Output: apple, banana, avocado, pear
+
+        // 8. **Sort words alphabetically (null values are ignored)**
+        List<String> sortedWords = words.stream()
+                                        .filter(Objects::nonNull)
+                                        .sorted()
+                                        .collect(Collectors.toList());
+        System.out.println("Sorted words: " + sortedWords);  
+        // Output: [apple, avocado, banana, pear]
+
+        // 9. **Check if the list contains a word starting with 'a' (ignoring null)**
+        boolean containsWordStartingWithA = words.stream()
+                                                 .filter(Objects::nonNull)
+                                                 .anyMatch(word -> word.startsWith("a"));
+        System.out.println("Contains word starting with 'a': " + containsWordStartingWithA);  
+        // Output: true
+
+        // 10. **Find the longest word (ignoring null values)**
+        Optional<String> longestWord = words.stream()
+                                           .filter(Objects::nonNull)
+                                           .max(Comparator.comparingInt(String::length));
+        longestWord.ifPresent(word -> System.out.println("Longest word: " + word));  
+        // Output: Longest word: avocado
+
+        // 11. **Find the shortest word (ignoring null values)**
+        Optional<String> shortestWord = words.stream()
+                                            .filter(Objects::nonNull)
+                                            .min(Comparator.comparingInt(String::length));
+        shortestWord.ifPresent(word -> System.out.println("Shortest word: " + word));  
+        // Output: Shortest word: pear
+
+        // 12. **Remove duplicates (ignoring null)**
+        List<String> distinctWords = words.stream()
+                                          .filter(Objects::nonNull)
+                                          .distinct()
+                                          .collect(Collectors.toList());
+        System.out.println("Distinct non-null words: " + distinctWords);  
+        // Output: [apple, banana, avocado, pear]
+    }
+}
+
+
+
+import java.util.*;
+import java.util.stream.*;
+
+public class PersonStreamExamples {
+    public static void main(String[] args) {
+        List<Person> people = Arrays.asList(
+            new Person("Alice", 25),
+            new Person("Bob", 35),
+            new Person("Charlie", 40),
+            new Person("David", 29)
+        );
+
+        // 1. **Filter people older than 30**
+        List<Person> olderThan30 = people.stream()
+                                         .filter(person -> person.getAge() > 30)
+                                         .collect(Collectors.toList());
+        System.out.println("People older than 30: " + olderThan30);  
+        // Output: [Person{name='Bob', age=35}, Person{name='Charlie', age=40}]
+
+        // 2. **Find the youngest person**
+        Optional<Person> youngestPerson = people.stream()
+                                                .min(Comparator.comparingInt(Person::getAge));
+        youngestPerson.ifPresent(person -> System.out.println("Youngest person: " + person)); 
+        // Output: Youngest person: Person{name='Alice', age=25}
+
+        // 3. **Find the oldest person**
+        Optional<Person> oldestPerson = people.stream()
+                                              .max(Comparator.comparingInt(Person::getAge));
+        oldestPerson.ifPresent(person -> System.out.println("Oldest person: " + person)); 
+        // Output: Oldest person: Person{name='Charlie', age=40}
+
+        // 4. **Get a list of people's names**
+        List<String> names = people.stream()
+                                   .map(Person::getName)
+                                   .collect(Collectors.toList());
+        System.out.println("Names of people: " + names);  
+        // Output: [Alice, Bob, Charlie, David]
+
+        // 5. **Check if there is any person under 30**
+        boolean anyUnder30 = people.stream()
+                                   .anyMatch(person -> person.getAge() < 30);
+        System.out.println("Any person under 30? " + anyUnder30); 
+        // Output: true
+
+        // 6. **Check if all people are over 20**
+        boolean allOver20 = people.stream()
+                                  .allMatch(person -> person.getAge() > 20);
+        System.out.println("All people are over 20? " + allOver20); 
+        // Output: true
+
+        // 7. **Find the average age of people**
+        OptionalDouble averageAge = people.stream()
+                                          .mapToInt(Person::getAge)
+                                          .average();
+        averageAge.ifPresent(avg -> System.out.println("Average age: " + avg)); 
+        // Output: Average age: 32.25
+
+        // 8. **Count the number of people over 30**
+        long countOver30 = people.stream()
+                                 .filter(person -> person.getAge() > 30)
+                                 .count();
+        System.out.println("Number of people over 30: " + countOver30);  
+        // Output: 2
+
+        // 9. **Sort people by age (ascending)**
+        List<Person> sortedByAge = people.stream()
+                                         .sorted(Comparator.comparingInt(Person::getAge))
+                                         .collect(Collectors.toList());
+        System.out.println("People sorted by age: " + sortedByAge); 
+        // Output: [Person{name='Alice', age=25}, Person{name='David', age=29}, Person{name='Bob', age=35}, Person{name='Charlie', age=40}]
+
+        // 10. **Sort people by name (alphabetically)**
+        List<Person> sortedByName = people.stream()
+                                          .sorted(Comparator.comparing(Person::getName))
+                                          .collect(Collectors.toList());
+        System.out.println("People sorted by name: " + sortedByName); 
+        // Output: [Person{name='Alice', age=25}, Person{name='Bob', age=35}, Person{name='Charlie', age=40}, Person{name='David', age=29}]
+
+        // 11. **Group people by age**
+        Map<Integer, List<Person>> groupByAge = people.stream()
+                                                      .collect(Collectors.groupingBy(Person::getAge));
+        System.out.println("People grouped by age: " + groupByAge); 
+        // Output: {25=[Person{name='Alice', age=25}], 35=[Person{name='Bob', age=35}], 40=[Person{name='Charlie', age=40}], 29=[Person{name='David', age=29}]}
+
+        // 12. **Find the person with the name starting with 'A'**
+        Optional<Person> personWithA = people.stream()
+                                             .filter(person -> person.getName().startsWith("A"))
+                                             .findFirst();
+        personWithA.ifPresent(person -> System.out.println("Person with name starting with 'A': " + person)); 
+        // Output: Person with name starting with 'A': Person{name='Alice', age=25}
+
+        // 13. **Check if there are any people named 'Charlie'**
+        boolean hasCharlie = people.stream()
+                                   .anyMatch(person -> person.getName().equals("Charlie"));
+        System.out.println("Is there a person named Charlie? " + hasCharlie);  
+        // Output: true
+
+        // 14. **Get the sum of all people's ages**
+        int totalAge = people.stream()
+                             .mapToInt(Person::getAge)
+                             .sum();
+        System.out.println("Total age of all people: " + totalAge); 
+        // Output: 129
+
+        // 15. **Get a string of all people's names joined by commas**
+        String namesJoined = people.stream()
+                                   .map(Person::getName)
+                                   .collect(Collectors.joining(", "));
+        System.out.println("People's names: " + namesJoined); 
+        // Output: Alice, Bob, Charlie, David
+
+        // 16. **Create a map of names and ages**
+        Map<String, Integer> nameAgeMap = people.stream()
+                                                .collect(Collectors.toMap(Person::getName, Person::getAge));
+        System.out.println("Map of names and ages: " + nameAgeMap); 
+        // Output: {Alice=25, Bob=35, Charlie=40, David=29}
+
+        // 17. **Flatten a list of lists of people (example with nested lists)**
+        List<List<Person>> nestedLists = Arrays.asList(
+            Arrays.asList(new Person("Alice", 25), new Person("Bob", 35)),
+            Arrays.asList(new Person("Charlie", 40), new Person("David", 29))
+        );
+        List<Person> flattenedList = nestedLists.stream()
+                                                .flatMap(List::stream)
+                                                .collect(Collectors.toList());
+        System.out.println("Flattened list of people: " + flattenedList);  
+        // Output: [Person{name='Alice', age=25}, Person{name='Bob', age=35}, Person{name='Charlie', age=40}, Person{name='David', age=29}]
+    }
+}

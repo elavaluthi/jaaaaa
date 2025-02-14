@@ -58,81 +58,101 @@ public class SupplierExample {
     }
 }
 
-method Reference:
-Method Reference is a shorthand notation of a lambda expression to call a method. It provides a way to refer to a method directly using its name. It makes the code more readable
-Types of Method References:
-Reference to a Static Method
-Description: A method reference to a static method of a class.
-Syntax: ClassName::staticMethodName
-Example:
-import java.util.function.Function;
+Types of Method References
+Reference to a static method
+Reference to an instance method of a particular object
+Reference to an instance method of an arbitrary object of a particular type
+Reference to a constructor
+Example 1: Reference to a Static Method
+Consider a static method in a class that you want to reference:
 
-public class MethodReferenceExample {
-    // Static method
-    public static String greet(String name) {
-        return "Hello, " + name;
-    }
-
-    public static void main(String[] args) {
-        // Using method reference
-        Function<String, String> greetingFunction = MethodReferenceExample::greet;
-        System.out.println(greetingFunction.apply("Alice"));  // Output: Hello, Alice
-    }
-}
-Reference to an Instance Method of a Particular Object
-Description: A method reference to an instance method of a particular object (not a class).
-Syntax: instance::instanceMethodName
-Example:
-import java.util.function.Consumer;
-
-public class MethodReferenceExample {
-    // Instance method
-    public void printMessage(String message) {
-        System.out.println(message);
-    }
-
-    public static void main(String[] args) {
-        MethodReferenceExample obj = new MethodReferenceExample();
-        // Using method reference to an instance method
-        Consumer<String> printer = obj::printMessage;
-        printer.accept("Hello, World!");  // Output: Hello, World!
-    }
-}
-
-Reference to an Instance Method of an Arbitrary Object of a Particular Type
-Description: A method reference to an instance method of an arbitrary object of a particular type. It is often used when you don’t have a specific object but want to refer to an instance method.
-Syntax: ClassName::instanceMethodName
-Example:
+java
+Copy
 import java.util.Arrays;
 import java.util.List;
 
 public class MethodReferenceExample {
-    // Instance method
-    public String transform(String str) {
-        return "Transformed: " + str;
+    
+    // Static method to be referenced
+    public static void printUpperCase(String str) {
+        System.out.println(str.toUpperCase());
     }
 
     public static void main(String[] args) {
-        List<String> words = Arrays.asList("apple", "banana", "cherry");
-        // Using method reference to an instance method of an arbitrary object
-        words.forEach(new MethodReferenceExample()::transform);
+        List<String> list = Arrays.asList("apple", "banana", "cherry");
+
+        // Using method reference to call a static method
+        list.forEach(MethodReferenceExample::printUpperCase);
     }
 }
-Reference to a Constructor
-Description: A method reference to a constructor. This allows you to create a new instance of a class using a constructor.
-Syntax: ClassName::new
-Example:
+Here, MethodReferenceExample::printUpperCase is a method reference to the static method printUpperCase.
+
+Example 2: Reference to an Instance Method of a Particular Object
+If you want to reference an instance method of a specific object, here's how you can do it:
+
+java
+Copy
+import java.util.Arrays;
+import java.util.List;
+
+public class MethodReferenceExample {
+    
+    // Instance method to be referenced
+    public void printLowerCase(String str) {
+        System.out.println(str.toLowerCase());
+    }
+
+    public static void main(String[] args) {
+        MethodReferenceExample example = new MethodReferenceExample();
+        List<String> list = Arrays.asList("APPLE", "BANANA", "CHERRY");
+
+        // Using method reference to call an instance method of a specific object
+        list.forEach(example::printLowerCase);
+    }
+}
+Here, example::printLowerCase is a reference to the instance method printLowerCase of the example object.
+
+Example 3: Reference to an Instance Method of an Arbitrary Object of a Particular Type
+In this case, we reference an instance method of an object, but the object is not known in advance. A common use case is for collection manipulation:
+
+java
+Copy
+import java.util.Arrays;
+import java.util.List;
+
+public class MethodReferenceExample {
+
+    // Instance method to be referenced
+    public void printLength(String str) {
+        System.out.println(str.length());
+    }
+
+    public static void main(String[] args) {
+        List<String> list = Arrays.asList("apple", "banana", "cherry");
+
+        // Using method reference to call an instance method of any object of the type String
+        list.forEach(String::length);  // Here String::length is a method reference
+    }
+}
+Here, String::length is a reference to the instance method length of the String class.
+
+Example 4: Reference to a Constructor
+You can also reference constructors in Java, particularly useful when working with collections and functional interfaces:
+
+java
+Copy
 import java.util.function.Supplier;
 
 public class MethodReferenceExample {
-    // Constructor
+    
+    // Constructor to be referenced
     public MethodReferenceExample() {
         System.out.println("Constructor called!");
     }
 
     public static void main(String[] args) {
-        // Using method reference to constructor
+        // Using method reference to call a constructor
         Supplier<MethodReferenceExample> supplier = MethodReferenceExample::new;
-        supplier.get();  // Output: Constructor called!
+        supplier.get();  // Calls the constructor
     }
 }
