@@ -1449,3 +1449,29 @@ Explanation:
 -> Here, a Book object has a list of Chapter objects. The chapters are considered "part of" the book and have a dependent lifecycle.
 
 -> When a Book instance is destroyed, the garbage collector will also destroy the Chapter objects it holds in the list.
+
+Comparison Table: Variables, Methods, and Access Modifiers in Abstract Class vs. Interface
+Feature	Abstract Class	Interface
+Variables	Can have instance variables, static variables, and constants	Can only have constants (public static final by default)
+Instance Variables	Can be instance variables with any access modifier (public, private, etc.)	Cannot have instance variables
+Methods	Can have abstract methods and concrete methods (methods with a body)	Can have abstract methods (implicit) and default methods (since Java 8)
+Abstract Methods	Can have abstract methods that must be implemented by subclasses	Can have abstract methods (implicitly public abstract)
+Concrete Methods	Can have concrete methods (with a body)	Can have default methods (with a body, since Java 8)
+Default Methods	Not allowed	Allowed (since Java 8)
+Static Methods	Allowed	Allowed (since Java 8)
+Private Methods	Allowed	Allowed (since Java 9, only for internal use in interfaces)
+Constructors	Allowed	Not allowed
+Access Modifiers	Can have public, protected, private, or default (package-private)	Methods are implicitly public; fields are implicitly public static final
+Inheritance	A class can only extend one abstract class	A class can implement multiple interfaces
+Multiple Inheritance	Not supported (single inheritance only)	Supported (a class can implement multiple interfaces)
+
+
+
+2. Access Modifier Rules:
+Here’s a breakdown of what you can and cannot do when overriding methods:
+
+Super/Interface Access Modifier	Overriding Access Modifier (allowed)
+public	public, protected, default (not private)
+protected	public, protected, default (not private)
+default (package-private)	public, default (not protected, not private)
+private	Cannot be overridden (private members cannot be inherited or accessed by subclasses)
